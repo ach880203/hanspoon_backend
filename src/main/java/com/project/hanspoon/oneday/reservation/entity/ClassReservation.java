@@ -1,6 +1,7 @@
 package com.project.hanspoon.oneday.reservation.entity;
 
 import com.project.hanspoon.common.entity.BaseTimeEntity;
+import com.project.hanspoon.common.payment.entity.Payment;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.oneday.clazz.entity.ClassSession;
 import com.project.hanspoon.oneday.reservation.domain.ReservationStatus;
@@ -15,15 +16,12 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "class_reservation", indexes = {
-        @Index(name = "idx_reservation_session", columnList = "session_id"),
-        @Index(name = "idx_reservation_user", columnList = "member_id"),
-        @Index(name = "idx_reservation_status", columnList = "status")
-})
-@AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "createdat")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updatedat"))
-})
+@Table(name = "class_reservation",
+        indexes = {
+                @Index(name = "idx_reservation_session", columnList = "session_id"),
+                @Index(name = "idx_reservation_user", columnList = "member_id"),
+                @Index(name = "idx_reservation_status", columnList = "status")
+        })
 public class ClassReservation extends BaseTimeEntity {
 
     @Id
@@ -39,7 +37,7 @@ public class ClassReservation extends BaseTimeEntity {
     private User user;
 
     // Legacy DB compatibility: some schemas still keep NOT NULL user_id.
-    @Column(name = "user_id", nullable = true)
+    @Column(name = "user_id", nullable = false)
     private Long legacyUserId;
 
     @Enumerated(EnumType.STRING)
@@ -49,32 +47,18 @@ public class ClassReservation extends BaseTimeEntity {
     @Column(name = "hold_expired_at", nullable = false)
     private LocalDateTime holdExpiredAt;
 
-    @Column(name = "paid_at")
     private LocalDateTime paidAt;
-
-    @Column(name = "canceled_at")
     private LocalDateTime canceledAt;
-
-    @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @Column(name = "cancel_requested_at")
-    private LocalDateTime cancelRequestedAt;
-
-    @Column(name = "cancel_reason", length = 500)
-    private String cancelReason;
-
+    // 결제 엔티티 연결(PortOneService 하위호환)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pay_id")
-    private com.project.hanspoon.common.payment.entity.Payment payment; // 결제 정보 연결 (환불용)
-
-    public void setPayment(com.project.hanspoon.common.payment.entity.Payment payment) {
-        this.payment = payment;
-    }
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
     @Builder
     private ClassReservation(ClassSession session, User user,
-            ReservationStatus status, LocalDateTime holdExpiredAt) {
+                             ReservationStatus status, LocalDateTime holdExpiredAt) {
         this.session = session;
         this.user = user;
         this.legacyUserId = (user != null ? user.getUserId() : null);
@@ -91,8 +75,6 @@ public class ClassReservation extends BaseTimeEntity {
     }
 
     public boolean isExpired(LocalDateTime now) {
-        if (holdExpiredAt == null)
-            return true; // 만료 시간이 없으면 만료된 것으로 간주 (혹은 필요에 따라 정책 결정)
         return holdExpiredAt.isBefore(now);
     }
 
@@ -101,21 +83,9 @@ public class ClassReservation extends BaseTimeEntity {
         this.paidAt = now;
     }
 
-    public void markCancelRequested(LocalDateTime now, String reason) {
-        this.status = ReservationStatus.CANCEL_REQUESTED;
-        this.cancelRequestedAt = now;
-        this.cancelReason = reason;
-    }
-
     public void markCanceled(LocalDateTime now) {
         this.status = ReservationStatus.CANCELED;
         this.canceledAt = now;
-    }
-
-    public void revertToPaid() {
-        this.status = ReservationStatus.PAID;
-        this.cancelRequestedAt = null;
-        this.cancelReason = null;
     }
 
     public void markExpired(LocalDateTime now) {
@@ -127,7 +97,8 @@ public class ClassReservation extends BaseTimeEntity {
         this.completedAt = now;
     }
 
-    public LocalDateTime getCompletedAt() {
-        return completedAt;
+    // 기존 서비스 코드에서 사용하는 하위호환 세터
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

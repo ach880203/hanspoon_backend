@@ -26,10 +26,6 @@ public class QClassReservation extends EntityPathBase<ClassReservation> {
 
     public final DateTimePath<java.time.LocalDateTime> canceledAt = createDateTime("canceledAt", java.time.LocalDateTime.class);
 
-    public final StringPath cancelReason = createString("cancelReason");
-
-    public final DateTimePath<java.time.LocalDateTime> cancelRequestedAt = createDateTime("cancelRequestedAt", java.time.LocalDateTime.class);
-
     public final DateTimePath<java.time.LocalDateTime> completedAt = createDateTime("completedAt", java.time.LocalDateTime.class);
 
     //inherited

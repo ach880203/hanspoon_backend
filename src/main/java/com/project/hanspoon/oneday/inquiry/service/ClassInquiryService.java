@@ -36,9 +36,9 @@ public class ClassInquiryService {
         boolean hasAttachment = Boolean.TRUE.equals(req.hasAttachment());
 
         ClassInquiry saved = classInquiryRepository.save(
-                ClassInquiry.of(
+                ClassInquiry.create(
+                        classProductRepository.getReferenceById(classProductId),
                         userId,
-                        classProductId,
                         req.category().trim(),
                         req.title().trim(),
                         req.content().trim(),
@@ -165,9 +165,9 @@ public class ClassInquiryService {
 
         return new ClassInquiryResponse(
                 inquiry.getId(),
+                inquiry.getClassProductId(),
                 inquiry.getUserId(),
                 writerName,
-                inquiry.getClassProductId(),
                 inquiry.getCategory(),
                 title,
                 content,
@@ -177,10 +177,8 @@ public class ClassInquiryService {
                 answerContent,
                 inquiry.getAnsweredByUserId(),
                 inquiry.getAnsweredAt(),
-                canViewContent,
                 canAnswer,
-                inquiry.getCreatedAt(),
-                inquiry.getUpdatedAt()
+                inquiry.getCreatedAt()
         );
     }
 }

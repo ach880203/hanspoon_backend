@@ -22,6 +22,7 @@ public class Instructor extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+
     @Column(nullable = false, length = 1000)
     private String bio;
 
@@ -30,4 +31,6 @@ public class Instructor extends BaseTimeEntity {
         this.user = user;
         this.bio = bio;
     }
+
+    
 }

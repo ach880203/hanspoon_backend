@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,13 +18,13 @@ public class QClassInquiry extends EntityPathBase<ClassInquiry> {
 
     private static final long serialVersionUID = 396087979L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QClassInquiry classInquiry = new QClassInquiry("classInquiry");
 
     public final com.project.hanspoon.common.entity.QBaseTimeEntity _super = new com.project.hanspoon.common.entity.QBaseTimeEntity(this);
 
     public final StringPath answerContent = createString("answerContent");
-
-    public final BooleanPath answered = createBoolean("answered");
 
     public final DateTimePath<java.time.LocalDateTime> answeredAt = createDateTime("answeredAt", java.time.LocalDateTime.class);
 
@@ -31,9 +32,7 @@ public class QClassInquiry extends EntityPathBase<ClassInquiry> {
 
     public final StringPath category = createString("category");
 
-    public final NumberPath<Long> classId = createNumber("classId", Long.class);
-
-    public final NumberPath<Long> classProductId = createNumber("classProductId", Long.class);
+    public final com.project.hanspoon.oneday.clazz.entity.QClassProduct classProduct;
 
     public final StringPath content = createString("content");
 
@@ -43,10 +42,6 @@ public class QClassInquiry extends EntityPathBase<ClassInquiry> {
     public final BooleanPath hasAttachment = createBoolean("hasAttachment");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
-
-    public final BooleanPath secret = createBoolean("secret");
-
-    public final EnumPath<com.project.hanspoon.oneday.inquiry.domain.InquiryStatus> status = createEnum("status", com.project.hanspoon.oneday.inquiry.domain.InquiryStatus.class);
 
     public final StringPath title = createString("title");
 
@@ -58,15 +53,24 @@ public class QClassInquiry extends EntityPathBase<ClassInquiry> {
     public final EnumPath<com.project.hanspoon.oneday.inquiry.domain.Visibility> visibility = createEnum("visibility", com.project.hanspoon.oneday.inquiry.domain.Visibility.class);
 
     public QClassInquiry(String variable) {
-        super(ClassInquiry.class, forVariable(variable));
+        this(ClassInquiry.class, forVariable(variable), INITS);
     }
 
     public QClassInquiry(Path<? extends ClassInquiry> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QClassInquiry(PathMetadata metadata) {
-        super(ClassInquiry.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QClassInquiry(PathMetadata metadata, PathInits inits) {
+        this(ClassInquiry.class, metadata, inits);
+    }
+
+    public QClassInquiry(Class<? extends ClassInquiry> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.classProduct = inits.isInitialized("classProduct") ? new com.project.hanspoon.oneday.clazz.entity.QClassProduct(forProperty("classProduct"), inits.get("classProduct")) : null;
     }
 
 }

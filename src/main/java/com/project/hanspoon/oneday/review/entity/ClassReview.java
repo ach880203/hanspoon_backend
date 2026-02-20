@@ -55,11 +55,12 @@ public class ClassReview extends BaseTimeEntity {
     @Column(nullable = false, length = 2000)
     private String content;
 
-    // 관리자 답글 내용입니다. 리뷰 본문과 구분해서 별도 컬럼으로 관리합니다.
+    // 관리자 답글 본문입니다.
+    // null이면 아직 답글이 없는 상태로 해석합니다.
     @Column(name = "answer_content", length = 2000)
     private String answerContent;
 
-    // 답글 등록한 관리자 userId를 저장합니다.
+    // 답글을 등록한 사용자 ID입니다. (관리자 계정)
     @Column(name = "answered_by_user_id")
     private Long answeredByUserId;
 
@@ -94,11 +95,10 @@ public class ClassReview extends BaseTimeEntity {
         this.deletedAt = now;
     }
 
-    // 관리자 답글 등록/수정 메서드입니다.
-    // 같은 리뷰에 답글을 다시 등록하면 기존 답글을 덮어씁니다.
-    public void answerByAdmin(String answerContent, Long adminUserId, LocalDateTime now) {
+    // 리뷰 원문 아래로 달리는 관리자 답글(대댓글)을 저장합니다.
+    public void answer(String answerContent, Long answeredByUserId, LocalDateTime answeredAt) {
         this.answerContent = answerContent;
-        this.answeredByUserId = adminUserId;
-        this.answeredAt = now;
+        this.answeredByUserId = answeredByUserId;
+        this.answeredAt = answeredAt;
     }
 }
