@@ -1,0 +1,108 @@
+package com.project.hanspoon.common.payment.service;
+
+import com.project.hanspoon.common.payment.constant.PaymentStatus;
+import com.project.hanspoon.common.payment.entity.PaymentItem;
+import com.project.hanspoon.common.payment.entity.Payment;
+import com.project.hanspoon.common.user.entity.User;
+import com.project.hanspoon.common.payment.repository.PaymentItemRepository;
+import com.project.hanspoon.common.payment.repository.PaymentRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class PaymentService {
+
+    private final PaymentRepository paymentRepository;
+    private final PaymentItemRepository paymentItemRepository;
+    private final PortOneService portOneService;
+
+    /**
+     * 결제 생성
+     */
+    public Payment createPayment(User user, int totalPrice) {
+        Payment payment = Payment.builder()
+                .user(user)
+                .totalPrice(totalPrice)
+                .status(PaymentStatus.PAID)
+                .build();
+
+        return paymentRepository.save(payment);
+    }
+
+    /**
+     * 상품 결제 생성
+     */
+    public Payment createPaymentForProduct(User user, Long productId, int price, int quantity) {
+        int totalPrice = price * quantity;
+        Payment payment = createPayment(user, totalPrice);
+
+        PaymentItem paymentItem = PaymentItem.createForProduct(productId, quantity);
+        payment.addPaymentItem(paymentItem);
+
+        return paymentRepository.save(payment);
+    }
+
+    /**
+     * 클래스 결제 생성
+     */
+    public Payment createPaymentForClass(User user, Long classId, int price, int quantity) {
+        int totalPrice = price * quantity;
+        Payment payment = createPayment(user, totalPrice);
+
+        PaymentItem paymentItem = PaymentItem.createForClass(classId, quantity);
+        payment.addPaymentItem(paymentItem);
+
+        return paymentRepository.save(payment);
+    }
+
+    /**
+     * 결제 취소
+     */
+    public Payment cancelPayment(Long payId) {
+        // 포트원 취소 및 DB 업데이트
+        portOneService.cancelPayment(payId, "관리자 취소");
+
+        return paymentRepository.findById(payId)
+                .orElseThrow(() -> new IllegalArgumentException("결제 정보를 찾을 수 없습니다."));
+    }
+
+    /**
+     * 결제 상세 조회
+     */
+    @Transactional(readOnly = true)
+    public Payment getPayment(Long payId) {
+        return paymentRepository.findById(payId)
+                .orElseThrow(() -> new IllegalArgumentException("결제 정보를 찾을 수 없습니다."));
+    }
+
+    /**
+     * 사용자의 결제 내역 조회
+     */
+    @Transactional(readOnly = true)
+    public Page<Payment> getPaymentHistory(Long userId, Pageable pageable) {
+        return paymentRepository.findByUserUserIdOrderByPayDateDesc(userId, pageable);
+    }
+
+    /**
+     * 결제 상태별 조회
+     */
+    @Transactional(readOnly = true)
+    public List<Payment> getPaymentsByStatus(PaymentStatus status) {
+        return paymentRepository.findByStatus(status);
+    }
+
+    /**
+     * 전체 결제 내역 조회 (관리자용)
+     */
+    @Transactional(readOnly = true)
+    public Page<Payment> findAll(Pageable pageable) {
+        return paymentRepository.findAll(pageable);
+    }
+}

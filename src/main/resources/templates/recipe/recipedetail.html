@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${recipe.title}">레시피 상세 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .recipe-header { padding: 40px 0; background: white; border-bottom: 1px solid #eee; margin-bottom: 30px; }
+
+        /* [핵심] 재료 항목 고정 (Sticky) 스타일 */
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .step-card { border: none; border-radius: 12px; transition: transform 0.2s; }
+        .step-card:hover { transform: translateY(-5px); }
+        .step-number {
+            width: 30px; height: 30px; background: #ff6b6b; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; margin-bottom: 10px;
+        }
+
+        .ing-input { width: 70px; text-align: right; border: 1px solid #ddd; border-radius: 4px; }
+        .unit-text { color: #666; font-size: 0.9rem; margin-left: 3px; }
+        .ing-group-title { font-weight: bold; color: #555; margin-top: 15px; border-left: 4px solid #ff6b6b; padding-left: 10px; }
+    </style>
+</head>
+<body>
+
+<header class="recipe-header shadow-sm">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="recipe-img-container shadow rounded-4 overflow-hidden">
+                    <img th:src="${recipe.recipeImg != null ? '/images/recipe/' + recipe.recipeImg : '/images/default-recipe.jpg'}"
+                         alt="레시피 이미지" class="img-fluid w-100">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4 bg-white h-100">
+                    <h1 class="display-6 fw-bold mb-3" th:text="${recipe.title}">레시피 제목</h1>
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <span class="badge bg-primary px-3 py-2" th:text="${recipe.category}">한식</span>
+                        <div>
+                            <input type="number" id="servingsInput" class="form-control d-inline-block w-auto"
+                                   th:value="${recipe.baseServings}" step="0.5" min="0.5">
+                            <span class="fw-bold">인분</span>
+                        </div>
+                        <div class="col-md-6 mb-3 border-start ps-4">
+                            <label class="form-label text-primary fw-bold mb-3">😋 내 입맛에 맞게 조절해보기</label>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="flavor-label">매운맛</span>
+                                    <span class="text-muted small">기본: <span th:text="${recipe.spiciness}">3</span></span>
+                                </div>
+                                <input type="range" class="form-range flavor-slider" min="0" max="5"
+                                       th:value="${recipe.spiciness}" id="spicySlider">
+                                <div class="text-end">
+                                    <span class="badge rounded-pill bg-danger" id="spicyValue">현재: [[${recipe.spiciness}]]</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="flavor-label">단맛</span>
+                                    <span class="text-muted small">기본: <span th:text="${recipe.sweetness}">2</span></span>
+                                </div>
+                                <input type="range" class="form-range flavor-slider" min="0" max="5"
+                                       th:value="${recipe.sweetness}" id="sweetSlider">
+                                <div class="text-end">
+                                    <span class="badge rounded-pill bg-warning text-dark" id="sweetValue">현재: [[${recipe.sweetness}]]</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="flavor-label">짠맛</span>
+                                    <span class="text-muted small">기본: <span th:text="${recipe.saltiness}">2</span></span>
+                                </div>
+                                <input type="range" class="form-range flavor-slider" min="0" max="5"
+                                       th:value="${recipe.saltiness}" id="saltSlider">
+                                <div class="text-end">
+                                    <span class="badge rounded-pill bg-primary" id="saltValue">현재: [[${recipe.saltiness}]]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="mb-3">🛒 필요한 재료</h4>
+                    <div class="ingredient-scroll-area" style="max-height: 250px; overflow-y: auto;">
+                        <div th:each="group : ${recipe.ingredientGroup}">
+                            <div class="ing-group-title mb-2" th:text="${group.name}">메인 재료</div>
+                            <div th:each="ing : ${group.ingredients}" class="d-flex justify-content-between align-items-center mb-2 pe-2">
+                                <span th:text="${ing.name}" class="ing-name">돼지고기 앞다리살</span> <div class="d-flex align-items-center">
+                                <input type="number" class="ing-input me-1"
+                                       th:value="${ing.baseAmount}"
+                                       th:data-base="${ing.baseAmount}">
+                                <span class="unit-text" th:text="${ing.unit}">g</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h3 class="mb-4 text-center">🍳 조리 순서</h3>
+            <div th:each="group : ${recipe.instructionGroup}" class="mb-5">
+                <h5 class="text-secondary mb-3 border-bottom pb-2" th:text="${group.title}">그룹명</h5>
+                <div th:each="inst : ${group.instructions}" class="card step-card shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex gap-4 align-items-start">
+                            <div class="step-number flex-shrink-0" th:text="${inst.stepOrder}">1</div>
+                            <p class="card-text fs-5 mb-0 instruction-content"
+                               th:text="${inst.content}"
+                                th:attr="data-template=${inst.content}">재료를 넣고 볶으세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const baseServings = /*[[${recipe.baseServings}]]*/ 2.0;
+    const servingsInput = document.getElementById('servingsInput');
+    const ingInputs = document.querySelectorAll('.ing-input');
+
+    // [핵심] 조리법 텍스트 실시간 업데이트 함수
+    function updateInstructionText() {
+        const contents = document.querySelectorAll('.instruction-content');
+
+        contents.forEach(p => {
+            let template = p.getAttribute('data-template');
+            if (!template) return;
+
+            // {재료_amount}와 {재료_unit}을 모두 찾는 정규식
+            const regex = /\{([^}_]+)_(amount|unit)\}/g;
+
+            let newContent = template.replace(regex, (match, ingName, type) => {
+                const allNames = document.querySelectorAll('.ing-name');
+                let targetInput = null;
+                let unitText = '';
+
+                allNames.forEach(span => {
+                    if (span.textContent.trim() === ingName.trim()) {
+                        // [중요] span의 부모 div를 찾고, 그 안에서 값을 가져옵니다.
+                        const container = span.closest('.d-flex');
+                        if (container) {
+                            targetInput = container.querySelector('.ing-input');
+                            const unitSpan = container.querySelector('.unit-text');
+                            unitText = unitSpan ? unitSpan.textContent : '';
+                        }
+                    }
+                });
+
+                if (targetInput) {
+                    if (type === 'amount') {
+                        return `<strong class="text-danger">${ingName} ${targetInput.value}</strong>`;
+                    } else if (type === 'unit') {
+                        return `<strong class="text-danger">${unitText}</strong>`;
+                    }
+                }
+                return match;
+            });
+
+            p.innerHTML = newContent;
+        });
+    }
+
+    // 모든 수치를 동기화하는 함수
+    function syncAll(ratio, excludeInput) {
+        // 1. 재료 input들 값 변경
+        ingInputs.forEach(input => {
+            if (input !== excludeInput) {
+                const base = parseFloat(input.dataset.base);
+                const result = base * ratio;
+                input.value = Number.isInteger(result) ? result : result.toFixed(1);
+            }
+        });
+        // 2. 바뀐 재료값들을 바탕으로 조리법 텍스트 업데이트
+        updateInstructionText();
+    }
+
+    // 1. 인분 변경 시
+    servingsInput.addEventListener('input', function() {
+        const ratio = parseFloat(this.value) / baseServings;
+        if (ratio > 0) syncAll(ratio, null);
+    });
+
+    // 2. 개별 재료 무게 변경 시
+    ingInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const currentVal = parseFloat(this.value);
+            const baseVal = parseFloat(input.dataset.base);
+
+            if (currentVal > 0) {
+                const ratio = currentVal / baseVal;
+                servingsInput.value = (baseServings * ratio).toFixed(1);
+                syncAll(ratio, this);
+            }
+        });
+    });
+
+    // 3. 페이지 로드 시 최초 실행 (중요!)
+    window.addEventListener('DOMContentLoaded', () => {
+        updateInstructionText();
+    });
+
+    // 맛 지표 (기존 로직 유지)
+    const sliders = [
+        { id: 'spicySlider', output: 'spicyValue' },
+        { id: 'sweetSlider', output: 'sweetValue' },
+        { id: 'saltSlider', output: 'saltValue' }
+    ];
+    sliders.forEach(item => {
+        const slider = document.getElementById(item.id);
+        const output = document.getElementById(item.output);
+        if(slider) {
+            slider.addEventListener('input', () => {
+                output.textContent = `현재: ${slider.value}`;
+            });
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
