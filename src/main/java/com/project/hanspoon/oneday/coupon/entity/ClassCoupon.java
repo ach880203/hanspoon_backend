@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -34,6 +36,10 @@ public class ClassCoupon extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean active;
 
+    // Legacy DB compatibility: some schemas keep updatedat as NOT NULL.
+    @Column(name = "updatedat", nullable = false)
+    private LocalDateTime legacyUpdatedAt;
+
     @Builder
     private ClassCoupon(String name, DiscountType discountType,
                         int discountValue, int validDays, boolean active) {
@@ -42,5 +48,15 @@ public class ClassCoupon extends BaseTimeEntity {
         this.discountValue = discountValue;
         this.validDays = validDays;
         this.active = active;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void syncLegacyUpdatedAt() {
+        LocalDateTime now = LocalDateTime.now();
+        if (this.updatedAt == null) {
+            this.updatedAt = now;
+        }
+        this.legacyUpdatedAt = this.updatedAt;
     }
 }

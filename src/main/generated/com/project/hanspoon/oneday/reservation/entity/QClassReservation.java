@@ -26,10 +26,6 @@ public class QClassReservation extends EntityPathBase<ClassReservation> {
 
     public final DateTimePath<java.time.LocalDateTime> canceledAt = createDateTime("canceledAt", java.time.LocalDateTime.class);
 
-    public final StringPath cancelReason = createString("cancelReason");
-
-    public final DateTimePath<java.time.LocalDateTime> cancelRequestedAt = createDateTime("cancelRequestedAt", java.time.LocalDateTime.class);
-
     public final DateTimePath<java.time.LocalDateTime> completedAt = createDateTime("completedAt", java.time.LocalDateTime.class);
 
     //inherited
@@ -39,11 +35,11 @@ public class QClassReservation extends EntityPathBase<ClassReservation> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
+
     public final NumberPath<Long> legacyUserId = createNumber("legacyUserId", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> paidAt = createDateTime("paidAt", java.time.LocalDateTime.class);
-
-    public final com.project.hanspoon.common.payment.entity.QPayment payment;
 
     public final com.project.hanspoon.oneday.clazz.entity.QClassSession session;
 
@@ -72,7 +68,6 @@ public class QClassReservation extends EntityPathBase<ClassReservation> {
 
     public QClassReservation(Class<? extends ClassReservation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.payment = inits.isInitialized("payment") ? new com.project.hanspoon.common.payment.entity.QPayment(forProperty("payment"), inits.get("payment")) : null;
         this.session = inits.isInitialized("session") ? new com.project.hanspoon.oneday.clazz.entity.QClassSession(forProperty("session"), inits.get("session")) : null;
         this.user = inits.isInitialized("user") ? new com.project.hanspoon.common.user.entity.QUser(forProperty("user")) : null;
     }

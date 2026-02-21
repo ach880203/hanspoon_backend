@@ -18,24 +18,23 @@ public class ClassReservationController {
     @PostMapping("/api/oneday/sessions/{sessionId}/reservations")
     public ApiResponse<ReservationResponse> createHold(
             @PathVariable Long sessionId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ApiResponse.ok("홀드 예약이 생성되었습니다.", reservationService.createHold(sessionId, resolveUserId(userDetails)));
     }
 
-    @PostMapping("/api/oneday/reservations/{reservationId}/pay")
-    public ApiResponse<ReservationResponse> pay(
-            @PathVariable Long reservationId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        return ApiResponse.ok("예약 결제가 완료되었습니다.", reservationService.pay(reservationId, resolveUserId(userDetails)));
-    }
+    // @PostMapping("/api/oneday/reservations/{reservationId}/pay")
+    // public ApiResponse<ReservationResponse> pay(
+    // @PathVariable Long reservationId,
+    // @AuthenticationPrincipal CustomUserDetails userDetails
+    // ) {
+    // return ApiResponse.ok("예약 결제가 완료되었습니다.",
+    // reservationService.pay(reservationId, resolveUserId(userDetails)));
+    // }
 
     @PostMapping("/api/oneday/reservations/{reservationId}/cancel")
     public ApiResponse<ReservationResponse> cancel(
             @PathVariable Long reservationId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ApiResponse.ok("예약이 취소되었습니다.", reservationService.cancel(reservationId, resolveUserId(userDetails)));
     }
 

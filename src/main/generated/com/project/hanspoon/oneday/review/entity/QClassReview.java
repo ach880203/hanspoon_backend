@@ -43,6 +43,8 @@ public class QClassReview extends EntityPathBase<ClassReview> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> rating = createNumber("rating", Integer.class);
 
     public final NumberPath<Long> reservationId = createNumber("reservationId", Long.class);

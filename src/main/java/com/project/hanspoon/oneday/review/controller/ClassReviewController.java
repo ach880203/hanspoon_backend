@@ -8,6 +8,7 @@ import com.project.hanspoon.oneday.review.dto.ClassReviewCreateRequest;
 import com.project.hanspoon.oneday.review.dto.ClassReviewResponse;
 import com.project.hanspoon.oneday.review.service.ClassReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,16 +36,19 @@ public class ClassReviewController {
         return ApiResponse.ok("리뷰가 등록되었습니다.", reviewService.create(userId, req));
     }
 
-    // 리뷰 답글은 관리자 또는 리뷰 작성자만 달 수 있습니다.
+    // 리뷰 원문 아래로 관리자 대댓글(답글)을 등록합니다.
     @PostMapping("/{reviewId}/answer")
-    public ApiResponse<ClassReviewResponse> answerByAdmin(
+    public ApiResponse<ClassReviewResponse> answer(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long reviewId,
             @RequestBody ClassReviewAnswerRequest req
     ) {
         Long userId = resolveUserId(userDetails);
         boolean admin = isAdmin(userDetails);
-        return ApiResponse.ok("리뷰 답글이 등록되었습니다.", reviewService.answerByAdmin(userId, admin, reviewId, req));
+        return ApiResponse.ok(
+                "리뷰 답글이 등록되었습니다.",
+                reviewService.answer(userId, admin, reviewId, req)
+        );
     }
 
     @DeleteMapping("/{reviewId}")
@@ -59,11 +63,12 @@ public class ClassReviewController {
 
     @GetMapping("/classes/{classId}")
     public ApiResponse<List<ClassReviewResponse>> listByClass(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long classId
+            @PathVariable Long classId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
+        Long userId = userDetails == null ? null : userDetails.getUserId();
         boolean admin = isAdmin(userDetails);
-        return ApiResponse.ok(reviewService.listByClass(classId, admin));
+        return ApiResponse.ok(reviewService.listByClass(classId, userId, admin));
     }
 
     private Long resolveUserId(CustomUserDetails userDetails) {
@@ -74,10 +79,13 @@ public class ClassReviewController {
     }
 
     private boolean isAdmin(CustomUserDetails userDetails) {
-        if (userDetails == null) {
-            return false;
+        if (userDetails == null || userDetails.getAuthorities() == null) return false;
+        for (GrantedAuthority authority : userDetails.getAuthorities()) {
+            String role = authority.getAuthority();
+            if ("ROLE_ADMIN".equalsIgnoreCase(role) || "ADMIN".equalsIgnoreCase(role)) {
+                return true;
+            }
         }
-        return userDetails.getAuthorities().stream()
-                .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
+        return false;
     }
 }

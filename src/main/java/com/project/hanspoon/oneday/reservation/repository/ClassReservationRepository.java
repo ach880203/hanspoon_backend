@@ -19,8 +19,9 @@ public interface ClassReservationRepository extends JpaRepository<ClassReservati
 
     boolean existsBySession_IdAndUser_UserIdAndStatusIn(
             Long sessionId,
-            Long userId, Collection<ReservationStatus> statuses
-    );
+            Long userId, Collection<ReservationStatus> statuses);
+
+    List<ClassReservation> findBySession_IdAndUser_UserId(Long sessionId, Long userId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select r from ClassReservation r where r.id = :id")
@@ -31,16 +32,15 @@ public interface ClassReservationRepository extends JpaRepository<ClassReservati
     Optional<ClassReservation> findByIdAndUserIdForUpdate(@Param("id") Long id, @Param("userId") Long userId);
 
     @Query("""
-        select r
-        from ClassReservation r
-        where r.status = :status
-            and r.holdExpiredAt is not null
-          and r.holdExpiredAt < :now
-    """)
+                select r
+                from ClassReservation r
+                where r.status = :status
+                    and r.holdExpiredAt is not null
+                  and r.holdExpiredAt < :now
+            """)
     List<ClassReservation> findExpiredHolds(
             @Param("status") ReservationStatus status,
-            @Param("now") LocalDateTime now
-    );
+            @Param("now") LocalDateTime now);
 
     @Query("select r from ClassReservation r where r.user.userId = :userId order by r.createdAt desc")
     List<ClassReservation> findByUserId(@Param("userId") Long userId);
@@ -52,31 +52,25 @@ public interface ClassReservationRepository extends JpaRepository<ClassReservati
     Optional<ClassReservation> findByIdAndUser_UserId(Long reservationId, Long userId);
 
     @Query("""
-    select r
-    from ClassReservation r
-    join fetch r.session s
-    join fetch s.classProduct p
-    where r.status = :status
-      and s.startAt < :now
-""")
+                select r
+                from ClassReservation r
+                join fetch r.session s
+                join fetch s.classProduct p
+                where r.status = :status
+                  and s.startAt < :now
+            """)
     List<ClassReservation> findPaidToComplete(
             @Param("status") ReservationStatus status,
-            @Param("now") LocalDateTime now
-    );
+            @Param("now") LocalDateTime now);
 
     @Query("select count(r) from ClassReservation r where r.status = :status")
     long countByStatus(@Param("status") ReservationStatus status);
 
+    List<ClassReservation> findByStatus(ReservationStatus status);
+
     @Query("select count(r) from ClassReservation r join r.session s where s.startAt between :start and :end and r.status in :statuses")
     long countBySessionStartAtBetweenAndStatusIn(
-        @Param("start") LocalDateTime start, 
-        @Param("end") LocalDateTime end, 
-        @Param("statuses") Collection<ReservationStatus> statuses
-    );
-
-    long countByCreatedAtBetweenAndStatusIn(LocalDateTime createdAtAfter, LocalDateTime createdAtBefore, Collection<ReservationStatus> statuses);
-
-    long countByStatusIn(Collection<ReservationStatus> statuses);
-
-    Collection<ClassReservation> searchByStatus(ReservationStatus status);
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
+            @Param("statuses") Collection<ReservationStatus> statuses);
 }

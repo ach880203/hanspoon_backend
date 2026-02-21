@@ -35,6 +35,8 @@ public class QClassProduct extends EntityPathBase<ClassProduct> {
 
     public final com.project.hanspoon.oneday.instructor.entity.QInstructor instructor;
 
+    public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
+
     public final EnumPath<com.project.hanspoon.oneday.clazz.domain.Level> level = createEnum("level", com.project.hanspoon.oneday.clazz.domain.Level.class);
 
     public final EnumPath<com.project.hanspoon.oneday.clazz.domain.RunType> runType = createEnum("runType", com.project.hanspoon.oneday.clazz.domain.RunType.class);

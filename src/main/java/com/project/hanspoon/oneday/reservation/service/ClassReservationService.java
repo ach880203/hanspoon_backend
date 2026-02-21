@@ -45,11 +45,15 @@ public class ClassReservationService {
             throw new BusinessException("이미 시작된 수업은 예약할 수 없습니다.");
         }
 
-        boolean exists = reservationRepository.existsBySession_IdAndUser_UserIdAndStatusIn(
-                sessionId, userId, List.of(ReservationStatus.HOLD, ReservationStatus.PAID)
-        );
-        if (exists) {
-            throw new BusinessException("이미 예약(또는 결제완료)된 세션입니다.");
+        List<ClassReservation> existingReservations = reservationRepository.findBySession_IdAndUser_UserId(sessionId,
+                userId);
+        for (ClassReservation res : existingReservations) {
+            if (res.getStatus() == ReservationStatus.PAID) {
+                throw new BusinessException("이미 결제 완료된 세션입니다.");
+            }
+            if (res.getStatus() == ReservationStatus.HOLD && !res.isExpired(now)) {
+                return ReservationResponse.from(res); // 이미 유효한 홀드가 있으면 반환
+            }
         }
 
         if (session.remainingSeats() <= 0) {
@@ -74,27 +78,7 @@ public class ClassReservationService {
         return ReservationResponse.from(saved);
     }
 
-    public ReservationResponse pay(Long reservationId, Long userId) {
-        validateUserId(userId);
-
-        ClassReservation reservation = reservationRepository.findByIdAndUserIdForUpdate(reservationId, userId)
-                .orElseThrow(() -> new BusinessException("예약을 찾을 수 없습니다. id=" + reservationId));
-
-        LocalDateTime now = LocalDateTime.now(KST_ZONE);
-
-        if (reservation.getStatus() != ReservationStatus.HOLD) {
-            throw new BusinessException("결제할 수 없는 상태입니다: " + reservation.getStatus());
-        }
-        if (reservation.isExpired(now)) {
-            throw new BusinessException("예약이 만료되었습니다. 다시 예약해주세요.");
-        }
-        if (!reservation.getSession().getStartAt().isAfter(now)) {
-            throw new BusinessException("이미 시작된 수업은 결제할 수 없습니다.");
-        }
-
-        reservation.markPaid(now);
-        return ReservationResponse.from(reservation);
-    }
+    // 레거시 pay 메소드 제거됨. 결제 확정은 PortOneService.verifyAndSavePayment를 사용하세요.
 
     public ReservationResponse cancel(Long reservationId, Long userId) {
         validateUserId(userId);
