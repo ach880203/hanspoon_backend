@@ -35,6 +35,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
         private final CustomUserDetailsService userDetailsService;
         private final JwtAuthenticationFilter jwtAuthenticationFilter;
         private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;

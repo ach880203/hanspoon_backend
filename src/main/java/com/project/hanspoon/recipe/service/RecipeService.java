@@ -100,7 +100,7 @@ public class RecipeService {
     /**
      * 레시피 저장(메인 + 재료 + 조리단계 + 서브레시피 관계).
      */
-    public Long saveRecipe(RecipeFormDto recipeFormDto,
+    public void saveRecipe(RecipeFormDto recipeFormDto,
                            MultipartFile recipeImage,
                            List<MultipartFile> instructionImages){
 
@@ -120,7 +120,6 @@ public class RecipeService {
         saveIngredientsAndInstructions(mainRecipe, recipeFormDto, instructionImages);
         saveRecipeRelations(mainRecipe, recipeFormDto.getSubrecipe());
 
-        return mainRecipe.getId();
     }
 
     /**
@@ -189,13 +188,11 @@ public class RecipeService {
     }
 
     @Transactional
-    public Long deleteRecipe(Long id) {
+    public void deleteRecipe(Long id) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
 
         recipe.delete();
-
-        return recipe.getId();
     }
 
     @Transactional

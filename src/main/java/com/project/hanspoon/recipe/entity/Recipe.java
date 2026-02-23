@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name="recipe")
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString
