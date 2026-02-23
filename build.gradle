@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.10'
     id 'io.spring.dependency-management' version '1.1.7'
-    // id 'org.cyclonedx.bom' version '2.3.0' // ?좏깮: SBOM ?꾩슂???뚮쭔 耳?
+    // id 'org.cyclonedx.bom' version '2.3.0' // 필요할 때만 사용
 }
 
 group = 'com.project'
@@ -30,24 +30,23 @@ ext {
 }
 
 dependencies {
-    // REST API (React 遺꾨━)
+    // Spring Web / Actuator
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // Validation (@Valid)
+    // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // JPA (Entity濡??뚯씠釉??먮룞 ?앹꽦)
+    // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    // Security (?몄뀡/荑좏궎 濡쒓렇????嫄곕㈃ ?좎?)
+    // Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    // MariaDB ?쒕씪?대쾭
+    // MariaDB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
-    // JDBC ?ㅽ??곕뒗 湲곕낯?곸쑝濡?遺덊븘??(JPA留??곕㈃ ?쒓굅 異붿쿇)
-    // - JdbcTemplate濡??앹옘由????뚮쭔 耳?
+    // JDBC (일부 기능에서 JdbcTemplate 사용)
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     // Lombok
@@ -56,30 +55,31 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // DevTools (媛쒕컻??
+    // DevTools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    // DTO <-> Entity 留ㅽ븨
+    // DTO <-> Entity 매핑
     implementation 'org.modelmapper:modelmapper:3.2.6'
 
-    //??꾨━??
+    // Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-    // QueryDSL (寃???뺣젹/?꾪꽣留?怨좉툒??
+    // QueryDSL
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-    // ?뚯뀥 API ?곕룞
+    // OAuth2 / WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-    
-    // .env ?뚯씪 濡쒕뱶
+
+    // .env 로더
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
     // Test
@@ -88,7 +88,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// QueryDSL QClass ?앹꽦 寃쎈줈瑜?src/main/generated濡?怨좎젙
+// QueryDSL QClass 생성 경로
 def generated = file("src/main/generated")
 
 tasks.withType(JavaCompile).configureEach {
@@ -103,7 +103,7 @@ sourceSets {
     }
 }
 
-// gradle clean ??QClass ??젣
+// clean 시 생성된 QClass 삭제
 clean {
     delete generated
 }
@@ -111,4 +111,3 @@ clean {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
