@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,7 @@ import java.util.UUID;
  * - 테스트 종료 시 롤백되어 실제 DB 누적 오염을 방지합니다.
  */
 @SpringBootTest
+@ActiveProfiles("test")
 //@Transactional
 class OneDayClassCreationTest {
 

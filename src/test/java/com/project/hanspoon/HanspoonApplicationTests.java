@@ -2,6 +2,7 @@ package com.project.hanspoon;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 컨텍스트 로딩 성공 자체를 검증합니다.
  */
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 class HanspoonApplicationTests {
 
