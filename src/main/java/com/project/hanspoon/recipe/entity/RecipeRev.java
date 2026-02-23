@@ -1,5 +1,6 @@
 package com.project.hanspoon.recipe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.hanspoon.common.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class RecipeRev {
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
+    @JsonIgnore
     private Recipe recipe;
 
     @Lob

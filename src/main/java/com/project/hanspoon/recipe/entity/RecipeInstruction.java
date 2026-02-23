@@ -1,5 +1,6 @@
 package com.project.hanspoon.recipe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class RecipeInstruction {
 
     @ManyToOne
     @JoinColumn(name = "inst_group_id")
+    @JsonIgnore
     private RecipeInstructionGroup recipeInstructionGroup;
 
     private int stepOrder; //조리 순서

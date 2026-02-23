@@ -123,12 +123,14 @@ public class RecipeService {
         }
     }
     @Transactional(readOnly = true)
-    public RecipeDetailDto getRecipeDtl(Long id){
+    public RecipeDetailDto getRecipeDtl(Long id, String userEmail){
 
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
 
-        RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe);
+        boolean likd = recipeWishesRepository.existsByUserEmailAndRecipe(userEmail, id);
+
+        RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe, likd);
 
         dto.getInstructionGroup().forEach(group->{
             group.getInstructions().forEach(inst->{
