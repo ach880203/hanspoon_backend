@@ -6,6 +6,8 @@ import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
