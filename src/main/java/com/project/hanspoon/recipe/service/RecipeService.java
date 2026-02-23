@@ -1,5 +1,7 @@
 package com.project.hanspoon.recipe.service;
 
+import com.project.hanspoon.common.user.entity.User;
+import com.project.hanspoon.common.user.repository.UserRepository;
 import com.project.hanspoon.recipe.component.RecipeParser;
 import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.*;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,13 +35,15 @@ public class RecipeService {
     @Value("c:/hanspoon/img")
     private String itemImgLocation;
 
-    private final RecipeRepository recipeRepository;
-    private final IngredientGroupRepository ingredientGroupRepository;
-    private final IngredientRepository ingredientRepository;
-    private final InstructionRepository instructionRepository;
-    private final InstructionGroupRepository instructionGroupRepository;
-    private final RecipeRelationRepository recipeRelationRepository;
-    private final RecipeParser recipeParser;
+    private final RecipeRepository recipeRepository; // 레시피 메인 레포스토리
+    private final IngredientGroupRepository ingredientGroupRepository; // 재료 그룹 레포스토리
+    private final IngredientRepository ingredientRepository; // 개별 재료 레포스토리
+    private final InstructionRepository instructionRepository; // 개별 조리 방법 레포스토리
+    private final InstructionGroupRepository instructionGroupRepository; // 조리 방법 그룹 레포스토리
+    private final RecipeRelationRepository recipeRelationRepository; // 서브 레시피 레포스토리
+    private final RecipeParser recipeParser; //
+    private final RecipeWishesRepository recipeWishesRepository;
+    private final UserRepository userRepository;
 
     public double convertToGram(String unit, double amount){
         return switch (unit) {
@@ -116,26 +121,6 @@ public class RecipeService {
                 recipeRelationRepository.save(relation);
             }
         }
-    }
-
-    public String getParsedContent(RecipeInstruction inst, double requestedServings,
-                                   double baseServings) {
-        String content = inst.getContent();
-        double ratio = requestedServings / baseServings;
-
-        for (RecipeIngredient ingre : inst.getRecipeInstructionGroup().getRecipe().getAllIngredients()){
-            double calculatedAmount = ingre.getBaseAmount() * ratio;
-
-            String amountStr = (calculatedAmount == (long) calculatedAmount)
-                    ? String.format("%d", (long)calculatedAmount)
-                    : String.format("%.1f", calculatedAmount);
-
-            content = content.replace("{"+ ingre.getName()+"_amount}",
-                                    amountStr);
-            content = content.replace("{"+ ingre.getName()+"_unit}",
-                                ingre.getUnit());
-        }
-        return content;
     }
     @Transactional(readOnly = true)
     public RecipeDetailDto getRecipeDtl(Long id){
@@ -338,4 +323,21 @@ public class RecipeService {
                 .build()).toList();
     }
 
+    public void createWishes(Long id, String email) {
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
+
+        User user = userRepository.findByEmail(email)
+                        .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다"));
+
+        recipeWishesRepository.save(new RecipeWish(recipe, user));
+    }
+
+    public  Page<Recipe> getMyWishedRecipes(String email, String category, Pageable pageable) {
+        if (category == null || category.isEmpty()) {
+            return recipeWishesRepository.findRecipeByUserEmail(email, pageable);
+        } else {
+            return recipeWishesRepository.findRecipeByUserEmailAndCategory(email, category, pageable);
+        }
+    }
 }

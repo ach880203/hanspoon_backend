@@ -2,14 +2,16 @@ package com.project.hanspoon.recipe.entity;
 
 import com.project.hanspoon.common.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name="recipe_wish")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RecipeWish {
 
     @Id
@@ -23,7 +25,13 @@ public class RecipeWish {
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
+    @JsonIgnore
     private Recipe recipe;
+
+    public RecipeWish(Recipe recipe, User user) {
+        this.recipe = recipe;
+        this.user = user;
+    }
 
 
 }

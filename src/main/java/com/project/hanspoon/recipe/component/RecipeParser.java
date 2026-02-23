@@ -16,8 +16,10 @@ public class RecipeParser {
             IngredientDto ing = ingMap.get(name);
             String formatted = formatAmount(ing.getBaseAmount() * multiplier);
 
-            result = result.replace("{" + name + "_amount}", name + " " + formatted)
-                             .replace("{" + name + "_unit}", ing.getUnit());
+            String target = "@" + name;
+            String replacement = name + "" + formatted + ing.getUnit();
+
+            result = result.replace(target, replacement);
         }
         return result;
     }
@@ -27,7 +29,4 @@ public class RecipeParser {
                 : String.format("%.1f", amount);
     }
 
-    public String parseContent(String content, Map<String, IngredientDto> ingredientMap, double i) {
-        return null;
-    }
 }
