@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
@@ -54,6 +56,10 @@ public class ClassSession extends BaseTimeEntity {
     @Version
     private Long version;
 
+    // Legacy DB compatibility: some schemas keep updatedat as NOT NULL.
+    @Column(name = "updatedat", nullable = false)
+    private LocalDateTime legacyUpdatedAt;
+
     @Builder
     public ClassSession(ClassProduct classProduct, LocalDateTime startAt, SessionSlot slot, int capacity, int price) {
         this.classProduct = classProduct;
@@ -80,5 +86,15 @@ public class ClassSession extends BaseTimeEntity {
             return;
         }
         this.reservedCount -= 1;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void syncLegacyUpdatedAt() {
+        LocalDateTime now = LocalDateTime.now();
+        if (this.updatedAt == null) {
+            this.updatedAt = now;
+        }
+        this.legacyUpdatedAt = this.updatedAt;
     }
 }

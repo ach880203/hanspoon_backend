@@ -6,8 +6,12 @@ import com.project.hanspoon.oneday.clazz.domain.RunType;
 
 import java.util.List;
 
-// 원데이 클래스 등록 요청 DTO입니다.
-// 프런트에서 클래스 기본 정보 + 세션 배열을 함께 보냅니다.
+/**
+ * 원데이 클래스 등록 요청 DTO입니다.
+ * 초보자 참고:
+ * - 클래스 기본 정보 + 세션 목록을 한 번에 받기 위해 DTO를 분리했습니다.
+ * - sessions는 최소 1개 이상 필요합니다.
+ */
 public record ClassCreateRequest(
         String title,
         String description,
@@ -16,5 +20,4 @@ public record ClassCreateRequest(
         RecipeCategory category,
         Long instructorId,
         List<ClassSessionCreateRequest> sessions
-) {
-}
+) {}

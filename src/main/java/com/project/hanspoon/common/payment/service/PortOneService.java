@@ -171,7 +171,6 @@ public class PortOneService {
                         throw new IllegalArgumentException("결제 가능한 예약 상태가 아닙니다: " + reservation.getStatus());
                     }
 
-                    reservation.setPayment(savedPayment);
                     reservation.markPaid(java.time.LocalDateTime.now());
                     log.info("기존 예약 확정 및 결제 연동 완료: reservationId={}, payId={}", reservation.getId(),
                             savedPayment.getPayId());
@@ -191,7 +190,6 @@ public class PortOneService {
                             .holdExpiredAt(java.time.LocalDateTime.now().plusHours(1)) // 임시
                             .build();
 
-                    reservation.setPayment(savedPayment);
                     reservation.markPaid(java.time.LocalDateTime.now());
 
                     classReservationRepository.save(reservation);

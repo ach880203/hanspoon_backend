@@ -30,7 +30,7 @@ public class ClassUserCoupon extends BaseTimeEntity {
     @JoinColumn(name = "coupon_id", nullable = false)
     private ClassCoupon coupon;
 
-    @Column(name = "reservation_id", nullable = true)
+    @Column(name = "reservation_id")
     private Long reservationId; // 어떤 수강완료로 발급됐는지 추적
 
     @Column(name = "issued_at", nullable = false)

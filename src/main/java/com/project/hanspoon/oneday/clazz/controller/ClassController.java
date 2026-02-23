@@ -1,7 +1,7 @@
 package com.project.hanspoon.oneday.clazz.controller;
 
-import com.project.hanspoon.common.exception.BusinessException;
 import com.project.hanspoon.common.response.ApiResponse;
+import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.oneday.clazz.domain.Level;
 import com.project.hanspoon.oneday.clazz.domain.RecipeCategory;
 import com.project.hanspoon.oneday.clazz.domain.RunType;
@@ -13,12 +13,10 @@ import com.project.hanspoon.oneday.clazz.dto.ClassListItemResponse;
 import com.project.hanspoon.oneday.clazz.dto.SessionResponse;
 import com.project.hanspoon.oneday.clazz.service.ClassCommandService;
 import com.project.hanspoon.oneday.clazz.service.ClassQueryService;
-import com.project.hanspoon.common.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +31,12 @@ public class ClassController {
     private final ClassQueryService classQueryService;
     private final ClassCommandService classCommandService;
 
+    /**
+     * 원데이 클래스 등록 API입니다.
+     * 초보자 참고:
+     * - 클래스 기본정보 + 세션 목록을 한 번에 저장합니다.
+     * - 현재 정책은 관리자만 등록할 수 있도록 제한했습니다.
+     */
     @PostMapping
     public ApiResponse<ClassCreateResponse> create(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -70,20 +74,14 @@ public class ClassController {
     }
 
     private Long resolveUserId(CustomUserDetails userDetails) {
-        if (userDetails == null || userDetails.getUserId() == null) {
-            throw new BusinessException("로그인 정보가 필요합니다.");
-        }
-        return userDetails.getUserId();
+        return userDetails == null ? null : userDetails.getUserId();
     }
 
     private boolean isAdmin(CustomUserDetails userDetails) {
-        if (userDetails == null || userDetails.getAuthorities() == null) return false;
-        for (GrantedAuthority authority : userDetails.getAuthorities()) {
-            String role = authority.getAuthority();
-            if ("ROLE_ADMIN".equalsIgnoreCase(role) || "ADMIN".equalsIgnoreCase(role)) {
-                return true;
-            }
-        }
-        return false;
+        if (userDetails == null) return false;
+        return userDetails.getAuthorities().stream()
+                // 운영 중 데이터에 "ADMIN" / "ROLE_ADMIN"이 혼재될 수 있어 둘 다 허용
+                .anyMatch(a -> "ROLE_ADMIN".equalsIgnoreCase(a.getAuthority())
+                        || "ADMIN".equalsIgnoreCase(a.getAuthority()));
     }
 }
