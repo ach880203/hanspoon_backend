@@ -73,7 +73,7 @@ public class RecipeService {
 
         int extensionIndex = originalFileName.lastIndexOf(".");
         String extension = extensionIndex >= 0 ? originalFileName.substring(extensionIndex) : "";
-        String savedFileName = UUID.randomUUID().toString() + extension;
+        String savedFileName = UUID.randomUUID() + extension;
         log.info("저장될 파일명: "+ savedFileName);
 
         try {
@@ -114,7 +114,7 @@ public class RecipeService {
         }
 
         // 3) 메인 레시피 저장
-        recipeRepository.save(mainRecipe);
+        mainRecipe = recipeRepository.save(mainRecipe);
 
         // 4) 하위 데이터 저장
         saveIngredientsAndInstructions(mainRecipe, recipeFormDto, instructionImages);
@@ -154,10 +154,10 @@ public class RecipeService {
 
         RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe, liked);
 
-        dto.getInstructionGroup().forEach(group->{
-            group.getInstructions().forEach(inst->{
-                String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
-                //inst.setContent(parsed);
+        dto.getInstructionGroup().forEach(group -> {
+            group.getInstructions().forEach(inst -> {
+                // 재료 치환 파싱 결과를 다시 DTO에 반영해 화면에서 즉시 사용할 수 있게 한다.
+                inst.setContent(recipeParser.parse(inst.getContent(), dto.getIngredientMap(), 1.0));
             });
         });
 
@@ -263,7 +263,7 @@ public class RecipeService {
 
         double mainTotalAmount = recipeFormDto.getIngredientGroup().stream()
                 .flatMap(group -> group.getIngredients().stream())
-                .filter(dto -> dto.isMain())
+                .filter(IngredientDto::isMain)
                 .mapToDouble(dto -> convertToGram(dto.getUnit(), dto.getBaseAmount()))
                 .sum();
 

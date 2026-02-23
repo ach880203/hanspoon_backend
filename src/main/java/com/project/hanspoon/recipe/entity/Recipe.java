@@ -86,6 +86,7 @@ public class Recipe { //레시피 메인
             new ArrayList<>();
 
     @JsonIgnore
+    @SuppressWarnings("unused")
     public List<RecipeIngredient> getAllIngredients() {
         return this.recipeIngredientGroup.stream()
                 .flatMap(group -> group.getIngredients().stream())
