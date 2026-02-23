@@ -23,7 +23,6 @@ public class RecipeDetailDto {
     private int sweetness;
     private int saltiness;
     private int spiciness;
-    private boolean isWished;
 
     private List<Long> subrecipe;
 

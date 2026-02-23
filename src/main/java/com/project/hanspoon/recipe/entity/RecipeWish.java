@@ -1,9 +1,9 @@
 package com.project.hanspoon.recipe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.hanspoon.common.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name="recipe_wish")
