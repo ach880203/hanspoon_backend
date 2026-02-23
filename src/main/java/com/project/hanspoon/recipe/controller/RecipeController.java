@@ -157,8 +157,8 @@ public class RecipeController {
         }
     }
 
-    @GetMapping("/ResipeWiahes")
-    public ResponseEntity<Page<Recipe>> getMyWiahes(
+    @GetMapping("/RecipeWishes")
+    public ResponseEntity<Page<Recipe>> getMyWishes(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(required = false) Category category,
             @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable

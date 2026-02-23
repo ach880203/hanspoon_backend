@@ -1,12 +1,11 @@
 package com.project.hanspoon.recipe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,26 +59,31 @@ public class Recipe { //레시피 메인
     @OneToMany(mappedBy = "mainRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeRelation> subRecipeRelations = new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredientGroup> recipeIngredientGroup =
             new ArrayList<>(); //연결된 재료그룹 삭제
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeInstructionGroup> recipeInstructionGroup =
             new ArrayList<>(); //연결된 조리 순서 삭제
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeRev> recipeRevs =
             new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIng> recipeIngs  =
             new ArrayList<>();
 
+    @JsonIgnore
     public List<RecipeIngredient> getAllIngredients() {
         return this.recipeIngredientGroup.stream()
                 .flatMap(group -> group.getIngredients().stream())
