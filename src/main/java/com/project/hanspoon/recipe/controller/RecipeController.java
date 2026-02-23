@@ -1,5 +1,7 @@
 package com.project.hanspoon.recipe.controller;
 
+import com.project.hanspoon.common.security.CustomUserDetails;
+import com.project.hanspoon.common.user.repository.UserRepository;
 import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.RecipeDetailDto;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
@@ -16,10 +18,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
@@ -30,6 +33,7 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final RecipeRepository recipeRepository;
+    private final UserRepository userRepository;
 
     @PostMapping("/new")
     public ResponseEntity<?> createRecipe(@Valid @RequestPart("recipe") RecipeFormDto recipeFormDto,
@@ -135,4 +139,41 @@ public class RecipeController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("복원실패");
         }
     }
+
+    @PostMapping("/createWishes/{id}")
+    public ResponseEntity<?> createWishes(@PathVariable Long id,
+                                          @AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                          Authentication authentication) {
+        if (authentication == null) {
+            log.info("인증 객체가 null입니다");
+        }else{
+            log.info("인증된 사용사 이메일:" + authentication.getName());
+        }
+        try {
+            recipeService.createWishes(id,customUserDetails.getEmail());
+            return ResponseEntity.ok("관심목록 등록 완료");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관심목록 등록 실패");
+        }
+    }
+
+    @GetMapping("/ResipeWiahes")
+    public ResponseEntity<Page<Recipe>> getMyWiahes(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(required = false) Category category,
+            @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            ) {
+
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Page<Recipe> wishes = recipeService.getMyWishedRecipes(
+                userDetails.getEmail(),
+                category != null ? category.name() : null,
+                pageable
+        );
+        return ResponseEntity.ok(wishes);
+    }
+
 }
