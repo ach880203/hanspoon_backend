@@ -1,14 +1,15 @@
 package com.project.hanspoon.recipe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="recipe_ingredient_group")
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString
@@ -32,6 +33,7 @@ public class RecipeIngredientGroup { // 재료 그룹
 
     private int sortOrder; // 화면 노출 순서
 
+    @Builder.Default
     @OneToMany(mappedBy = "recipeIngredientGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 }

@@ -7,7 +7,8 @@ import com.project.hanspoon.common.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,14 +24,17 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Spring Security 설정 (React 연동용 JWT 기반)
+ * Spring Security 설정 (JWT + OAuth2).
+ *
+ * 보안 정책 원칙:
+ * 1) 인증/헬스체크/공개 조회 API만 permitAll
+ * 2) 관리자 API는 ROLE_ADMIN 강제
+ * 3) 나머지 /api/** 는 인증 필요
  */
 @Configuration
 @EnableWebSecurity
-//@Profile("!dev")
 @RequiredArgsConstructor
 public class SecurityConfig {
-
 
         private final CustomUserDetailsService userDetailsService;
         private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -46,15 +50,49 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 http
-                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .cors(Customizer.withDefaults())
                                 .csrf(csrf -> csrf.disable())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
+                                                // 인증/인가 없이 접근 가능한 엔드포인트
                                                 .requestMatchers("/api/auth/**").permitAll()
+                                                .requestMatchers("/api/health", "/api/info").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/notice/**", "/api/faq/**")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/api/products",
+                                                                "/api/products/*",
+                                                                "/api/products/*/images")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/api/oneday/home",
+                                                                "/api/oneday/classes",
+                                                                "/api/oneday/classes/*",
+                                                                "/api/oneday/classes/*/sessions",
+                                                                "/api/oneday/sessions/search")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/api/recipe/list",
+                                                                "/api/recipe/detail/*")
+                                                .permitAll()
+
+                                                // 관리자 전용 API
                                                 .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                                                .requestMatchers("/api/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/api/products")
+                                                .hasAuthority("ROLE_ADMIN")
+                                                .requestMatchers(HttpMethod.PUT, "/api/products/*")
+                                                .hasAuthority("ROLE_ADMIN")
+                                                .requestMatchers(HttpMethod.POST, "/api/products/*/images")
+                                                .hasAuthority("ROLE_ADMIN")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/products/*/images/*")
+                                                .hasAuthority("ROLE_ADMIN")
+
+                                                // 정적 리소스 공개
                                                 .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
+
+                                                // 위에서 허용하지 않은 API는 인증 필수
+                                                .requestMatchers("/api/**").authenticated()
                                                 .anyRequest().permitAll())
                                 .oauth2Login(oauth2 -> oauth2
                                                 .userInfoEndpoint(userInfo -> userInfo

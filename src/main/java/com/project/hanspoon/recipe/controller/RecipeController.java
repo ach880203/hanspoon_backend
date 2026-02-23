@@ -1,13 +1,12 @@
 package com.project.hanspoon.recipe.controller;
 
+import com.project.hanspoon.common.dto.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
-import com.project.hanspoon.common.user.repository.UserRepository;
 import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.RecipeDetailDto;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import com.project.hanspoon.recipe.dto.RecipeListDto;
 import com.project.hanspoon.recipe.entity.Recipe;
-import com.project.hanspoon.recipe.repository.RecipeRepository;
 import com.project.hanspoon.recipe.service.RecipeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,49 +31,59 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
-    private final RecipeRepository recipeRepository;
-    private final UserRepository userRepository;
 
+    /**
+     * 레시피 생성 API.
+     * - multipart/form-data의 recipe(JSON) + recipeImage(대표 이미지) + instructionImages(단계 이미지)를 받는다.
+     * - 파일 저장/DB 저장은 모두 서비스 계층에서 처리한다.
+     */
     @PostMapping("/new")
-    public ResponseEntity<?> createRecipe(@Valid @RequestPart("recipe") RecipeFormDto recipeFormDto,
-                             @RequestPart(value = "recipeImage", required = false) MultipartFile recipeImage,
-                             BindingResult bindingResult, List<MultipartFile> instructionImages){
-        if (recipeImage != null) {
-            log.info("====파일 업로드 감지 ======");
-            log.info("파일명:" + recipeImage.getOriginalFilename());
-            log.info("파일크기" + recipeImage.getSize());
-            log.info("콘텐츠 타입" + recipeImage.getContentType());
-        }else {
-            log.info("=======업로드된 파일이 없습니다=========");
-        }
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-        try {
-            // 컨트롤러에서는 파일 저장(uploadFile)을 직접 하지 마세요!
-            // 서비스의 saveRecipe가 파일 저장 + DB 저장을 한 번에 처리하도록 맡깁니다.
-            recipeService.saveRecipe(recipeFormDto, recipeImage, instructionImages);
+    public ResponseEntity<ApiResponse<Void>> createRecipe(
+            @Valid @RequestPart("recipe") RecipeFormDto recipeFormDto,
+            @RequestPart(value = "recipeImage", required = false) MultipartFile recipeImage,
+            @RequestPart(value = "instructionImages", required = false) List<MultipartFile> instructionImages,
+            BindingResult bindingResult) {
 
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (recipeImage != null) {
+            log.info("대표 이미지 업로드 감지: name={}, size={}", recipeImage.getOriginalFilename(), recipeImage.getSize());
+        } else {
+            log.info("대표 이미지 없이 레시피 생성 요청");
+        }
+
+        // @Valid 검증 실패 시 즉시 400 반환
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("입력값 검증에 실패했습니다."));
+        }
+
+        try {
+            recipeService.saveRecipe(recipeFormDto, recipeImage, instructionImages);
+            return ResponseEntity.ok(ApiResponse.success("레시피가 등록되었습니다."));
         } catch (Exception e) {
             log.error("레시피 저장 중 오류 발생", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("레시피 저장 중 오류가 발생했습니다."));
         }
     }
-    
+
+    /**
+     * 레시피 상세 조회 API.
+     * - 비로그인 사용자도 조회 가능(찜 여부는 false로 내려감).
+     */
     @GetMapping("/detail/{id}")
-    public ResponseEntity<RecipeDetailDto> getRecipeDetail(@PathVariable("id") Long id){
-
-            RecipeDetailDto detail = recipeService.getRecipeDtl(id);
-
-        return ResponseEntity.ok(detail);
+    public ResponseEntity<ApiResponse<RecipeDetailDto>> getRecipeDetail(@PathVariable("id") Long id) {
+        RecipeDetailDto detail = recipeService.getRecipeDtl(id);
+        return ResponseEntity.ok(ApiResponse.success(detail));
     }
 
+    /**
+     * 레시피 목록 조회 API.
+     * - category/keyword/페이지 조건을 받아 목록을 반환한다.
+     */
     @GetMapping("/list")
-    public ResponseEntity<Page<RecipeListDto>> getrecipeList(
+    public ResponseEntity<ApiResponse<Page<RecipeListDto>>> getRecipeList(
             @RequestParam(value = "category", required = false) Category category,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Recipe> recipePage = recipeService.getRecipeList(keyword, pageable, category);
 
@@ -87,85 +96,110 @@ public class RecipeController {
                         .reviewCount(recipe.getRecipeRevs().size())
                         .build());
 
-        return ResponseEntity.ok(recipeList);
+        return ResponseEntity.ok(ApiResponse.success(recipeList));
     }
 
+    /**
+     * 레시피 수정 화면에 필요한 상세 데이터 조회 API.
+     */
     @GetMapping("/edit/{id}")
-    public ResponseEntity<RecipeDetailDto> getupdateRecipe(@PathVariable Long id) {
-
+    public ResponseEntity<ApiResponse<RecipeDetailDto>> getUpdateRecipe(@PathVariable Long id) {
         RecipeDetailDto recipeDetailDto = recipeService.getRecipeDtl(id);
-
-        return ResponseEntity.ok(recipeDetailDto);
+        return ResponseEntity.ok(ApiResponse.success(recipeDetailDto));
     }
 
+    /**
+     * 레시피 수정 API.
+     */
     @PostMapping("/edit/{id}")
-    public ResponseEntity<?> updateRecipe(@PathVariable Long id,
-                                          @Valid @RequestPart("recipe") RecipeFormDto recipeFormDto,
-                                          @RequestPart(value = "recipeImage", required = false) MultipartFile recipeImage,
-                                          List<MultipartFile> instructionImages) {
+    public ResponseEntity<ApiResponse<Long>> updateRecipe(@PathVariable Long id,
+            @Valid @RequestPart("recipe") RecipeFormDto recipeFormDto,
+            @RequestPart(value = "recipeImage", required = false) MultipartFile recipeImage,
+            @RequestPart(value = "instructionImages", required = false) List<MultipartFile> instructionImages) {
         recipeFormDto.setId(id);
 
         Long updateRecipeId = recipeService.updateRecipe(id, recipeFormDto, recipeImage, instructionImages);
-
-        return ResponseEntity.ok(updateRecipeId);
+        return ResponseEntity.ok(ApiResponse.success("레시피가 수정되었습니다.", updateRecipeId));
     }
 
-
+    /**
+     * 레시피 소프트 삭제 API.
+     */
     @PostMapping("/delete/{id}")
-    public ResponseEntity<?> deleteRecipe(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteRecipe(@PathVariable Long id) {
         try {
             recipeService.deleteRecipe(id);
-            return ResponseEntity.ok("삭제 완료");
+            return ResponseEntity.ok(ApiResponse.success("레시피가 삭제되었습니다."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제실패");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.error("레시피 삭제에 실패했습니다."));
         }
     }
 
+    /**
+     * 삭제된 레시피 목록 조회 API.
+     */
     @GetMapping("/deleted")
-    public ResponseEntity<List<RecipeListDto>> getDeletedRecipes(
+    public ResponseEntity<ApiResponse<List<RecipeListDto>>> getDeletedRecipes(
             @RequestParam(required = false) Category category) {
 
         List<RecipeListDto> list = recipeService.getDeletedRecipes(category);
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(ApiResponse.success(list));
     }
 
-
+    /**
+     * 소프트 삭제된 레시피 복원 API.
+     */
     @PostMapping("/deleteReturn/{id}")
-    public ResponseEntity<?> deleteReturn(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteReturn(@PathVariable Long id) {
         try {
             recipeService.deletereturn(id);
-            return ResponseEntity.ok("복원 완료");
+            return ResponseEntity.ok(ApiResponse.success("레시피가 복원되었습니다."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("복원실패");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.error("레시피 복원에 실패했습니다."));
         }
     }
 
+    /**
+     * 레시피 찜 등록 API.
+     */
     @PostMapping("/createWishes/{id}")
-    public ResponseEntity<?> createWishes(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<Void>> createWishes(@PathVariable Long id,
                                           @AuthenticationPrincipal CustomUserDetails customUserDetails,
                                           Authentication authentication) {
+        // 인증 정보가 없는 경우(비로그인)는 401로 명확히 응답한다.
+        if (customUserDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("로그인이 필요합니다."));
+        }
+
         if (authentication == null) {
             log.info("인증 객체가 null입니다");
-        }else{
-            log.info("인증된 사용사 이메일:" + authentication.getName());
+        } else {
+            log.info("인증된 사용자 이메일: {}", authentication.getName());
         }
         try {
-            recipeService.createWishes(id,customUserDetails.getEmail());
-            return ResponseEntity.ok("관심목록 등록 완료");
+            recipeService.createWishes(id, customUserDetails.getEmail());
+            return ResponseEntity.ok(ApiResponse.success("관심목록에 등록되었습니다."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관심목록 등록 실패");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.error("관심목록 등록에 실패했습니다."));
         }
     }
 
-    @GetMapping("/ResipeWiahes")
-    public ResponseEntity<Page<Recipe>> getMyWiahes(
+    /**
+     * 로그인 사용자의 찜 레시피 목록 조회 API.
+     * - 기존 경로 호환을 위해 URI 오타(ResipeWishes)를 유지한다.
+     */
+    @GetMapping("/ResipeWishes")
+    public ResponseEntity<ApiResponse<Page<Recipe>>> getMyWishes(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(required = false) Category category,
             @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-            ) {
+    ) {
 
         if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("로그인이 필요합니다."));
         }
 
         Page<Recipe> wishes = recipeService.getMyWishedRecipes(
@@ -173,7 +207,7 @@ public class RecipeController {
                 category != null ? category.name() : null,
                 pageable
         );
-        return ResponseEntity.ok(wishes);
+        return ResponseEntity.ok(ApiResponse.success(wishes));
     }
 
 }

@@ -73,8 +73,8 @@ public class ProductService {
         Pageable pageable = PageRequest.of(safePage, safeSize, sort);
 
         // Specification 초기화
-        // Specification.where(null)은 “조건 없음” 상태로 시작해서 .and(...)로 누적하기 좋음
-        Specification<Product> spec = Specification.where(null);
+        // where(null) 대신 항상 true 조건(conjunction)으로 시작해 경고를 제거한다.
+        Specification<Product> spec = (root, query, cb) -> cb.conjunction();
 
         // 검색 조건이 들어온 경우에만 조건을 하나씩 결합
         if (search != null) {

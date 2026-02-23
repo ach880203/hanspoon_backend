@@ -1,18 +1,18 @@
 package com.project.hanspoon.recipe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="recipe")
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString
@@ -46,6 +46,7 @@ public class Recipe { //레시피 메인
     private int saltiness; //짠맛
     private int spiciness; //매운맛
 
+    @Builder.Default
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean deleted = false;
 
@@ -57,29 +58,36 @@ public class Recipe { //레시피 메인
         this.deleted = false;
     }
 
+    @Builder.Default
     @OneToMany(mappedBy = "mainRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeRelation> subRecipeRelations = new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredientGroup> recipeIngredientGroup =
             new ArrayList<>(); //연결된 재료그룹 삭제
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeInstructionGroup> recipeInstructionGroup =
             new ArrayList<>(); //연결된 조리 순서 삭제
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeRev> recipeRevs =
             new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIng> recipeIngs  =
             new ArrayList<>();
 
+    @JsonIgnore
+    @SuppressWarnings("unused")
     public List<RecipeIngredient> getAllIngredients() {
         return this.recipeIngredientGroup.stream()
                 .flatMap(group -> group.getIngredients().stream())

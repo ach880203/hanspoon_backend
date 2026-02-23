@@ -23,6 +23,7 @@ public class RecipeDetailDto {
     private int sweetness;
     private int saltiness;
     private int spiciness;
+    private boolean isWished;
 
     private List<Long> subrecipe;
 
@@ -36,7 +37,7 @@ public class RecipeDetailDto {
 
     private List<IngDto> ingDtos;
 
-    public static RecipeDetailDto fromEntity(Recipe recipe) {
+    public static RecipeDetailDto fromEntity(Recipe recipe, boolean isWished) {
         Map<String, IngredientDto> ingMap = recipe.getRecipeIngredientGroup().stream()
                 .flatMap(group -> group.getIngredients().stream())
                 .map(IngredientDto::fromEntity)
@@ -73,6 +74,7 @@ public class RecipeDetailDto {
                         recipe.getRecipeIngs().stream()
                                 .map(IngDto::fromEntity)
                                 .toList() : List.of())
+                .isWished(isWished)
                 .build();
     }
 }

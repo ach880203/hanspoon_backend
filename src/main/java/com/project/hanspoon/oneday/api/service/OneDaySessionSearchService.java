@@ -33,7 +33,9 @@ public class OneDaySessionSearchService {
             Boolean onlyAvailable,
             String sort
     ) {
-        Specification<ClassSession> spec = Specification.where(ClassSessionSpecs.fetchAll())
+        // Specification.where(...)는 최신 Spring Data JPA에서 제거 예정이라
+        // 기본 스펙(fetchAll)에서 시작해 and(...)로 조건을 누적한다.
+        Specification<ClassSession> spec = ClassSessionSpecs.fetchAll()
                 .and(ClassSessionSpecs.level(level))
                 .and(ClassSessionSpecs.category(category))
                 .and(ClassSessionSpecs.runType(runType))
