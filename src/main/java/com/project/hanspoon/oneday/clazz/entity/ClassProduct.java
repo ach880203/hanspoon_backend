@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -51,6 +52,10 @@ public class ClassProduct extends BaseTimeEntity {
                                 , orphanRemoval = true)
     private List<ClassSession> session = new ArrayList<>();
 
+    // Legacy DB compatibility: some schemas keep updatedat as NOT NULL.
+    @Column(name = "updatedat", nullable = false)
+    private LocalDateTime legacyUpdatedAt;
+
     @Builder
     public ClassProduct(String title, String description, Level level,
                         RunType runType, RecipeCategory category,
@@ -62,5 +67,15 @@ public class ClassProduct extends BaseTimeEntity {
         this.category = category;
         this.instructor = instructor;
 
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void syncLegacyUpdatedAt() {
+        LocalDateTime now = LocalDateTime.now();
+        if (this.updatedAt == null) {
+            this.updatedAt = now;
+        }
+        this.legacyUpdatedAt = this.updatedAt;
     }
 }

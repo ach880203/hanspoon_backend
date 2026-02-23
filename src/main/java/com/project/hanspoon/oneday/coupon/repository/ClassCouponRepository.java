@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ClassCouponRepository extends JpaRepository<ClassCoupon, Long> {
-    Optional<ClassCoupon>findFirstByActiveTrueOrderByIdAsc();
-
     Optional<ClassCoupon> findByName(String name);
+
+    Optional<ClassCoupon> findFirstByActiveTrueOrderByIdAsc();
 }

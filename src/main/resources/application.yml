@@ -26,9 +26,16 @@ spring:
         format_sql: true
 
   servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
     multipart:
       max-file-size: 20MB
       max-request-size: 100MB
+
+  messages:
+    encoding: UTF-8
 
   security:
     oauth2:

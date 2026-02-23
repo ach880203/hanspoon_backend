@@ -10,10 +10,10 @@ public record ClassReviewResponse(
         String reviewerName,
         int rating,
         String content,
+        LocalDateTime createdAt,
         String answerContent,
         Long answeredByUserId,
         String answeredByName,
         LocalDateTime answeredAt,
-        boolean canAnswer,
-        LocalDateTime createdAt
+        boolean canAnswer
 ) {}

@@ -2,6 +2,7 @@ package com.project.hanspoon.oneday.inquiry.service;
 
 import com.project.hanspoon.common.exception.BusinessException;
 import com.project.hanspoon.common.user.repository.UserRepository;
+import com.project.hanspoon.oneday.clazz.entity.ClassProduct;
 import com.project.hanspoon.oneday.clazz.repository.ClassProductRepository;
 import com.project.hanspoon.oneday.inquiry.domain.Visibility;
 import com.project.hanspoon.oneday.inquiry.dto.ClassInquiryAnswerRequest;
@@ -28,32 +29,29 @@ public class ClassInquiryService {
     private final UserRepository userRepository;
 
     public ClassInquiryResponse create(Long userId, ClassInquiryCreateRequest req) {
-        // 1) 요청값 검증
         validateCreate(userId, req);
 
-        Long classProductId = req.classProductId();
-        Visibility visibility = Boolean.TRUE.equals(req.secret()) ? Visibility.PRIVATE : Visibility.PUBLIC;
-        boolean hasAttachment = Boolean.TRUE.equals(req.hasAttachment());
+        ClassProduct classProduct = classProductRepository.findById(req.classProductId())
+                .orElseThrow(() -> new BusinessException("존재하지 않는 클래스입니다. id=" + req.classProductId()));
+        Visibility visibility = req.secret() ? Visibility.PRIVATE : Visibility.PUBLIC;
 
         ClassInquiry saved = classInquiryRepository.save(
-                ClassInquiry.of(
+                ClassInquiry.create(
+                        classProduct,
                         userId,
-                        classProductId,
                         req.category().trim(),
                         req.title().trim(),
                         req.content().trim(),
                         visibility,
-                        hasAttachment
+                        req.hasAttachment()
                 )
         );
 
-        String writerName = resolveWriterName(userId);
-        return toResponse(saved, writerName, true, true);
+        return toResponse(saved, resolveWriterName(userId), true, true);
     }
 
     @Transactional(readOnly = true)
     public List<ClassInquiryResponse> listAll(Long viewerUserId, boolean isAdmin) {
-        // 2) 모든 문의를 한 번에 조회하고, 조회자 권한에 따라 마스킹 여부를 결정합니다.
         List<ClassInquiry> inquiries = classInquiryRepository.findAllByOrderByCreatedAtDesc();
         Map<Long, String> names = userRepository.findAllById(
                         inquiries.stream().map(ClassInquiry::getUserId).distinct().toList()
@@ -75,25 +73,23 @@ public class ClassInquiryService {
             throw new BusinessException("로그인 정보가 필요합니다.");
         }
         if (req == null || req.answerContent() == null || req.answerContent().isBlank()) {
-            throw new BusinessException("답글 내용(answerContent)은 필수입니다.");
+            throw new BusinessException("답변 내용(answerContent)은 필수입니다.");
         }
 
         ClassInquiry inquiry = classInquiryRepository.findById(inquiryId)
                 .orElseThrow(() -> new BusinessException("문의를 찾을 수 없습니다. id=" + inquiryId));
 
         if (!canAnswer(inquiry, actorUserId, isAdmin)) {
-            throw new BusinessException("답글은 작성자 또는 관리자만 등록할 수 있습니다.");
+            throw new BusinessException("답변은 작성자 또는 관리자만 등록할 수 있습니다.");
         }
 
         String answer = req.answerContent().trim();
         if (answer.length() > 4000) {
-            throw new BusinessException("답글 내용(answerContent)은 최대 4000자입니다.");
+            throw new BusinessException("답변 내용(answerContent)은 최대 4000자입니다.");
         }
 
         inquiry.answer(answer, actorUserId, LocalDateTime.now());
-
-        String writerName = resolveWriterName(inquiry.getUserId());
-        return toResponse(inquiry, writerName, true, canAnswer(inquiry, actorUserId, isAdmin));
+        return toResponse(inquiry, resolveWriterName(inquiry.getUserId()), true, canAnswer(inquiry, actorUserId, isAdmin));
     }
 
     private void validateCreate(Long userId, ClassInquiryCreateRequest req) {
@@ -124,19 +120,15 @@ public class ClassInquiryService {
         if (req.content().trim().length() > 4000) {
             throw new BusinessException("내용(content)은 최대 4000자입니다.");
         }
-
-        boolean exists = classProductRepository.existsById(req.classProductId());
-        if (!exists) {
+        if (!classProductRepository.existsById(req.classProductId())) {
             throw new BusinessException("존재하지 않는 클래스입니다. id=" + req.classProductId());
         }
     }
 
     private boolean canView(ClassInquiry inquiry, Long viewerUserId, boolean isAdmin) {
-        // 공개글은 모두 조회 가능
         if (inquiry.getVisibility() == Visibility.PUBLIC) {
             return true;
         }
-        // 비밀글은 작성자/관리자만 조회 가능
         if (viewerUserId == null || viewerUserId <= 0) {
             return false;
         }
@@ -144,7 +136,6 @@ public class ClassInquiryService {
     }
 
     private boolean canAnswer(ClassInquiry inquiry, Long actorUserId, boolean isAdmin) {
-        // 답글 권한: 작성자 또는 관리자
         if (actorUserId == null || actorUserId <= 0) {
             return false;
         }
@@ -158,16 +149,15 @@ public class ClassInquiryService {
     }
 
     private ClassInquiryResponse toResponse(ClassInquiry inquiry, String writerName, boolean canViewContent, boolean canAnswer) {
-        // 비밀글을 권한 없이 조회하면 제목/본문/답글을 마스킹합니다.
         String title = canViewContent ? inquiry.getTitle() : "비밀글입니다.";
         String content = canViewContent ? inquiry.getContent() : "비밀글입니다.";
         String answerContent = canViewContent ? inquiry.getAnswerContent() : null;
 
         return new ClassInquiryResponse(
                 inquiry.getId(),
+                inquiry.getClassProduct().getId(),
                 inquiry.getUserId(),
                 writerName,
-                inquiry.getClassProductId(),
                 inquiry.getCategory(),
                 title,
                 content,
@@ -177,10 +167,8 @@ public class ClassInquiryService {
                 answerContent,
                 inquiry.getAnsweredByUserId(),
                 inquiry.getAnsweredAt(),
-                canViewContent,
                 canAnswer,
-                inquiry.getCreatedAt(),
-                inquiry.getUpdatedAt()
+                inquiry.getCreatedAt()
         );
     }
 }

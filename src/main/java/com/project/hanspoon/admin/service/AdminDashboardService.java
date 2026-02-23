@@ -61,19 +61,20 @@ public class AdminDashboardService {
             try {
 
                 // 오늘 시작수업 기준 -> 오늘 생성된 예약 기준으로 변경
-                todayReservations = reservationRepository.countByCreatedAtBetweenAndStatusIn(
+                todayReservations = reservationRepository.countBySessionStartAtBetweenAndStatusIn(
                         todayStart, todayEnd,
                         List.of(ReservationStatus.PAID, ReservationStatus.COMPLETED,
-                                ReservationStatus.CANCEL_REQUESTED));
+                                ReservationStatus.CANCELED));
 
-                pendingCancel = reservationRepository.countByStatus(ReservationStatus.CANCEL_REQUESTED);
+                // Current reservation domain has no explicit CANCEL_REQUESTED state.
+                pendingCancel = 0;
 
                 // 전체 취소 건수 (예약 취소 + 기간 만료)
-                totalCanceled = reservationRepository.countByStatusIn(
-                        List.of(ReservationStatus.CANCELED, ReservationStatus.EXPIRED));
+                totalCanceled = reservationRepository.countByStatus(ReservationStatus.CANCELED)
+                        + reservationRepository.countByStatus(ReservationStatus.EXPIRED);
 
                 // 오늘 매출 계산 (오늘 PAID 상태가 된 예약들의 금액 합계 - 임시)
-                todaySales = reservationRepository.searchByStatus(ReservationStatus.PAID).stream()
+                todaySales = reservationRepository.findByStatus(ReservationStatus.PAID).stream()
                         .filter(r -> r.getCreatedAt().isAfter(todayStart) && r.getCreatedAt().isBefore(todayEnd))
                         .mapToLong(r -> r.getSession() != null ? r.getSession().getPrice() : 0)
                         .sum();

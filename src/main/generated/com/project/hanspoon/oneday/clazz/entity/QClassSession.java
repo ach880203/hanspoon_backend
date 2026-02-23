@@ -33,6 +33,8 @@ public class QClassSession extends EntityPathBase<ClassSession> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final NumberPath<Integer> reservedCount = createNumber("reservedCount", Integer.class);

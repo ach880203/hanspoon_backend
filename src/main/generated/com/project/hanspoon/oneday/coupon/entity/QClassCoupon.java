@@ -32,6 +32,8 @@ public class QClassCoupon extends EntityPathBase<ClassCoupon> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
+
     public final StringPath name = createString("name");
 
     //inherited

@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.10'
     id 'io.spring.dependency-management' version '1.1.7'
-    // id 'org.cyclonedx.bom' version '2.3.0' // 선택: SBOM 필요할 때만 켜
+    // id 'org.cyclonedx.bom' version '2.3.0' // 필요할 때만 사용
 }
 
 group = 'com.project'
@@ -30,23 +30,23 @@ ext {
 }
 
 dependencies {
-    // REST API (React 분리)
+    // Spring Web / Actuator
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // Validation (@Valid)
+    // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // JPA (Entity로 테이블 자동 생성)
+    // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    // Security (세션/쿠키 로그인 할 거면 유지)
+    // Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    // MariaDB 드라이버
+    // MariaDB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
-    // JDBC 스타터는 기본적으로 불필요 (JPA만 쓰면 제거 추천)
-    // - JdbcTemplate로 생쿼리 쓸 때만 켜
+    // JDBC (일부 기능에서 JdbcTemplate 사용)
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     // Lombok
@@ -55,39 +55,41 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // DevTools (개발용)
+    // DevTools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // DTO <-> Entity 매핑
     implementation 'org.modelmapper:modelmapper:3.2.6'
 
-    //타임리프
+    // Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-    // QueryDSL (검색/정렬/필터링 고급화)
+    // QueryDSL
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-    // 소셜 API 연동
+    // OAuth2 / WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-    
-    // .env 파일 로드
+
+    // .env 로더
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// QueryDSL QClass 생성 경로를 src/main/generated로 고정
+// QueryDSL QClass 생성 경로
 def generated = file("src/main/generated")
 
 tasks.withType(JavaCompile).configureEach {
@@ -102,11 +104,12 @@ sourceSets {
     }
 }
 
-// gradle clean 시 QClass 삭제
+// clean 시 생성된 QClass 삭제
 clean {
     delete generated
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty 'spring.profiles.active', 'test'
 }
