@@ -1,3 +1,15 @@
 /gradlew text eol=lf
 *.bat text eol=crlf
 *.jar binary
+
+# 소스/설정 파일은 LF로 고정해 운영체제 간 불필요한 변경(diff)을 방지한다.
+*.java text eol=lf
+*.kt text eol=lf
+*.kts text eol=lf
+*.gradle text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.xml text eol=lf
+*.properties text eol=lf
+*.sh text eol=lf

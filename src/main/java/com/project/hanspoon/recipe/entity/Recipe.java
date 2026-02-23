@@ -6,8 +6,6 @@ import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,7 @@ public class Recipe { //레시피 메인
     private int saltiness; //짠맛
     private int spiciness; //매운맛
 
+    @Builder.Default
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean deleted = false;
 
@@ -58,6 +57,7 @@ public class Recipe { //레시피 메인
         this.deleted = false;
     }
 
+    @Builder.Default
     @OneToMany(mappedBy = "mainRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeRelation> subRecipeRelations = new ArrayList<>();
 

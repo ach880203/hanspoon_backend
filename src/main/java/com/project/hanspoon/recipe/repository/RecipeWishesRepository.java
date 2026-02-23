@@ -22,6 +22,7 @@ public interface RecipeWishesRepository extends JpaRepository<RecipeWish, Long> 
     @Query("SELECT rw.recipe FROM RecipeWish rw WHERE rw.user.email = :email AND rw.recipe.category = :category")
     Page<Recipe> findRecipeByUserEmailAndCategory (@Param("email") String email, @Param("category") String category, Pageable pageable);
 
-    boolean existsByUserEmailAndRecipe(String userEmail, Long id);
+    // user.email + recipe.id 조합으로 찜 여부를 확인한다.
+    boolean existsByUserEmailAndRecipeId(String userEmail, Long recipeId);
 
 }

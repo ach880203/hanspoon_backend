@@ -1,7 +1,7 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
-uploadPath: file:///c:/hanspoon/img
+uploadPath: file:///c:/hanspoon/img/
 itemImgLocation: c:/hanspoon/img
 
 spring:
@@ -18,9 +18,10 @@ spring:
     password: 1234
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -36,6 +37,10 @@ spring:
 
   messages:
     encoding: UTF-8
+
+  devtools:
+    livereload:
+      enabled: false
 
   security:
     oauth2:
@@ -67,8 +72,9 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql: trace
+    root: info
+    org.hibernate.SQL: warn
+    org.hibernate.type.descriptor.sql: warn
 
 jwt:
   secret: ${JWT_SECRET:mySecretKeyForJwtTokenGenerationMustBe256BitsLong}

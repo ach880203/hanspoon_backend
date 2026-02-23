@@ -32,6 +32,7 @@ public class RecipeIngredientGroup { // 재료 그룹
 
     private int sortOrder; // 화면 노출 순서
 
+    @Builder.Default
     @OneToMany(mappedBy = "recipeIngredientGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 }
