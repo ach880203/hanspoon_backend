@@ -85,16 +85,7 @@ public class RecipeController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Recipe> recipePage = recipeService.getRecipeList(keyword, pageable, category);
-
-        Page<RecipeListDto> recipeList = recipePage
-                .map(recipe -> RecipeListDto.builder()
-                        .id(recipe.getId())
-                        .title(recipe.getTitle())
-                        .recipeImg(recipe.getRecipeImg())
-                        .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
-                        .reviewCount(recipe.getRecipeRevs().size())
-                        .build());
+        Page<RecipeListDto> recipeList = recipeService.getRecipeListForView(keyword, pageable, category);
 
         return ResponseEntity.ok(ApiResponse.success(recipeList));
     }
