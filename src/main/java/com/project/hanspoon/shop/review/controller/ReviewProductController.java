@@ -1,9 +1,7 @@
 package com.project.hanspoon.shop.review.controller;
 
 import com.project.hanspoon.common.security.CustomUserDetails;
-import com.project.hanspoon.shop.review.dto.ReviewCreateRequestDto;
-import com.project.hanspoon.shop.review.dto.ReviewResponseDto;
-import com.project.hanspoon.shop.review.dto.ReviewUpdateRequestDto;
+import com.project.hanspoon.shop.review.dto.*;
 import com.project.hanspoon.shop.review.service.ReviewProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +20,28 @@ public class ReviewProductController {
 
     private final ReviewProductService reviewService;
 
-    // ✅ 상품별 후기 목록 (로그인 없어도 조회 가능하게)
+    // ✅ 상품별 후기 목록 (로그인 없어도 조회 가능)
+    // 추가 파라미터: sort=BEST|LATEST, rating=1~5, keyword=검색어
     @GetMapping("/products/{productId}/reviews")
     public ResponseEntity<Page<ReviewResponseDto>> listByProduct(
             @PathVariable Long productId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "LATEST") String sort,
+            @RequestParam(required = false) Integer rating,
+            @RequestParam(required = false) String keyword
     ) {
-        return ResponseEntity.ok(reviewService.listByProduct(productId, page, size));
+        return ResponseEntity.ok(
+                reviewService.listByProduct(productId, page, size, sort, rating, keyword)
+        );
+    }
+
+    // ✅ (추가) 쿠팡 좌측 요약용 API
+    @GetMapping("/products/{productId}/reviews/summary")
+    public ResponseEntity<ReviewSummaryDto> summary(
+            @PathVariable Long productId
+    ) {
+        return ResponseEntity.ok(reviewService.summaryByProduct(productId));
     }
 
     // ✅ 내 후기 목록
