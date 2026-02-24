@@ -10,6 +10,7 @@ import com.project.hanspoon.oneday.clazz.dto.ClassCreateRequest;
 import com.project.hanspoon.oneday.clazz.dto.ClassCreateResponse;
 import com.project.hanspoon.oneday.clazz.dto.ClassDetailResponse;
 import com.project.hanspoon.oneday.clazz.dto.ClassListItemResponse;
+import com.project.hanspoon.oneday.clazz.dto.ClassUpdateRequest;
 import com.project.hanspoon.oneday.clazz.dto.SessionResponse;
 import com.project.hanspoon.oneday.clazz.service.ClassCommandService;
 import com.project.hanspoon.oneday.clazz.service.ClassQueryService;
@@ -18,7 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -62,6 +65,31 @@ public class ClassController {
     @GetMapping("/{classId}")
     public ApiResponse<ClassDetailResponse> detail(@PathVariable Long classId) {
         return ApiResponse.ok(classQueryService.getClassDetail(classId));
+    }
+
+    @PutMapping("/{classId}")
+    public ApiResponse<ClassDetailResponse> update(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classId,
+            @RequestBody ClassUpdateRequest req
+    ) {
+        Long userId = resolveUserId(userDetails);
+        boolean admin = isAdmin(userDetails);
+        return ApiResponse.ok(
+                "원데이 클래스가 수정되었습니다.",
+                classCommandService.updateClass(userId, admin, classId, req)
+        );
+    }
+
+    @DeleteMapping("/{classId}")
+    public ApiResponse<Void> delete(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classId
+    ) {
+        Long userId = resolveUserId(userDetails);
+        boolean admin = isAdmin(userDetails);
+        classCommandService.deleteClass(userId, admin, classId);
+        return ApiResponse.ok("원데이 클래스가 삭제되었습니다.", null);
     }
 
     @GetMapping("/{classId}/sessions")

@@ -78,6 +78,26 @@ public class ClassProduct extends BaseTimeEntity {
 
     }
 
+    public void updateInfo(
+            String title,
+            String description,
+            String detailDescription,
+            String detailImageData,
+            Level level,
+            RunType runType,
+            RecipeCategory category,
+            Instructor instructor
+    ) {
+        this.title = title;
+        this.description = description;
+        this.detailDescription = detailDescription;
+        this.detailImageData = detailImageData;
+        this.level = level;
+        this.runType = runType;
+        this.category = category;
+        this.instructor = instructor;
+    }
+
     @PrePersist
     @PreUpdate
     private void syncLegacyUpdatedAt() {
