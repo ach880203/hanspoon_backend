@@ -15,7 +15,7 @@ public class ClassReservationController {
 
     private final ClassReservationService reservationService;
 
-    @PostMapping("/api/oneday/sessions/{sessionId}/reservations")
+    @PostMapping({"/api/oneday/sessions/{sessionId}/reservations", "/api/oneday/session/{sessionId}/reservations"})
     public ApiResponse<ReservationResponse> createHold(
             @PathVariable Long sessionId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -31,7 +31,7 @@ public class ClassReservationController {
     // reservationService.pay(reservationId, resolveUserId(userDetails)));
     // }
 
-    @PostMapping("/api/oneday/reservations/{reservationId}/cancel")
+    @PostMapping({"/api/oneday/reservations/{reservationId}/cancel", "/api/mypage/reservations/{reservationId}/cancel"})
     public ApiResponse<ReservationResponse> cancel(
             @PathVariable Long reservationId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {

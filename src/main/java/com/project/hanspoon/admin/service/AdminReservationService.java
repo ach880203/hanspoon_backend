@@ -77,7 +77,7 @@ public class AdminReservationService {
 
         return new AdminReservationItemDto(
                 r.getId(),
-                r.getStatus().name(),
+                r.getStatus().getDescription(),
                 clazz != null ? clazz.getTitle() : null,
                 session != null ? session.getPrice() : null,
                 r.getCreatedAt(),

@@ -119,7 +119,7 @@ public class AdminDashboardService {
         } catch (Exception e) {
             System.err.println("❌ Critical error in getDashboardSummary: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Failed to generate dashboard summary", e);
+            throw new RuntimeException("대시보드 요약 생성에 실패했습니다.", e);
         }
     }
 }

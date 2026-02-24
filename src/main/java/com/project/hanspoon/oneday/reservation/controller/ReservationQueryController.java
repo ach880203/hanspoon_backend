@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/oneday/reservations")
+@RequestMapping({"/api/oneday/reservations", "/api/mypage/reservations", "/api/mypage/class-reservations"})
 public class ReservationQueryController {
 
     private final ReservationQueryService queryService;
@@ -34,13 +34,13 @@ public class ReservationQueryController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate,
-            @RequestParam(required = false) ReservationStatus status,
+            @RequestParam(required = false) String status,
             @PageableDefault(sort = "session.startAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Long userId = resolveUserId(userDetails);
         LocalDateTime start = (startDate != null) ? startDate.atStartOfDay() : null;
         LocalDateTime end = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
-        return ApiResponse.ok(queryService.myReservationsWithFilters(userId, start, end, status, pageable));
+        return ApiResponse.ok(queryService.myReservationsWithFilters(userId, start, end, parseStatus(status), pageable));
     }
 
     @GetMapping("/{reservationId}")
@@ -57,5 +57,20 @@ public class ReservationQueryController {
             throw new BusinessException("로그인 정보가 필요합니다.");
         }
         return userDetails.getUserId();
+    }
+
+    private ReservationStatus parseStatus(String status) {
+        if (status == null || status.isBlank()) {
+            return null;
+        }
+
+        String normalized = status.trim();
+        for (ReservationStatus value : ReservationStatus.values()) {
+            if (value.name().equalsIgnoreCase(normalized) || value.getDescription().equals(normalized)) {
+                return value;
+            }
+        }
+
+        throw new BusinessException("지원하지 않는 예약 상태입니다: " + status);
     }
 }

@@ -238,7 +238,7 @@ public class UserService {
                 .map(res -> ClassReservationResponseDto.builder()
                         .id(res.getId())
                         .sessionId(res.getSession() != null ? res.getSession().getId() : null)
-                        .status(res.getStatus())
+                        .status(res.getStatus().getDescription())
                         .holdExpiredAt(res.getHoldExpiredAt())
                         .paidAt(res.getPaidAt())
                         .canceledAt(res.getCanceledAt())

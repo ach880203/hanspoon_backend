@@ -95,7 +95,7 @@ public class ReviewProductService {
     @Transactional
     public ReviewResponseDto create(Long userId, Long productId, ReviewCreateRequestDto req) {
         if (!StringUtils.hasText(req.getContent())) {
-            throw new ResponseStatusException(BAD_REQUEST, "content는 필수입니다.");
+            throw new ResponseStatusException(BAD_REQUEST, "후기 내용은 필수입니다.");
         }
 
         Product product = productRepository.findById(productId)

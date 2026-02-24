@@ -67,17 +67,17 @@ public class AuthController {
                     .role(resolveRole(user, userDetails))
                     .build();
 
-            return ResponseEntity.ok(ApiResponse.success("Login success", response));
+            return ResponseEntity.ok(ApiResponse.success("로그인에 성공했습니다.", response));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Invalid email or password."));
+            return ResponseEntity.badRequest().body(ApiResponse.error("이메일 또는 비밀번호가 올바르지 않습니다."));
         } catch (LockedException e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Account is locked."));
+            return ResponseEntity.badRequest().body(ApiResponse.error("계정이 잠겨 있습니다."));
         } catch (DisabledException e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Account is disabled."));
+            return ResponseEntity.badRequest().body(ApiResponse.error("비활성화된 계정입니다."));
         } catch (AuthenticationException e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Login failed: " + e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error("로그인에 실패했습니다: " + e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Server error occurred."));
+            return ResponseEntity.badRequest().body(ApiResponse.error("서버 오류가 발생했습니다."));
         }
     }
 
@@ -85,7 +85,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> register(@Valid @RequestBody UserRegisterDto dto) {
         try {
             userService.register(dto);
-            return ResponseEntity.ok(ApiResponse.success("Register success"));
+            return ResponseEntity.ok(ApiResponse.success("회원가입에 성공했습니다."));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -94,7 +94,7 @@ public class AuthController {
     @GetMapping("/check-email")
     public ResponseEntity<ApiResponse<Boolean>> checkEmail(@RequestParam String email) {
         boolean available = !userService.isEmailExists(email);
-        String message = available ? "Available email." : "Email already exists.";
+        String message = available ? "사용 가능한 이메일입니다." : "이미 사용 중인 이메일입니다.";
         return ResponseEntity.ok(ApiResponse.success(message, available));
     }
 
@@ -102,7 +102,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponse>> getCurrentUser(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error("Authentication required."));
+            return ResponseEntity.status(401).body(ApiResponse.error("인증이 필요합니다."));
         }
 
         User user = userDetails.getUser();
@@ -120,7 +120,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponse>> oauth2Success(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error("OAuth2 auth failed."));
+            return ResponseEntity.status(401).body(ApiResponse.error("소셜 로그인 인증에 실패했습니다."));
         }
 
         User user = userDetails.getUser();
@@ -137,19 +137,19 @@ public class AuthController {
                 .role(resolveRole(user, userDetails))
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success("OAuth2 login success", response));
+        return ResponseEntity.ok(ApiResponse.success("소셜 로그인에 성공했습니다.", response));
     }
 
     @GetMapping("/oauth2/failure")
     public ResponseEntity<ApiResponse<Void>> oauth2Failure() {
-        return ResponseEntity.badRequest().body(ApiResponse.error("OAuth2 login failed."));
+        return ResponseEntity.badRequest().body(ApiResponse.error("소셜 로그인에 실패했습니다."));
     }
 
     @PostMapping("/find-email")
     public ResponseEntity<ApiResponse<String>> findEmail(@RequestBody FindIdRequest request) {
         try {
             String email = userService.findEmail(request.getUserName(), request.getPhone());
-            return ResponseEntity.ok(ApiResponse.success("Find email success", email));
+            return ResponseEntity.ok(ApiResponse.success("이메일 찾기에 성공했습니다.", email));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -160,7 +160,7 @@ public class AuthController {
         try {
             String tempPassword = userService.resetPassword(
                     request.getEmail(), request.getUserName(), request.getPhone());
-            return ResponseEntity.ok(ApiResponse.success("Reset password success", tempPassword));
+            return ResponseEntity.ok(ApiResponse.success("비밀번호 재설정에 성공했습니다.", tempPassword));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

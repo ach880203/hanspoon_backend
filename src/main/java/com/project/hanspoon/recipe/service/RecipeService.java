@@ -155,9 +155,8 @@ public class RecipeService {
 
         dto.getInstructionGroup().forEach(group -> {
             group.getInstructions().forEach(inst -> {
-                // 재료 치환 파싱 결과를 다시 DTO에 반영해 화면에서 즉시 사용할 수 있게 한다.
-                String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
-                //inst.setContent(parsed);
+                // 조리문 원본 템플릿(@재료명)은 프론트에서 인분 변경 시 동적 치환하므로 원본을 유지한다.
+                // String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
             });
         });
 
@@ -213,14 +212,7 @@ public class RecipeService {
      */
     @Transactional(readOnly = true)
     public Page<RecipeListDto> getRecipeListForView(String keyword, Pageable pageable, Category category) {
-        return getRecipeList(keyword, pageable, category)
-                .map(recipe -> RecipeListDto.builder()
-                        .id(recipe.getId())
-                        .title(recipe.getTitle())
-                        .recipeImg(recipe.getRecipeImg())
-                        .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
-                        .reviewCount(recipe.getRecipeRevs().size())
-                        .build());
+        return getRecipeListDto(keyword, pageable, category);
     }
 
     @Transactional

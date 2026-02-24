@@ -211,40 +211,40 @@ public class ClassCommandService {
         }
 
         if (title == null || title.isBlank()) {
-            throw new BusinessException("title은 필수입니다.");
+            throw new BusinessException("제목은 필수입니다.");
         }
         if (title.trim().length() > 80) {
-            throw new BusinessException("title은 최대 80자입니다.");
+            throw new BusinessException("제목은 최대 80자입니다.");
         }
 
         if (description != null && description.trim().length() > 4000) {
-            throw new BusinessException("description은 최대 4000자입니다.");
+            throw new BusinessException("설명은 최대 4000자입니다.");
         }
         if (detailDescription != null && detailDescription.trim().length() > 12000) {
-            throw new BusinessException("detailDescription은 최대 12000자입니다.");
+            throw new BusinessException("상세 설명은 최대 12000자입니다.");
         }
         if (detailImageData != null && detailImageData.length() > 4_000_000) {
             throw new BusinessException("상세 이미지 데이터가 너무 큽니다. 2MB 이하 이미지를 사용해 주세요.");
         }
 
         if (level == null) {
-            throw new BusinessException("level은 필수입니다.");
+            throw new BusinessException("난이도는 필수입니다.");
         }
         if (runType == null) {
-            throw new BusinessException("runType은 필수입니다.");
+            throw new BusinessException("진행 방식은 필수입니다.");
         }
         if (category == null) {
-            throw new BusinessException("category는 필수입니다.");
+            throw new BusinessException("분류는 필수입니다.");
         }
         if (instructorId == null || instructorId <= 0) {
-            throw new BusinessException("instructorId는 필수입니다.");
+            throw new BusinessException("강사 ID는 필수입니다.");
         }
 
         if (sessions == null || sessions.isEmpty()) {
-            throw new BusinessException("sessions는 최소 1건 이상 필요합니다.");
+            throw new BusinessException("수업 일정은 최소 1건 이상 필요합니다.");
         }
         if (sessions.size() > 20) {
-            throw new BusinessException("sessions는 최대 20건까지 등록할 수 있습니다.");
+            throw new BusinessException("수업 일정은 최대 20건까지 등록할 수 있습니다.");
         }
 
         for (int i = 0; i < sessions.size(); i++) {
@@ -255,19 +255,19 @@ public class ClassCommandService {
                 throw new BusinessException(prefix + "값이 비어 있습니다.");
             }
             if (session.startAt() == null) {
-                throw new BusinessException(prefix + "startAt은 필수입니다.");
+                throw new BusinessException(prefix + "시작 시각은 필수입니다.");
             }
             if (session.startAt().isBefore(LocalDateTime.now())) {
-                throw new BusinessException(prefix + "startAt은 현재 시각 이후여야 합니다.");
+                throw new BusinessException(prefix + "시작 시각은 현재 시각 이후여야 합니다.");
             }
             if (session.slot() == null) {
-                throw new BusinessException(prefix + "slot은 필수입니다.");
+                throw new BusinessException(prefix + "회차는 필수입니다.");
             }
             if (session.capacity() == null || session.capacity() <= 0) {
-                throw new BusinessException(prefix + "capacity는 1 이상이어야 합니다.");
+                throw new BusinessException(prefix + "정원은 1 이상이어야 합니다.");
             }
             if (session.price() == null || session.price() < 0) {
-                throw new BusinessException(prefix + "price는 0 이상이어야 합니다.");
+                throw new BusinessException(prefix + "가격은 0 이상이어야 합니다.");
             }
         }
     }

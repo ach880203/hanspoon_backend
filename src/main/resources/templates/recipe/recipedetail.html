@@ -140,6 +140,26 @@
     function updateInstructionText() {
         const contents = document.querySelectorAll('.instruction-content');
 
+        // 화면에 표시된 재료명/수량/단위를 맵으로 만든다.
+        // 조리문 치환은 이 맵만 참조하므로 인분 변경과 항상 동기화된다.
+        const ingredientState = {};
+        document.querySelectorAll('.ing-name').forEach(span => {
+            const name = span.textContent.trim();
+            const container = span.closest('.d-flex');
+            if (!container) return;
+
+            const input = container.querySelector('.ing-input');
+            const unit = container.querySelector('.unit-text');
+            if (!input || !unit) return;
+
+            ingredientState[name] = {
+                amount: input.value,
+                unit: unit.textContent
+            };
+        });
+
+        const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
         contents.forEach(p => {
             let template = p.getAttribute('data-template');
             if (!template) return;
@@ -148,30 +168,23 @@
             const regex = /\{([^}_]+)_(amount|unit)\}/g;
 
             let newContent = template.replace(regex, (match, ingName, type) => {
-                const allNames = document.querySelectorAll('.ing-name');
-                let targetInput = null;
-                let unitText = '';
-
-                allNames.forEach(span => {
-                    if (span.textContent.trim() === ingName.trim()) {
-                        // [중요] span의 부모 div를 찾고, 그 안에서 값을 가져옵니다.
-                        const container = span.closest('.d-flex');
-                        if (container) {
-                            targetInput = container.querySelector('.ing-input');
-                            const unitSpan = container.querySelector('.unit-text');
-                            unitText = unitSpan ? unitSpan.textContent : '';
-                        }
-                    }
-                });
-
-                if (targetInput) {
-                    if (type === 'amount') {
-                        return `<strong class="text-danger">${ingName} ${targetInput.value}</strong>`;
-                    } else if (type === 'unit') {
-                        return `<strong class="text-danger">${unitText}</strong>`;
-                    }
+                const item = ingredientState[ingName.trim()];
+                if (item) {
+                    if (type === 'amount') return `<strong class="text-danger">${ingName} ${item.amount}</strong>`;
+                    if (type === 'unit') return `<strong class="text-danger">${item.unit}</strong>`;
                 }
                 return match;
+            });
+
+            // @재료명 형식도 함께 지원한다.
+            // 입력폼 안내가 @재료명 기준이므로, 기존 레시피 템플릿이 그대로 동작해야 한다.
+            Object.keys(ingredientState).forEach(name => {
+                const item = ingredientState[name];
+                const tokenPattern = new RegExp(`@${escapeRegex(name)}\\b`, 'g');
+                newContent = newContent.replace(
+                    tokenPattern,
+                    `<strong class="text-danger">${name} ${item.amount}${item.unit}</strong>`
+                );
             });
 
             p.innerHTML = newContent;
