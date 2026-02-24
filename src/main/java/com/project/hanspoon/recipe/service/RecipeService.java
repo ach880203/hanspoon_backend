@@ -206,6 +206,23 @@ public class RecipeService {
                 .build());
     }
 
+    /**
+     * 목록 조회용 DTO를 트랜잭션 내부에서 생성한다.
+     * 컨트롤러 레벨에서 지연 로딩 컬렉션을 직접 접근하면 LazyInitializationException이 날 수 있어
+     * 변환 책임을 서비스로 이동했다.
+     */
+    @Transactional(readOnly = true)
+    public Page<RecipeListDto> getRecipeListForView(String keyword, Pageable pageable, Category category) {
+        return getRecipeList(keyword, pageable, category)
+                .map(recipe -> RecipeListDto.builder()
+                        .id(recipe.getId())
+                        .title(recipe.getTitle())
+                        .recipeImg(recipe.getRecipeImg())
+                        .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
+                        .reviewCount(recipe.getRecipeRevs().size())
+                        .build());
+    }
+
     @Transactional
     public void deleteRecipe(Long id) {
         Recipe recipe = recipeRepository.findById(id)
