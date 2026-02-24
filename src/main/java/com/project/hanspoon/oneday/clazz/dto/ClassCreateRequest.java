@@ -15,6 +15,8 @@ import java.util.List;
 public record ClassCreateRequest(
         String title,
         String description,
+        String detailDescription,
+        String detailImageData,
         Level level,
         RunType runType,
         RecipeCategory category,

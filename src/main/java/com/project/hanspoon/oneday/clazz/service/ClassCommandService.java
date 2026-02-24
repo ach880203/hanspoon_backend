@@ -52,6 +52,8 @@ public class ClassCommandService {
                 ClassProduct.builder()
                         .title(req.title().trim())
                         .description(req.description() == null ? "" : req.description().trim())
+                        .detailDescription(req.detailDescription() == null ? "" : req.detailDescription().trim())
+                        .detailImageData(req.detailImageData() == null ? "" : req.detailImageData().trim())
                         .level(req.level())
                         .runType(req.runType())
                         .category(req.category())
@@ -101,6 +103,15 @@ public class ClassCommandService {
         }
         if (req.title().trim().length() > 80) {
             throw new BusinessException("title은 최대 80자입니다.");
+        }
+        if (req.description() != null && req.description().trim().length() > 4000) {
+            throw new BusinessException("description은 최대 4000자입니다.");
+        }
+        if (req.detailDescription() != null && req.detailDescription().trim().length() > 12000) {
+            throw new BusinessException("detailDescription은 최대 12000자입니다.");
+        }
+        if (req.detailImageData() != null && req.detailImageData().length() > 4_000_000) {
+            throw new BusinessException("상세 이미지 데이터가 너무 큽니다. 2MB 이하 이미지를 사용해 주세요.");
         }
         if (req.level() == null) {
             throw new BusinessException("level은 필수입니다.");
