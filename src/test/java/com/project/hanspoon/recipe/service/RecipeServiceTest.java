@@ -19,6 +19,7 @@ import com.project.hanspoon.recipe.repository.InstructionGroupRepository;
 import com.project.hanspoon.recipe.repository.InstructionRepository;
 import com.project.hanspoon.recipe.repository.RecipeRelationRepository;
 import com.project.hanspoon.recipe.repository.RecipeRepository;
+import com.project.hanspoon.recipe.repository.RecipeRevRepository;
 import com.project.hanspoon.recipe.repository.RecipeWishesRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +61,8 @@ class RecipeServiceTest {
     @Mock
     private RecipeWishesRepository recipeWishesRepository;
     @Mock
+    private RecipeRevRepository recipeRevRepository;
+    @Mock
     private UserRepository userRepository;
 
     private RecipeService 서비스생성() {
@@ -72,6 +75,7 @@ class RecipeServiceTest {
                 recipeRelationRepository,
                 recipeParser,
                 recipeWishesRepository,
+                recipeRevRepository,
                 userRepository
         );
     }

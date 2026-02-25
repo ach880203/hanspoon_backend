@@ -68,6 +68,24 @@ public class ClassInquiryService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<ClassInquiryResponse> listMy(Long userId, boolean isAdmin) {
+        List<ClassInquiry> inquiries = classInquiryRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+        Map<Long, String> names = userRepository.findAllById(
+                        inquiries.stream().map(ClassInquiry::getUserId).distinct().toList()
+                ).stream()
+                .collect(Collectors.toMap(u -> u.getUserId(), u -> u.getUserName(), (a, b) -> a));
+
+        return inquiries.stream()
+                .map(inquiry -> {
+                    boolean canViewContent = canView(inquiry, userId, isAdmin);
+                    boolean canAnswer = canAnswer(inquiry, userId, isAdmin);
+                    String writerName = names.getOrDefault(inquiry.getUserId(), "?대쫫 ?놁쓬");
+                    return toResponse(inquiry, writerName, canViewContent, canAnswer);
+                })
+                .toList();
+    }
+
     public ClassInquiryResponse answer(Long inquiryId, Long actorUserId, boolean isAdmin, ClassInquiryAnswerRequest req) {
         if (actorUserId == null || actorUserId <= 0) {
             throw new BusinessException("로그인 정보가 필요합니다.");

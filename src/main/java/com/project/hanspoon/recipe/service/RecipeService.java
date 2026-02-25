@@ -42,6 +42,7 @@ public class RecipeService {
     private final RecipeRelationRepository recipeRelationRepository; // 서브 레시피 레포스토리
     private final RecipeParser recipeParser; //
     private final RecipeWishesRepository recipeWishesRepository;
+    private final RecipeRevRepository recipeRevRepository;
     private final UserRepository userRepository;
 
     /**
@@ -414,5 +415,16 @@ public class RecipeService {
             wishPage = recipeWishesRepository.findByUserEmailAndCategory(email, category, pageable);
         }
         return wishPage.map(recipeWish -> new WishDto(recipeWish, recipeWish.getRecipe()));
+    }
+
+    /**
+     * 로그인 사용자가 작성한 레시피 리뷰 목록을 조회합니다.
+     * 통합 마이페이지 화면에서 바로 표시할 수 있도록 전용 DTO로 변환합니다.
+     */
+    @Transactional(readOnly = true)
+    public List<MyRecipeReviewDto> getMyRecipeReviews(Long userId) {
+        return recipeRevRepository.findAllByUser_UserIdOrderByIdDesc(userId).stream()
+                .map(MyRecipeReviewDto::fromEntity)
+                .toList();
     }
 }
