@@ -71,6 +71,15 @@ public class ClassReviewController {
         return ApiResponse.ok(reviewService.listByClass(classId, userId, admin));
     }
 
+    @GetMapping("/me")
+    public ApiResponse<List<ClassReviewResponse>> listMine(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = resolveUserId(userDetails);
+        boolean admin = isAdmin(userDetails);
+        return ApiResponse.ok(reviewService.listMy(userId, admin));
+    }
+
     private Long resolveUserId(CustomUserDetails userDetails) {
         if (userDetails == null || userDetails.getUserId() == null) {
             throw new BusinessException("로그인 정보가 필요합니다.");

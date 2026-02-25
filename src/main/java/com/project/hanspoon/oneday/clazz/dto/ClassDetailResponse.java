@@ -4,6 +4,7 @@ import com.project.hanspoon.oneday.clazz.domain.Level;
 import com.project.hanspoon.oneday.clazz.domain.RecipeCategory;
 import com.project.hanspoon.oneday.clazz.domain.RunType;
 import com.project.hanspoon.oneday.clazz.entity.ClassProduct;
+import java.util.List;
 
 public record ClassDetailResponse(
         Long id,
@@ -11,6 +12,7 @@ public record ClassDetailResponse(
         String description,
         String detailDescription,
         String detailImageData,
+        List<String> detailImageDataList,
         Level level,
         RunType runType,
         RecipeCategory category,
@@ -27,6 +29,7 @@ public record ClassDetailResponse(
                 p.getDescription(),
                 p.getDetailDescription(),
                 p.getDetailImageData(),
+                p.getDetailImages().stream().map(img -> img.getImageData()).toList(),
                 p.getLevel(),
                 p.getRunType(),
                 p.getCategory(),

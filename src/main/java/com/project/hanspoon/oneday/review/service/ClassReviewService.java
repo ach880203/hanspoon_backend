@@ -131,6 +131,35 @@ public class ClassReviewService {
                 .toList();
     }
 
+    /**
+     * 로그인 사용자가 작성한 원데이 리뷰 목록을 조회합니다.
+     * 마이페이지 통합 리뷰 화면에서 source=ONEDAY 항목으로 사용합니다.
+     */
+    @Transactional(readOnly = true)
+    public List<ClassReviewResponse> listMy(Long userId, boolean viewerIsAdmin) {
+        List<ClassReview> reviews = reviewRepository.findAllByUserIdAndDelFlagFalseOrderByCreatedAtDesc(userId);
+
+        List<Long> userIds = reviews.stream()
+                .flatMap(rv -> java.util.stream.Stream.of(rv.getUserId(), rv.getAnsweredByUserId()))
+                .filter(id -> id != null && id > 0)
+                .distinct()
+                .toList();
+
+        Map<Long, String> nameByUserId = userRepository.findAllById(userIds).stream()
+                .collect(Collectors.toMap(User::getUserId, User::getUserName, (a, b) -> a));
+
+        return reviews.stream()
+                .map(rv -> {
+                    String reviewerName = nameByUserId.getOrDefault(rv.getUserId(), "?대쫫 ?놁쓬");
+                    String answeredByName = rv.getAnsweredByUserId() == null
+                            ? null
+                            : nameByUserId.getOrDefault(rv.getAnsweredByUserId(), "愿由ъ옄");
+                    boolean canAnswer = viewerIsAdmin;
+                    return toResponse(rv, reviewerName, answeredByName, canAnswer);
+                })
+                .toList();
+    }
+
     private ClassReviewResponse toResponse(
             ClassReview rv,
             String reviewerName,

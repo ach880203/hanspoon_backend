@@ -38,6 +38,10 @@ public class ClassProduct extends BaseTimeEntity {
     @Column(columnDefinition = "LONGTEXT")
     private String detailImageData;
 
+    @OneToMany(mappedBy = "classProduct", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("sortOrder ASC, id ASC")
+    private List<ClassDetailImage> detailImages = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Level level;
@@ -96,6 +100,20 @@ public class ClassProduct extends BaseTimeEntity {
         this.runType = runType;
         this.category = category;
         this.instructor = instructor;
+    }
+
+    public void replaceDetailImages(List<String> imageDataList) {
+        this.detailImages.clear();
+        if (imageDataList == null || imageDataList.isEmpty()) {
+            return;
+        }
+
+        int order = 0;
+        for (String imageData : imageDataList) {
+            if (imageData == null || imageData.isBlank()) continue;
+            this.detailImages.add(ClassDetailImage.of(this, order, imageData));
+            order += 1;
+        }
     }
 
     @PrePersist

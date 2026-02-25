@@ -3,6 +3,7 @@ package com.project.hanspoon.recipe.controller;
 import com.project.hanspoon.common.dto.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.recipe.constant.Category;
+import com.project.hanspoon.recipe.dto.MyRecipeReviewDto;
 import com.project.hanspoon.recipe.dto.RecipeDetailDto;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import com.project.hanspoon.recipe.dto.RecipeListDto;
@@ -199,6 +200,23 @@ public class RecipeController {
                 pageable
         );
         return ResponseEntity.ok(ApiResponse.success(wishes));
+    }
+
+    /**
+     * 로그인 사용자가 작성한 레시피 리뷰 목록 조회 API.
+     * 마이페이지 통합 "내 리뷰" 화면에서 레시피/원데이/마켓 데이터를 함께 보여줄 때 사용합니다.
+     */
+    @GetMapping("/reviews/me")
+    public ResponseEntity<ApiResponse<List<MyRecipeReviewDto>>> getMyRecipeReviews(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        if (userDetails == null || userDetails.getUserId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("濡쒓렇?몄씠 ?꾩슂?⑸땲??"));
+        }
+
+        List<MyRecipeReviewDto> reviews = recipeService.getMyRecipeReviews(userDetails.getUserId());
+        return ResponseEntity.ok(ApiResponse.success(reviews));
     }
 
 }
