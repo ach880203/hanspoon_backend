@@ -31,6 +31,13 @@ public class ClassProduct extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String detailDescription;
+
+    // Base64 Data URL 형식(예: data:image/png;base64,...)을 저장하는 상세 이미지 필드
+    @Column(columnDefinition = "LONGTEXT")
+    private String detailImageData;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Level level;
@@ -57,16 +64,38 @@ public class ClassProduct extends BaseTimeEntity {
     private LocalDateTime legacyUpdatedAt;
 
     @Builder
-    public ClassProduct(String title, String description, Level level,
+    public ClassProduct(String title, String description, String detailDescription, String detailImageData, Level level,
                         RunType runType, RecipeCategory category,
                         Instructor instructor){
         this.title = title;
         this.description = description;
+        this.detailDescription = detailDescription;
+        this.detailImageData = detailImageData;
         this.level = level;
         this.runType = runType;
         this.category = category;
         this.instructor = instructor;
 
+    }
+
+    public void updateInfo(
+            String title,
+            String description,
+            String detailDescription,
+            String detailImageData,
+            Level level,
+            RunType runType,
+            RecipeCategory category,
+            Instructor instructor
+    ) {
+        this.title = title;
+        this.description = description;
+        this.detailDescription = detailDescription;
+        this.detailImageData = detailImageData;
+        this.level = level;
+        this.runType = runType;
+        this.category = category;
+        this.instructor = instructor;
     }
 
     @PrePersist

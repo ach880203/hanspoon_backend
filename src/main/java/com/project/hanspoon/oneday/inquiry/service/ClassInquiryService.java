@@ -73,7 +73,7 @@ public class ClassInquiryService {
             throw new BusinessException("로그인 정보가 필요합니다.");
         }
         if (req == null || req.answerContent() == null || req.answerContent().isBlank()) {
-            throw new BusinessException("답변 내용(answerContent)은 필수입니다.");
+            throw new BusinessException("답변 내용은 필수입니다.");
         }
 
         ClassInquiry inquiry = classInquiryRepository.findById(inquiryId)
@@ -85,7 +85,7 @@ public class ClassInquiryService {
 
         String answer = req.answerContent().trim();
         if (answer.length() > 4000) {
-            throw new BusinessException("답변 내용(answerContent)은 최대 4000자입니다.");
+            throw new BusinessException("답변 내용은 최대 4000자입니다.");
         }
 
         inquiry.answer(answer, actorUserId, LocalDateTime.now());
@@ -100,25 +100,25 @@ public class ClassInquiryService {
             throw new BusinessException("문의 요청값이 없습니다.");
         }
         if (req.classProductId() == null || req.classProductId() <= 0) {
-            throw new BusinessException("classProductId는 필수입니다.");
+            throw new BusinessException("클래스 ID는 필수입니다.");
         }
         if (req.category() == null || req.category().isBlank()) {
-            throw new BusinessException("분류(category)는 필수입니다.");
+            throw new BusinessException("분류는 필수입니다.");
         }
         if (req.title() == null || req.title().isBlank()) {
-            throw new BusinessException("제목(title)은 필수입니다.");
+            throw new BusinessException("제목은 필수입니다.");
         }
         if (req.content() == null || req.content().isBlank()) {
-            throw new BusinessException("내용(content)은 필수입니다.");
+            throw new BusinessException("내용은 필수입니다.");
         }
         if (req.category().trim().length() > 30) {
-            throw new BusinessException("분류(category)는 최대 30자입니다.");
+            throw new BusinessException("분류는 최대 30자입니다.");
         }
         if (req.title().trim().length() > 150) {
-            throw new BusinessException("제목(title)은 최대 150자입니다.");
+            throw new BusinessException("제목은 최대 150자입니다.");
         }
         if (req.content().trim().length() > 4000) {
-            throw new BusinessException("내용(content)은 최대 4000자입니다.");
+            throw new BusinessException("내용은 최대 4000자입니다.");
         }
         if (!classProductRepository.existsById(req.classProductId())) {
             throw new BusinessException("존재하지 않는 클래스입니다. id=" + req.classProductId());

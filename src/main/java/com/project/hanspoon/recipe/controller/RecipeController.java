@@ -85,16 +85,7 @@ public class RecipeController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Recipe> recipePage = recipeService.getRecipeList(keyword, pageable, category);
-
-        Page<RecipeListDto> recipeList = recipePage
-                .map(recipe -> RecipeListDto.builder()
-                        .id(recipe.getId())
-                        .title(recipe.getTitle())
-                        .recipeImg(recipe.getRecipeImg())
-                        .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
-                        .reviewCount(recipe.getRecipeRevs().size())
-                        .build());
+        Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category);
 
         return ResponseEntity.ok(ApiResponse.success(recipeList));
     }
@@ -164,8 +155,8 @@ public class RecipeController {
     /**
      * 레시피 찜 등록 API.
      */
-    @PostMapping("/createWishes/{id}")
-    public ResponseEntity<ApiResponse<Void>> createWishes(@PathVariable Long id,
+    @PostMapping("/toggleWish/{id}")
+    public ResponseEntity<ApiResponse<Void>> toggleWish(@PathVariable Long id,
                                           @AuthenticationPrincipal CustomUserDetails customUserDetails,
                                           Authentication authentication) {
         // 인증 정보가 없는 경우(비로그인)는 401로 명확히 응답한다.

@@ -30,7 +30,7 @@
   <form th:action="@{/recipe/new}" th:object="${recipeFormDto}" method="post" id="recipeForm" enctype="multipart/form-data">
 
     <div class="d-flex justify-content-between align-items-center mb-5">
-      <h1 class="fw-bold"><span style="color:var(--primary-color)">Han</span>spoon Recipe</h1>
+      <h1 class="fw-bold"><span style="color:var(--primary-color)">한</span>스푼 레시피</h1>
       <div>
         <button type="submit" class="btn btn-primary shadow-sm">레시피 저장하기</button>
       </div>
@@ -105,7 +105,7 @@
         <select th:field="*{subrecipe}" class="form-select" multiple size="5">
           <option th:each="sub : ${subRecipeList}" th:value="${sub.id}" th:text="${sub.title}"></option>
         </select>
-        <p class="text-muted mt-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i>Ctrl키를 누른 채 클릭하면 여러 개를 선택할 수 있습니다.</p>
+        <p class="text-muted mt-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i>컨트롤 키를 누른 채 클릭하면 여러 개를 선택할 수 있습니다.</p>
       </div>
     </div>
   </form>
@@ -132,9 +132,9 @@
     <div class="col-md-3">
       <select name="ingredientGroup[{gIdx}].ingredients[{rIdx}].tasteType" class="form-select">
         <option value="NONE">맛 영향 없음</option>
-        <option value="SWEET">단맛 (Sweet)</option>
-        <option value="SALT">짠맛 (Salt)</option>
-        <option value="SPICY">매운맛 (Spicy)</option>
+        <option value="SWEET">단맛</option>
+        <option value="SALT">짠맛</option>
+        <option value="SPICY">매운맛</option>
       </select>
     </div>
     <div class="col-md-1 text-center">

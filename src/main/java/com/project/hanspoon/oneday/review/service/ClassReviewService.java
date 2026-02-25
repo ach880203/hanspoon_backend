@@ -45,7 +45,7 @@ public class ClassReviewService {
             throw new BusinessException("본인 예약만 리뷰를 작성할 수 있습니다.");
         }
         if (reservation.getStatus() != ReservationStatus.COMPLETED) {
-            throw new BusinessException("수강 완료(COMPLETED)인 예약만 리뷰를 작성할 수 있습니다.");
+            throw new BusinessException("수강 완료 상태인 예약만 리뷰를 작성할 수 있습니다.");
         }
 
         var classProduct = reservation.getSession().getClassProduct();
@@ -66,7 +66,7 @@ public class ClassReviewService {
             throw new BusinessException("리뷰 답글은 관리자만 작성할 수 있습니다.");
         }
         if (reviewId == null || reviewId <= 0) {
-            throw new BusinessException("reviewId가 올바르지 않습니다.");
+            throw new BusinessException("리뷰 ID가 올바르지 않습니다.");
         }
         if (req == null || req.answerContent() == null || req.answerContent().isBlank()) {
             throw new BusinessException("답글 내용을 입력해 주세요.");
@@ -162,13 +162,13 @@ public class ClassReviewService {
             throw new BusinessException("리뷰 요청 값이 없습니다.");
         }
         if (req.reservationId() == null || req.reservationId() <= 0) {
-            throw new BusinessException("reservationId가 올바르지 않습니다.");
+            throw new BusinessException("예약 ID가 올바르지 않습니다.");
         }
         if (req.rating() < 1 || req.rating() > 5) {
-            throw new BusinessException("rating은 1~5여야 합니다.");
+            throw new BusinessException("평점은 1~5여야 합니다.");
         }
         if (req.content() == null || req.content().isBlank()) {
-            throw new BusinessException("content는 필수입니다.");
+            throw new BusinessException("리뷰 내용은 필수입니다.");
         }
     }
 }

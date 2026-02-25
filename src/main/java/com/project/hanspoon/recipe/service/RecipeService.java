@@ -155,8 +155,8 @@ public class RecipeService {
 
         dto.getInstructionGroup().forEach(group -> {
             group.getInstructions().forEach(inst -> {
-                // 재료 치환 파싱 결과를 다시 DTO에 반영해 화면에서 즉시 사용할 수 있게 한다.
-                inst.setContent(recipeParser.parse(inst.getContent(), dto.getIngredientMap(), 1.0));
+                // 조리문 원본 템플릿(@재료명)은 프론트에서 인분 변경 시 동적 치환하므로 원본을 유지한다.
+                // String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
             });
         });
 
@@ -173,18 +173,46 @@ public class RecipeService {
      * 레시피 목록 조회.
      * - keyword가 null이면 빈 문자열로 정규화해 repository 쿼리 오류를 방지한다.
      */
-  public Page<Recipe> getRecipeList
-          (String keyword, Pageable pageable, Category category) {
-            String normalizedKeyword = (keyword == null) ? "" : keyword;
 
-            if (category == null) {
-                if (normalizedKeyword.isEmpty()) {
-                    return recipeRepository.findByDeletedFalse(pageable);
-                }
-                return recipeRepository.findByTitleContainingAndDeletedFalse(normalizedKeyword, pageable);
+    @Transactional(readOnly = true)
+    public Page<RecipeListDto> getRecipeListDto(String keyword, Pageable pageable, Category category) {
+        String normalizedkeyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword.trim();
+        log.info("DEBUG: 카테고리=" + category + ", 키워드=[ " + normalizedkeyword + "]");
+
+        Page<Recipe> recipePage;
+
+        if(category == null) {
+            if (normalizedkeyword.isEmpty()) {
+                recipePage = recipeRepository.findByDeletedFalse(pageable);
+            } else{
+                recipePage = recipeRepository.findByTitleContainingAndDeletedFalse
+                        (normalizedkeyword, pageable);
             }
-        return recipeRepository.findByCategoryAndTitleContainingAndDeletedFalse
-                (category, normalizedKeyword, pageable);
+        } else {
+            recipePage = recipeRepository.findByCategoryAndTitleContainingAndDeletedFalse
+                    (category, normalizedkeyword, pageable);
+        }
+
+        log.info("DEBUG: DB 조회 결과 건수=" + recipePage.getContent().size());
+
+        // 2. 위에서 가져온 '필터링된 결과물'을 DTO로 변환만 하는 거예요.
+        return recipePage.map(recipe -> RecipeListDto.builder()
+                .id(recipe.getId())
+                .title(recipe.getTitle())
+                .recipeImg(recipe.getRecipeImg())
+                .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
+                .reviewCount(recipe.getRecipeRevs().size()) // 이제 에러 안 남!
+                .build());
+    }
+
+    /**
+     * 목록 조회용 DTO를 트랜잭션 내부에서 생성한다.
+     * 컨트롤러 레벨에서 지연 로딩 컬렉션을 직접 접근하면 LazyInitializationException이 날 수 있어
+     * 변환 책임을 서비스로 이동했다.
+     */
+    @Transactional(readOnly = true)
+    public Page<RecipeListDto> getRecipeListForView(String keyword, Pageable pageable, Category category) {
+        return getRecipeListDto(keyword, pageable, category);
     }
 
     @Transactional

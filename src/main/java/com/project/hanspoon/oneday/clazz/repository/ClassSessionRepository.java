@@ -31,4 +31,8 @@ public interface ClassSessionRepository extends JpaRepository<ClassSession, Long
             @Param("to") LocalDateTime to,
             @Param("slot") SessionSlot slot
             );
+
+    boolean existsByClassProductIdAndReservedCountGreaterThan(Long classProductId, int reservedCount);
+
+    void deleteByClassProductId(Long classProductId);
 }

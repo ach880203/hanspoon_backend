@@ -30,8 +30,8 @@ public final class ProductMapper {
      * - 서비스에서 findById로 가져온 entity에 적용해야 안전함
      */
     public static void applyToEntity(ProductRequestDto dto, Product entity) {
-        if (dto == null) throw new IllegalArgumentException("ProductRequestDto is null");
-        if (entity == null) throw new IllegalArgumentException("Product entity is null");
+        if (dto == null) throw new IllegalArgumentException("상품 요청 데이터가 비어 있습니다.");
+        if (entity == null) throw new IllegalArgumentException("상품 엔티티가 비어 있습니다.");
 
         entity.setCategory(dto.getCategory());
         entity.setName(dto.getName());

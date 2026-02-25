@@ -53,7 +53,7 @@ public class InquiryProductService {
     @Transactional
     public InquiryResponseDto create(Long userId, Long productId, InquiryCreateRequestDto req) {
         if (!StringUtils.hasText(req.getContent())) {
-            throw new ResponseStatusException(BAD_REQUEST, "content는 필수입니다.");
+            throw new ResponseStatusException(BAD_REQUEST, "문의 내용은 필수입니다.");
         }
 
         Product product = productRepository.findById(productId)
@@ -125,7 +125,7 @@ public class InquiryProductService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "문의가 없습니다. inqId=" + inqId));
 
         if (!StringUtils.hasText(req.getAnswer())) {
-            throw new ResponseStatusException(BAD_REQUEST, "answer는 필수입니다.");
+            throw new ResponseStatusException(BAD_REQUEST, "답변 내용은 필수입니다.");
         }
 
         inq.setAnswer(req.getAnswer().trim());

@@ -69,7 +69,7 @@ public class ReservationQueryService {
 
         return new ReservationDetailResponse(
                 reservation.getId(),
-                reservation.getStatus(),
+                reservation.getStatus().getDescription(),
                 reservation.getHoldExpiredAt(),
                 reservation.getPaidAt(),
                 reservation.getCanceledAt(),
@@ -90,7 +90,7 @@ public class ReservationQueryService {
 
         return new ReservationListItemResponse(
                 reservation.getId(),
-                reservation.getStatus(),
+                reservation.getStatus().getDescription(),
                 reservation.getHoldExpiredAt(),
                 session.getId(),
                 session.getStartAt(),

@@ -1,6 +1,5 @@
 package com.project.hanspoon.oneday.reservation.dto;
 
-import com.project.hanspoon.oneday.reservation.domain.ReservationStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 public class ClassReservationResponseDto {
     private Long id;
     private Long sessionId;
-    private ReservationStatus status;
+    private String status;
     private LocalDateTime holdExpiredAt;
     private LocalDateTime paidAt;
     private LocalDateTime canceledAt;

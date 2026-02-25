@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/reservations")
+@RequestMapping({"/api/admin/reservations", "/api/admin/reservation"})
 public class AdminReservationController {
 
     private final AdminReservationService adminReservationService;
@@ -27,18 +27,18 @@ public class AdminReservationController {
         return ApiResponse.ok(adminReservationService.getReservations(status));
     }
 
-    @GetMapping("/cancel-requests")
+    @GetMapping({"/cancel-requests", "/cancel_requests", "/cancelRequests"})
     public ApiResponse<List<AdminReservationItemDto>> getCancelRequests() {
         return ApiResponse.ok(adminReservationService.getCancelRequests());
     }
 
-    @PostMapping("/{reservationId}/approve-cancel")
+    @PostMapping({"/{reservationId}/approve-cancel", "/{reservationId}/approve_cancel", "/{reservationId}/approveCancel"})
     public ApiResponse<Void> approveCancel(@PathVariable Long reservationId) {
         adminReservationService.approveCancel(reservationId);
         return ApiResponse.ok("취소 승인 처리되었습니다.", null);
     }
 
-    @PostMapping("/{reservationId}/reject-cancel")
+    @PostMapping({"/{reservationId}/reject-cancel", "/{reservationId}/reject_cancel", "/{reservationId}/rejectCancel"})
     public ApiResponse<Void> rejectCancel(@PathVariable Long reservationId) {
         adminReservationService.rejectCancel(reservationId);
         return ApiResponse.ok("취소 거절 처리되었습니다.", null);
