@@ -3,6 +3,7 @@ package com.project.hanspoon.recipe.dto;
 import com.project.hanspoon.recipe.entity.Recipe;
 import com.project.hanspoon.recipe.entity.RecipeIngredient;
 import com.project.hanspoon.recipe.entity.RecipeInstruction;
+import com.project.hanspoon.recipe.entity.RecipeWish;
 import lombok.*;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class RecipeDetailDto {
 
     private List<IngDto> ingDtos;
 
-    public static RecipeDetailDto fromEntity(Recipe recipe, boolean isWished) {
+    public static RecipeDetailDto fromEntity(Recipe recipe, boolean wished) {
         Map<String, IngredientDto> ingMap = recipe.getRecipeIngredientGroup().stream()
                 .flatMap(group -> group.getIngredients().stream())
                 .map(IngredientDto::fromEntity)
@@ -50,6 +51,7 @@ public class RecipeDetailDto {
         return RecipeDetailDto.builder()
                 .id(recipe.getId())
                 .title(recipe.getTitle())
+                .isWished(wished)
                 .recipeImg(recipe.getRecipeImg())
                 .category(recipe.getCategory() !=null ?
                         recipe.getCategory().name() : null)
@@ -74,7 +76,6 @@ public class RecipeDetailDto {
                         recipe.getRecipeIngs().stream()
                                 .map(IngDto::fromEntity)
                                 .toList() : List.of())
-                .isWished(isWished)
                 .build();
     }
 }

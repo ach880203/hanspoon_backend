@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -147,12 +148,12 @@ public class RecipeService {
                 .orElseThrow(()-> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
 
         // 비로그인 요청은 찜 여부를 false로 처리해 상세 조회가 항상 동작하도록 한다.
-        boolean liked = false;
-        if (userEmail != null && !userEmail.isBlank()) {
-            liked = recipeWishesRepository.existsByUserEmailAndRecipeId(userEmail, id);
+        boolean isWished = false;
+        if (userEmail != null) {
+            isWished = recipeWishesRepository.existsByUserEmailAndRecipeId(userEmail, id);
         }
 
-        RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe, liked);
+        RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe, isWished);
 
         dto.getInstructionGroup().forEach(group -> {
             group.getInstructions().forEach(inst -> {
@@ -414,7 +415,7 @@ public class RecipeService {
         } else {
             wishPage = recipeWishesRepository.findByUserEmailAndCategory(email, category, pageable);
         }
-        return wishPage.map(recipeWish -> new WishDto(recipeWish, recipeWish.getRecipe()));
+        return wishPage.map(rw -> new WishDto(rw, rw.getRecipe()));
     }
 
     /**
@@ -426,5 +427,12 @@ public class RecipeService {
         return recipeRevRepository.findAllByUser_UserIdOrderByIdDesc(userId).stream()
                 .map(MyRecipeReviewDto::fromEntity)
                 .toList();
+    }
+
+    @Transactional
+    @Modifying
+    public void removeWish(String email, Long id) {
+        log.info("삭제" + id);
+        recipeWishesRepository.deleteByUserEmailAndId(email, id);
     }
 }

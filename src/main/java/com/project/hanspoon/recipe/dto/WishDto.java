@@ -3,6 +3,7 @@ package com.project.hanspoon.recipe.dto;
 import com.project.hanspoon.recipe.entity.Recipe;
 import com.project.hanspoon.recipe.entity.RecipeWish;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 
 @Setter
 @Getter
@@ -18,8 +19,8 @@ public class WishDto {
 
     public WishDto(RecipeWish recipeWish, Recipe recipe) {
         this.id = recipe.getId();
-        this.userId = recipeWish.getId();
-        this.wishId = recipeWish.getUser().getUserId();
+        this.wishId = recipeWish.getId();
+        this.userId = recipeWish.getUser().getUserId();
         this.title = recipe.getTitle();
         this.mainImage = recipe.getRecipeImg();
     }

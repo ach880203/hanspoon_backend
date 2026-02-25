@@ -72,8 +72,12 @@ public class RecipeController {
      * - 비로그인 사용자도 조회 가능(찜 여부는 false로 내려감).
      */
     @GetMapping("/detail/{id}")
-    public ResponseEntity<ApiResponse<RecipeDetailDto>> getRecipeDetail(@PathVariable("id") Long id) {
-        RecipeDetailDto detail = recipeService.getRecipeDtl(id);
+    public ResponseEntity<ApiResponse<RecipeDetailDto>> getRecipeDetail(
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        String email = (customUserDetails != null) ? customUserDetails.getEmail() : null;
+
+        RecipeDetailDto detail = recipeService.getRecipeDtl(id, email);
         return ResponseEntity.ok(ApiResponse.success(detail));
     }
 
@@ -202,6 +206,17 @@ public class RecipeController {
         );
         return ResponseEntity.ok(ApiResponse.success(wishes));
     }
+
+    @DeleteMapping("/deletewihses/{id}")
+    public ResponseEntity<ApiResponse<String>> deletewihses(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        recipeService.removeWish(customUserDetails.getEmail(), id);
+
+        return ResponseEntity.ok(ApiResponse.success(null,"찜 목록에서 삭제되었습니다"));
+    };
+
 
     /**
      * 로그인 사용자가 작성한 레시피 리뷰 목록 조회 API.

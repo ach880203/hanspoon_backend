@@ -17,13 +17,13 @@ public interface RecipeWishesRepository extends JpaRepository<RecipeWish, Long> 
 
     List<RecipeWish> user(User user);
 
-    @Query("SELECT rw.recipe FROM RecipeWish rw WHERE rw.user.email = :email")
+    @Query("SELECT rw FROM RecipeWish rw WHERE rw.user.email = :email")
     Page<RecipeWish> findByUserEmail (@Param("email") String email, Pageable pageable);
 
-    @Query("SELECT rw.recipe FROM RecipeWish rw WHERE rw.user.email = :email AND rw.recipe.category = :category")
+    @Query("SELECT rw FROM RecipeWish rw WHERE rw.user.email = :email AND rw.recipe.category = :category")
     Page<RecipeWish> findByUserEmailAndCategory (@Param("email") String email, @Param("category") String category, Pageable pageable);
 
-    // user.email + recipe.id 조합으로 찜 여부를 확인한다.
-    boolean existsByUserEmailAndRecipeId(String userEmail, Long recipeId);
+    void deleteByUserEmailAndId(String email, Long id);
 
+    boolean existsByUserEmailAndRecipeId(String email, Long id);
 }
