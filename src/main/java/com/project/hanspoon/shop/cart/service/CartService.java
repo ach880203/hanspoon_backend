@@ -252,4 +252,14 @@ public class CartService {
                 .totalPrice(totalPrice)
                 .build();
     }
+
+    public int getCartTotalQuantityByUser(Long userId) {
+        try {
+            CartResponseDto cart = getCartByUser(userId); // 기존 메서드 재사용
+            return cart.getTotalQuantity();               // ✅ DTO에 이미 있음
+        } catch (ResponseStatusException e) {
+            if (e.getStatusCode().value() == NOT_FOUND.value()) return 0;
+            throw e;
+        }
+    }
 }

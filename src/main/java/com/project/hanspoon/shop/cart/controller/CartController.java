@@ -1,10 +1,7 @@
 package com.project.hanspoon.shop.cart.controller;
 
 import com.project.hanspoon.common.security.CustomUserDetails;
-import com.project.hanspoon.shop.cart.dto.CartCreateResponseDto;
-import com.project.hanspoon.shop.cart.dto.CartItemAddRequestDto;
-import com.project.hanspoon.shop.cart.dto.CartItemUpdateRequestDto;
-import com.project.hanspoon.shop.cart.dto.CartResponseDto;
+import com.project.hanspoon.shop.cart.dto.*;
 import com.project.hanspoon.shop.cart.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +49,15 @@ public class CartController {
     ) {
         Long userId = requireUserId(userDetails);
         return ResponseEntity.ok(cartService.addItemByUser(userId, req));
+    }
+
+    @GetMapping("/me/count")
+    public ResponseEntity<CartCountResponseDto> getMyCartCount(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = requireUserId(userDetails);
+        int count = cartService.getCartTotalQuantityByUser(userId);
+        return ResponseEntity.ok(CartCountResponseDto.builder().count(count).build());
     }
 
     // 수량 변경(내 장바구니에서)
