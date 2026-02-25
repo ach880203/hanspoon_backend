@@ -44,3 +44,5 @@ out/
 
 # application secrets override (optional)
 application-secrets.yml
+
+AGENTS.md
