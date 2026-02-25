@@ -43,8 +43,7 @@ public class ClassController {
     @PostMapping
     public ApiResponse<ClassCreateResponse> create(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody ClassCreateRequest req
-    ) {
+            @RequestBody ClassCreateRequest req) {
         Long userId = resolveUserId(userDetails);
         boolean admin = isAdmin(userDetails);
         return ApiResponse.ok("원데이 클래스가 등록되었습니다.", classCommandService.createClass(userId, admin, req));
@@ -52,14 +51,15 @@ public class ClassController {
 
     @GetMapping
     public ApiResponse<Page<ClassListItemResponse>> list(
-            @RequestParam(required = false)Level level,
-            @RequestParam(required = false)RunType runType,
-            @RequestParam(required = false)RecipeCategory category,
+            @RequestParam(required = false) Level level,
+            @RequestParam(required = false) RunType runType,
+            @RequestParam(required = false) RecipeCategory category,
             @RequestParam(required = false) Long instructorId,
-            Pageable pageable
-    ) {
+            @RequestParam(required = false) String keyword,
+            Pageable pageable) {
         // pageable 예시: /classes?page=0&size=10&sort=createdAt,desc
-        return ApiResponse.ok(classQueryService.searchClasses(level, runType, category, instructorId, pageable));
+        return ApiResponse
+                .ok(classQueryService.searchClasses(level, runType, category, instructorId, keyword, pageable));
     }
 
     @GetMapping("/{classId}")
@@ -71,21 +71,18 @@ public class ClassController {
     public ApiResponse<ClassDetailResponse> update(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classId,
-            @RequestBody ClassUpdateRequest req
-    ) {
+            @RequestBody ClassUpdateRequest req) {
         Long userId = resolveUserId(userDetails);
         boolean admin = isAdmin(userDetails);
         return ApiResponse.ok(
                 "원데이 클래스가 수정되었습니다.",
-                classCommandService.updateClass(userId, admin, classId, req)
-        );
+                classCommandService.updateClass(userId, admin, classId, req));
     }
 
     @DeleteMapping("/{classId}")
     public ApiResponse<Void> delete(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long classId
-    ) {
+            @PathVariable Long classId) {
         Long userId = resolveUserId(userDetails);
         boolean admin = isAdmin(userDetails);
         classCommandService.deleteClass(userId, admin, classId);
@@ -95,9 +92,8 @@ public class ClassController {
     @GetMapping("/{classId}/sessions")
     public ApiResponse<List<SessionResponse>> sessions(
             @PathVariable Long classId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date,
-            @RequestParam(required = false)SessionSlot slot
-    ) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) SessionSlot slot) {
         return ApiResponse.ok(classQueryService.getSessions(classId, date, slot));
     }
 
@@ -106,7 +102,8 @@ public class ClassController {
     }
 
     private boolean isAdmin(CustomUserDetails userDetails) {
-        if (userDetails == null) return false;
+        if (userDetails == null)
+            return false;
         return userDetails.getAuthorities().stream()
                 // 운영 중 데이터에 "ADMIN" / "ROLE_ADMIN"이 혼재될 수 있어 둘 다 허용
                 .anyMatch(a -> "ROLE_ADMIN".equalsIgnoreCase(a.getAuthority())

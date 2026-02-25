@@ -35,7 +35,7 @@ public class InquiryProductService {
 
     // ✅ 상품별 문의 목록
     public Page<InquiryResponseDto> listByProduct(Long productId, int page, int size,
-                                                  Long viewerUserId, boolean viewerIsAdmin) {
+            Long viewerUserId, boolean viewerIsAdmin) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
 
         return inqProductRepository.findByProduct_IdOrderByIdDesc(productId, pageable)
@@ -46,6 +46,13 @@ public class InquiryProductService {
     public Page<InquiryResponseDto> listMyInquiries(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         return inqProductRepository.findByUser_UserIdOrderByIdDesc(userId, pageable)
+                .map(this::toDto);
+    }
+
+    // ✅ [Admin] 전역 문의 목록
+    public Page<InquiryResponseDto> listAllForAdmin(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return inqProductRepository.findAllByOrderByIdDesc(pageable)
                 .map(this::toDto);
     }
 
@@ -70,8 +77,7 @@ public class InquiryProductService {
                         .content(req.getContent().trim())
                         .secret(secret)
                         .answeredYn(false)
-                        .build()
-        );
+                        .build());
 
         return toDto(saved);
     }
@@ -84,7 +90,7 @@ public class InquiryProductService {
 
         // 답변 달린 문의 수정 막고 싶으면 주석 해제
         // if (Boolean.TRUE.equals(inq.getAnsweredYn())) {
-        //     throw new ResponseStatusException(BAD_REQUEST, "답변된 문의는 수정할 수 없습니다.");
+        // throw new ResponseStatusException(BAD_REQUEST, "답변된 문의는 수정할 수 없습니다.");
         // }
 
         if (!inq.getUser().getUserId().equals(userId)) {
@@ -93,7 +99,8 @@ public class InquiryProductService {
 
         if (req.getContent() != null) {
             String c = req.getContent().trim();
-            if (StringUtils.hasText(c)) inq.setContent(c);
+            if (StringUtils.hasText(c))
+                inq.setContent(c);
         }
 
         if (req.getSecret() != null) {
@@ -111,7 +118,7 @@ public class InquiryProductService {
 
         // 답변 달린 문의 삭제 막고 싶으면 주석 해제
         // if (Boolean.TRUE.equals(inq.getAnsweredYn())) {
-        //     throw new ResponseStatusException(BAD_REQUEST, "답변된 문의는 삭제할 수 없습니다.");
+        // throw new ResponseStatusException(BAD_REQUEST, "답변된 문의는 삭제할 수 없습니다.");
         // }
 
         inqProductRepository.delete(inq);
@@ -158,7 +165,7 @@ public class InquiryProductService {
         boolean canSee = !secret || isOwner || viewerIsAdmin;
 
         String content = canSee ? i.getContent() : "비밀글입니다.";
-        String answer  = canSee ? i.getAnswer() : null; // 필요하면 "비밀글입니다."로 해도 됨
+        String answer = canSee ? i.getAnswer() : null; // 필요하면 "비밀글입니다."로 해도 됨
 
         return InquiryResponseDto.builder()
                 .inqId(i.getId())
