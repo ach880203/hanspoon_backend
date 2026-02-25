@@ -10,6 +10,7 @@ public interface ClassReviewRepository extends JpaRepository<ClassReview, Long> 
     boolean existsByReservationIdAndDelFlagFalse(Long reservationId);
 
     List<ClassReview> findAllByClassProduct_IdAndDelFlagFalseOrderByCreatedAtDesc(Long classId);
+    List<ClassReview> findAllByUserIdAndDelFlagFalseOrderByCreatedAtDesc(Long userId);
 
     Optional<ClassReview> findByIdAndDelFlagFalse(Long id);
 }

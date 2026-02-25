@@ -35,6 +35,8 @@ public class QClassProduct extends EntityPathBase<ClassProduct> {
 
     public final StringPath detailImageData = createString("detailImageData");
 
+    public final ListPath<ClassDetailImage, QClassDetailImage> detailImages = this.<ClassDetailImage, QClassDetailImage>createList("detailImages", ClassDetailImage.class, QClassDetailImage.class, PathInits.DIRECT2);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final com.project.hanspoon.oneday.instructor.entity.QInstructor instructor;

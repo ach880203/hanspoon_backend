@@ -45,6 +45,15 @@ public class ClassInquiryController {
         return ApiResponse.ok(classInquiryService.listAll(viewerUserId, isAdmin));
     }
 
+    @GetMapping("/me")
+    public ApiResponse<List<ClassInquiryResponse>> listMine(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = requireUserId(userDetails);
+        boolean isAdmin = isAdmin(userDetails);
+        return ApiResponse.ok(classInquiryService.listMy(userId, isAdmin));
+    }
+
     // 답글 등록: 작성자 또는 관리자만 가능
     @PostMapping("/{inquiryId}/answer")
     public ApiResponse<ClassInquiryResponse> answer(

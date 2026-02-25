@@ -17,6 +17,7 @@ public record ClassCreateRequest(
         String description,
         String detailDescription,
         String detailImageData,
+        List<String> detailImageDataList,
         Level level,
         RunType runType,
         RecipeCategory category,
