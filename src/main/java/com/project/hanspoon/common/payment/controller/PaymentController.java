@@ -5,7 +5,6 @@ import com.project.hanspoon.common.dto.ApiResponse;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.payment.dto.PaymentDto;
 import com.project.hanspoon.common.payment.dto.PortOneDto;
-import com.project.hanspoon.common.payment.entity.Payment;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.common.payment.service.PaymentService;
@@ -137,10 +136,10 @@ public class PaymentController {
         }
 
         User user = userService.findById(userDetails.getUserId());
-        Payment payment = paymentService.createPaymentForProduct(
+        PaymentDto paymentDto = paymentService.createPaymentForProduct(
                 user, request.getProductId(), request.getTotalAmount(), request.getQuantity());
 
-        return ResponseEntity.ok(ApiResponse.success("결제가 생성되었습니다.", PaymentDto.from(payment)));
+        return ResponseEntity.ok(ApiResponse.success("결제가 생성되었습니다.", paymentDto));
     }
 
     /**
@@ -157,10 +156,10 @@ public class PaymentController {
         }
 
         User user = userService.findById(userDetails.getUserId());
-        Payment payment = paymentService.createPaymentForClass(
+        PaymentDto paymentDto = paymentService.createPaymentForClass(
                 user, request.getClassId(), request.getTotalAmount(), request.getQuantity());
 
-        return ResponseEntity.ok(ApiResponse.success("결제가 생성되었습니다.", PaymentDto.from(payment)));
+        return ResponseEntity.ok(ApiResponse.success("결제가 생성되었습니다.", paymentDto));
     }
 
     /**
@@ -190,9 +189,7 @@ public class PaymentController {
             return ResponseEntity.status(401).body(ApiResponse.error("로그인이 필요합니다."));
         }
 
-        Page<Payment> payments = paymentService.getPaymentHistory(userDetails.getUserId(), pageable);
-        Page<PaymentDto> dtoPage = payments.map(PaymentDto::from);
-
+        Page<PaymentDto> dtoPage = paymentService.getPaymentHistory(userDetails.getUserId(), pageable);
         return ResponseEntity.ok(ApiResponse.success(PageResponse.of(dtoPage)));
     }
 
@@ -202,8 +199,8 @@ public class PaymentController {
      */
     @GetMapping("/{payId}")
     public ResponseEntity<ApiResponse<PaymentDto>> getPaymentDetail(@PathVariable Long payId) {
-        Payment payment = paymentService.getPayment(payId);
-        return ResponseEntity.ok(ApiResponse.success(PaymentDto.from(payment)));
+        PaymentDto paymentDto = paymentService.getPayment(payId);
+        return ResponseEntity.ok(ApiResponse.success(paymentDto));
     }
 
     /**

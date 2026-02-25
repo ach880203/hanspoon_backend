@@ -3,6 +3,7 @@ package com.project.hanspoon.common.payment.service;
 import com.project.hanspoon.common.payment.constant.PaymentStatus;
 import com.project.hanspoon.common.payment.entity.PaymentItem;
 import com.project.hanspoon.common.payment.entity.Payment;
+import com.project.hanspoon.common.payment.dto.PaymentDto;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.common.payment.repository.PaymentItemRepository;
 import com.project.hanspoon.common.payment.repository.PaymentRepository;
@@ -39,27 +40,31 @@ public class PaymentService {
     /**
      * 상품 결제 생성
      */
-    public Payment createPaymentForProduct(User user, Long productId, int price, int quantity) {
+    public PaymentDto createPaymentForProduct(User user, Long productId,
+            int price, int quantity) {
         int totalPrice = price * quantity;
         Payment payment = createPayment(user, totalPrice);
 
         PaymentItem paymentItem = PaymentItem.createForProduct(productId, quantity);
         payment.addPaymentItem(paymentItem);
 
-        return paymentRepository.save(payment);
+        Payment savedPayment = paymentRepository.save(payment);
+        return PaymentDto.from(savedPayment);
     }
 
     /**
      * 클래스 결제 생성
      */
-    public Payment createPaymentForClass(User user, Long classId, int price, int quantity) {
+    public PaymentDto createPaymentForClass(User user, Long classId, int price,
+            int quantity) {
         int totalPrice = price * quantity;
         Payment payment = createPayment(user, totalPrice);
 
         PaymentItem paymentItem = PaymentItem.createForClass(classId, quantity);
         payment.addPaymentItem(paymentItem);
 
-        return paymentRepository.save(payment);
+        Payment savedPayment = paymentRepository.save(payment);
+        return PaymentDto.from(savedPayment);
     }
 
     /**
@@ -77,17 +82,19 @@ public class PaymentService {
      * 결제 상세 조회
      */
     @Transactional(readOnly = true)
-    public Payment getPayment(Long payId) {
-        return paymentRepository.findById(payId)
+    public PaymentDto getPayment(Long payId) {
+        Payment payment = paymentRepository.findById(payId)
                 .orElseThrow(() -> new IllegalArgumentException("결제 정보를 찾을 수 없습니다."));
+        return PaymentDto.from(payment);
     }
 
     /**
      * 사용자의 결제 내역 조회
      */
     @Transactional(readOnly = true)
-    public Page<Payment> getPaymentHistory(Long userId, Pageable pageable) {
-        return paymentRepository.findByUserUserIdOrderByPayDateDesc(userId, pageable);
+    public Page<PaymentDto> getPaymentHistory(Long userId, Pageable pageable) {
+        return paymentRepository.findByUserUserIdOrderByPayDateDesc(userId, pageable)
+                .map(PaymentDto::from);
     }
 
     /**
@@ -102,7 +109,8 @@ public class PaymentService {
      * 전체 결제 내역 조회 (관리자용)
      */
     @Transactional(readOnly = true)
-    public Page<Payment> findAll(Pageable pageable) {
-        return paymentRepository.findAll(pageable);
+    public Page<PaymentDto> findAll(Pageable pageable) {
+        return paymentRepository.findAll(pageable)
+                .map(PaymentDto::from);
     }
 }

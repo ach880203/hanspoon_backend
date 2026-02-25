@@ -154,6 +154,24 @@ public class PortOneService {
             if (request.getProductId() != null) {
                 paymentItem = PaymentItem.createForProduct(request.getProductId(), request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
+            } else if (request.getOrderId() != null && request.getOrderId().startsWith("ORDER_") == false) {
+                // ✅ 일반 상품 주문(Order) 처리
+                try {
+                    Long orderIdLong = Long.parseLong(request.getOrderId());
+                    var order = orderRepository.findById(orderIdLong)
+                            .orElseThrow(() -> new BusinessException(
+                                    "주문 정보를 찾을 수 없습니다. (ID: " + request.getOrderId() + ")"));
+
+                    // 주문 상태 업데이트 (CREATED -> PAID)
+                    order.setStatus(com.project.hanspoon.shop.constant.OrderStatus.PAID);
+                    order.setPaidAt(java.time.LocalDateTime.now());
+
+                    // 주문에 포함된 각 상품에 대해 PaymentItem 기록 (간소화하여 첫 번째 상품 정보 등 활용 가능)
+                    // 여기서는 주문 전체를 하나의 단위로 결제했으므로 대표 정보를 남기거나 주문 번호를 남길 수 있음
+                    log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", order.getId(), savedPayment.getPayId());
+                } catch (NumberFormatException e) {
+                    log.warn("상품 주문이 아닌 형식이거나 비정상적인 결제 ID: {}", request.getOrderId());
+                }
             } else {
                 paymentItem = PaymentItem.createForClass(request.getClassId(), request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
