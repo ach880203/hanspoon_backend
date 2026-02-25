@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
@@ -29,8 +30,7 @@ public class InquiryProductController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long productId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         Long viewerUserId = (userDetails != null && userDetails.getUser() != null)
                 ? userDetails.getUser().getUserId()
                 : null;
@@ -38,12 +38,12 @@ public class InquiryProductController {
         boolean viewerIsAdmin = isAdmin(userDetails);
 
         return ResponseEntity.ok(
-                inquiryService.listByProduct(productId, page, size, viewerUserId, viewerIsAdmin)
-        );
+                inquiryService.listByProduct(productId, page, size, viewerUserId, viewerIsAdmin));
     }
 
     private boolean isAdmin(CustomUserDetails userDetails) {
-        if (userDetails == null) return false;
+        if (userDetails == null)
+            return false;
         return userDetails.getAuthorities().stream()
                 .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
     }
@@ -53,8 +53,7 @@ public class InquiryProductController {
     public ResponseEntity<Page<InquiryResponseDto>> myInquiries(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         Long userId = requireUserId(userDetails);
         return ResponseEntity.ok(inquiryService.listMyInquiries(userId, page, size));
     }
@@ -64,8 +63,7 @@ public class InquiryProductController {
     public ResponseEntity<InquiryResponseDto> create(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long productId,
-            @RequestBody @Valid InquiryCreateRequestDto req
-    ) {
+            @RequestBody @Valid InquiryCreateRequestDto req) {
         Long userId = requireUserId(userDetails);
         return ResponseEntity.ok(inquiryService.create(userId, productId, req));
     }
@@ -75,8 +73,7 @@ public class InquiryProductController {
     public ResponseEntity<InquiryResponseDto> updateMy(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long inqId,
-            @RequestBody @Valid InquiryUpdateRequestDto req
-    ) {
+            @RequestBody @Valid InquiryUpdateRequestDto req) {
         Long userId = requireUserId(userDetails);
         return ResponseEntity.ok(inquiryService.updateMyInquiry(userId, inqId, req));
     }
@@ -85,8 +82,7 @@ public class InquiryProductController {
     @DeleteMapping("/inquiries/{inqId}")
     public ResponseEntity<Void> deleteMy(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long inqId
-    ) {
+            @PathVariable Long inqId) {
         Long userId = requireUserId(userDetails);
         inquiryService.deleteMyInquiry(userId, inqId);
         return ResponseEntity.noContent().build();
@@ -97,9 +93,20 @@ public class InquiryProductController {
     @PostMapping("/inquiries/{inqId}/answer")
     public ResponseEntity<InquiryResponseDto> answer(
             @PathVariable Long inqId,
-            @RequestBody @Valid InquiryAnswerRequestDto req
-    ) {
+            @RequestBody @Valid InquiryAnswerRequestDto req) {
         return ResponseEntity.ok(inquiryService.answer(inqId, req));
+    }
+
+    // ✅ [Admin] 전역 문의 목록 조회
+    @GetMapping("/admin/inquiries")
+    public ResponseEntity<Page<InquiryResponseDto>> listAllAdmin(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        if (!isAdmin(userDetails)) {
+            throw new ResponseStatusException(FORBIDDEN, "관리자 권한이 필요합니다.");
+        }
+        return ResponseEntity.ok(inquiryService.listAllForAdmin(page, size));
     }
 
     private Long requireUserId(CustomUserDetails userDetails) {

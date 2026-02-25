@@ -14,4 +14,5 @@ public class LoginResponse {
     private String email;
     private String userName;
     private String role;
+    private int spoonBalance;
 }

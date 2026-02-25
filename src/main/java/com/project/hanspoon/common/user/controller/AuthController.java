@@ -64,6 +64,7 @@ public class AuthController {
                     .userId(user.getUserId())
                     .email(user.getEmail())
                     .userName(user.getUserName())
+                    .spoonBalance(user.getSpoonBalance()) // ✅ 추가
                     .role(resolveRole(user, userDetails))
                     .build();
 
@@ -110,6 +111,7 @@ public class AuthController {
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .userName(user.getUserName())
+                .spoonBalance(user.getSpoonBalance()) // ✅ 추가
                 .role(resolveRole(user, userDetails))
                 .build();
 
@@ -124,8 +126,8 @@ public class AuthController {
         }
 
         User user = userDetails.getUser();
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                userDetails.getAuthorities());
         String token = jwtTokenProvider.createToken(authentication);
 
         LoginResponse response = LoginResponse.builder()
@@ -134,6 +136,7 @@ public class AuthController {
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .userName(user.getUserName())
+                .spoonBalance(user.getSpoonBalance()) // ✅ 추가
                 .role(resolveRole(user, userDetails))
                 .build();
 
