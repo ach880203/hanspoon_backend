@@ -36,11 +36,30 @@ public class Instructor extends BaseTimeEntity {
     @Column(nullable = false, length = 1000)
     private String bio;
 
+    @Column(length = 1000)
+    private String specialty;
+
+    @Column(length = 2000)
+    private String career;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String profileImageData;
+
     @Builder
-    private Instructor(User user, String bio) {
+    private Instructor(User user, String bio, String specialty, String career, String profileImageData) {
         this.user = user;
         this.legacyMemberId = (user != null ? user.getUserId() : null);
         this.bio = bio;
+        this.specialty = specialty;
+        this.career = career;
+        this.profileImageData = profileImageData;
+    }
+
+    public void updateProfile(String bio, String specialty, String career, String profileImageData) {
+        this.bio = bio;
+        this.specialty = specialty;
+        this.career = career;
+        this.profileImageData = profileImageData;
     }
 
     @PrePersist

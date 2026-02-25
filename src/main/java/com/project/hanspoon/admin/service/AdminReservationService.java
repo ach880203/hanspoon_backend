@@ -2,6 +2,7 @@ package com.project.hanspoon.admin.service;
 
 import com.project.hanspoon.admin.dto.AdminReservationItemDto;
 import com.project.hanspoon.common.exception.BusinessException;
+import com.project.hanspoon.oneday.coupon.repository.ClassUserCouponRepository;
 import com.project.hanspoon.oneday.reservation.domain.ReservationStatus;
 import com.project.hanspoon.oneday.reservation.entity.ClassReservation;
 import com.project.hanspoon.oneday.reservation.repository.ClassReservationRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 public class AdminReservationService {
 
     private final ClassReservationRepository reservationRepository;
+    private final ClassUserCouponRepository classUserCouponRepository;
 
     /**
      * 관리자 예약 목록 조회
@@ -26,11 +28,10 @@ public class AdminReservationService {
      * status 파라미터 규칙:
      * - null/blank/ALL: 전체
      * - HOLD/PAID/CANCELED/EXPIRED/COMPLETED: 해당 상태만
-     * - CANCEL_REQUESTED: 현재 도메인 미지원(빈 목록)
+     * - CANCEL_REQUESTED: 현재 예약 상태 enum에 없어 빈 목록
      */
     public List<AdminReservationItemDto> getReservations(String status) {
         if ("CANCEL_REQUESTED".equalsIgnoreCase(trim(status))) {
-            // 현재 예약 도메인 enum에 CANCEL_REQUESTED가 없으므로 빈 목록 반환
             return List.of();
         }
 
@@ -50,14 +51,14 @@ public class AdminReservationService {
 
     /**
      * 취소 요청 목록 조회
-     * 현재 도메인에는 CANCEL_REQUESTED 상태가 없어서 항상 빈 목록입니다.
+     * 현재 예약 상태 모델에 CANCEL_REQUESTED 상태가 없어서 임시로 빈 목록입니다.
      */
     public List<AdminReservationItemDto> getCancelRequests() {
         return List.of();
     }
 
     /**
-     * 취소 승인/거절 플로우는 현재 예약 상태 모델에 존재하지 않습니다.
+     * 취소 승인/거절 플로우는 현재 예약 상태 모델상 존재하지 않습니다.
      * 프론트 계약 경로 유지를 위해 명확한 안내 메시지를 반환합니다.
      */
     @Transactional
@@ -72,19 +73,33 @@ public class AdminReservationService {
 
     private AdminReservationItemDto toDto(ClassReservation r) {
         var session = r.getSession();
-        var clazz = session.getClassProduct();
+        var clazz = (session != null ? session.getClassProduct() : null);
         var user = r.getUser();
+
+        boolean paymentCompleted = r.getStatus() == ReservationStatus.PAID || r.getStatus() == ReservationStatus.COMPLETED;
+        boolean couponIssued = classUserCouponRepository.existsByReservationId(r.getId());
 
         return new AdminReservationItemDto(
                 r.getId(),
-                r.getStatus().getDescription(),
+                r.getStatus() != null ? r.getStatus().getDescription() : "-",
+                r.getStatus() != null ? r.getStatus().name() : "-",
+                clazz != null ? clazz.getId() : null,
+                session != null ? session.getId() : null,
                 clazz != null ? clazz.getTitle() : null,
                 session != null ? session.getPrice() : null,
                 r.getCreatedAt(),
+                r.getUpdatedAt(),
+                r.getCanceledAt(),
+                user != null ? user.getUserId() : null,
                 user != null ? user.getUserName() : null,
                 user != null ? user.getEmail() : null,
+                user != null ? user.getPhone() : null,
                 session != null ? session.getStartAt() : null,
-                null // cancelReason 필드는 현재 엔티티에 없어 null로 유지
+                r.getHoldExpiredAt(),
+                r.getPaidAt(),
+                paymentCompleted,
+                couponIssued,
+                null
         );
     }
 

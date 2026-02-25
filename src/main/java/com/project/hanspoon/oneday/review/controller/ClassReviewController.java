@@ -36,7 +36,7 @@ public class ClassReviewController {
         return ApiResponse.ok("리뷰가 등록되었습니다.", reviewService.create(userId, req));
     }
 
-    // 리뷰 원문 아래로 관리자 대댓글(답글)을 등록합니다.
+    // 리뷰 전문 강사/관리자 답글 등록 API입니다.
     @PostMapping("/{reviewId}/answer")
     public ApiResponse<ClassReviewResponse> answer(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -44,10 +44,11 @@ public class ClassReviewController {
             @RequestBody ClassReviewAnswerRequest req
     ) {
         Long userId = resolveUserId(userDetails);
-        boolean admin = isAdmin(userDetails);
+        boolean admin = hasRole(userDetails, "ROLE_ADMIN", "ADMIN");
+        boolean instructor = hasRole(userDetails, "ROLE_INSTRUCTOR", "INSTRUCTOR");
         return ApiResponse.ok(
                 "리뷰 답글이 등록되었습니다.",
-                reviewService.answer(userId, admin, reviewId, req)
+                reviewService.answer(userId, admin, instructor, reviewId, req)
         );
     }
 
@@ -67,8 +68,9 @@ public class ClassReviewController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails == null ? null : userDetails.getUserId();
-        boolean admin = isAdmin(userDetails);
-        return ApiResponse.ok(reviewService.listByClass(classId, userId, admin));
+        boolean admin = hasRole(userDetails, "ROLE_ADMIN", "ADMIN");
+        boolean instructor = hasRole(userDetails, "ROLE_INSTRUCTOR", "INSTRUCTOR");
+        return ApiResponse.ok(reviewService.listByClass(classId, userId, admin, instructor));
     }
 
     @GetMapping("/me")
@@ -76,7 +78,7 @@ public class ClassReviewController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = resolveUserId(userDetails);
-        boolean admin = isAdmin(userDetails);
+        boolean admin = hasRole(userDetails, "ROLE_ADMIN", "ADMIN");
         return ApiResponse.ok(reviewService.listMy(userId, admin));
     }
 
@@ -87,12 +89,15 @@ public class ClassReviewController {
         return userDetails.getUserId();
     }
 
-    private boolean isAdmin(CustomUserDetails userDetails) {
+    private boolean hasRole(CustomUserDetails userDetails, String... candidates) {
         if (userDetails == null || userDetails.getAuthorities() == null) return false;
         for (GrantedAuthority authority : userDetails.getAuthorities()) {
             String role = authority.getAuthority();
-            if ("ROLE_ADMIN".equalsIgnoreCase(role) || "ADMIN".equalsIgnoreCase(role)) {
-                return true;
+            if (role == null) continue;
+            for (String candidate : candidates) {
+                if (candidate.equalsIgnoreCase(role)) {
+                    return true;
+                }
             }
         }
         return false;

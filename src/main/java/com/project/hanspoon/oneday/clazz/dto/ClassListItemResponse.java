@@ -11,10 +11,14 @@ public record ClassListItemResponse(
         Level level,
         RunType runType,
         RecipeCategory category,
-        Long instructorId
+        Long instructorId,
+        String instructorName
 ) {
     public static ClassListItemResponse from(ClassProduct p) {
         Long instructorId = (p.getInstructor() != null) ? p.getInstructor().getId() : null;
+        String instructorName = (p.getInstructor() != null && p.getInstructor().getUser() != null)
+                ? p.getInstructor().getUser().getUserName()
+                : null;
 
         return new ClassListItemResponse(
                 p.getId(),
@@ -22,7 +26,8 @@ public record ClassListItemResponse(
                 p.getLevel(),
                 p.getRunType(),
                 p.getCategory(),
-                instructorId
+                instructorId,
+                instructorName
         );
     }
 }
