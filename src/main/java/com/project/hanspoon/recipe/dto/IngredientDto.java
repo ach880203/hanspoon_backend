@@ -1,5 +1,6 @@
 package com.project.hanspoon.recipe.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.project.hanspoon.recipe.constant.TasteType;
 import com.project.hanspoon.recipe.entity.RecipeIngredient;
 import com.project.hanspoon.recipe.entity.RecipeIngredientGroup;
@@ -20,6 +21,7 @@ public class IngredientDto {
     private String unit;
     private boolean main;
 
+    @JsonAlias("taste")
     private TasteType tasteType;
 
     public static IngredientDto fromEntity(RecipeIngredient ingredient){
