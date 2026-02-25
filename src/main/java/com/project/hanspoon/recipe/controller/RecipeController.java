@@ -7,6 +7,7 @@ import com.project.hanspoon.recipe.dto.MyRecipeReviewDto;
 import com.project.hanspoon.recipe.dto.RecipeDetailDto;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import com.project.hanspoon.recipe.dto.RecipeListDto;
+import com.project.hanspoon.recipe.dto.WishDto;
 import com.project.hanspoon.recipe.entity.Recipe;
 import com.project.hanspoon.recipe.service.RecipeService;
 import jakarta.validation.Valid;
@@ -183,8 +184,8 @@ public class RecipeController {
      * 로그인 사용자의 찜 레시피 목록 조회 API.
      * - 기존 경로 호환을 위해 URI 오타(ResipeWishes)를 유지한다.
      */
-    @GetMapping("/ResipeWishes")
-    public ResponseEntity<ApiResponse<Page<Recipe>>> getMyWishes(
+    @GetMapping("/RecipeWishes")
+    public ResponseEntity<ApiResponse<Page<WishDto>>> getMyWishes(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(required = false) Category category,
             @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -194,7 +195,7 @@ public class RecipeController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("로그인이 필요합니다."));
         }
 
-        Page<Recipe> wishes = recipeService.getMyWishedRecipes(
+        Page<WishDto> wishes = recipeService.getMyWishedRecipes(
                 userDetails.getEmail(),
                 category != null ? category.name() : null,
                 pageable

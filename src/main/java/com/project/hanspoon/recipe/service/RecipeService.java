@@ -406,12 +406,15 @@ public class RecipeService {
         recipeWishesRepository.save(new RecipeWish(recipe, user));
     }
 
-    public  Page<Recipe> getMyWishedRecipes(String email, String category, Pageable pageable) {
+    public  Page<WishDto> getMyWishedRecipes(String email, String category, Pageable pageable) {
+        Page<RecipeWish> wishPage;
+
         if (category == null || category.isEmpty()) {
-            return recipeWishesRepository.findRecipeByUserEmail(email, pageable);
+            wishPage = recipeWishesRepository.findByUserEmail(email, pageable);
         } else {
-            return recipeWishesRepository.findRecipeByUserEmailAndCategory(email, category, pageable);
+            wishPage = recipeWishesRepository.findByUserEmailAndCategory(email, category, pageable);
         }
+        return wishPage.map(recipeWish -> new WishDto(recipeWish, recipeWish.getRecipe()));
     }
 
     /**
