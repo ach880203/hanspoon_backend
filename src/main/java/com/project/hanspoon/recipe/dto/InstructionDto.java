@@ -16,14 +16,15 @@ public class InstructionDto {
     private int stepOrder;
     private String content;
     private String instImg;
+    private boolean hasNewFile;
 
     public static InstructionDto fromEntity(RecipeInstruction entity){
         return InstructionDto.builder()
                 .stepOrder(entity.getStepOrder())
                 .content(entity.getContent())
                 .instImg(entity.getInstImg())
+                .hasNewFile(false)
                 .build();
     }
-
 
 }

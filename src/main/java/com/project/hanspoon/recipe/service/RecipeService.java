@@ -1,5 +1,6 @@
 package com.project.hanspoon.recipe.service;
 
+import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.common.user.repository.UserRepository;
 import com.project.hanspoon.recipe.component.RecipeParser;
@@ -24,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -45,6 +47,7 @@ public class RecipeService {
     private final RecipeWishesRepository recipeWishesRepository;
     private final RecipeRevRepository recipeRevRepository;
     private final UserRepository userRepository;
+    private final RecommendationRepository recommendationRepository;
 
     /**
      * 다양한 단위를 g 기준으로 환산한다.
@@ -75,7 +78,7 @@ public class RecipeService {
 
         int extensionIndex = originalFileName.lastIndexOf(".");
         String extension = extensionIndex >= 0 ? originalFileName.substring(extensionIndex) : "";
-        String savedFileName = UUID.randomUUID() + extension;
+        String savedFileName = UUID.randomUUID().toString() + extension;
         log.info("저장될 파일명: "+ savedFileName);
 
         try {
@@ -105,10 +108,13 @@ public class RecipeService {
      */
     public void saveRecipe(RecipeFormDto recipeFormDto,
                            MultipartFile recipeImage,
-                           List<MultipartFile> instructionImages){
+                           List<MultipartFile> instructionImages,
+                           CustomUserDetails userDetails){
+
+        User user = userDetails.getUser();
 
         // 1) 메인 레시피 엔티티 생성
-        Recipe mainRecipe = Recipe.createRecipe(recipeFormDto);
+        Recipe mainRecipe = Recipe.createRecipe(recipeFormDto, user);
 
         // 2) 대표 이미지 저장
         if (recipeImage != null && !recipeImage.isEmpty()) {
@@ -143,29 +149,40 @@ public class RecipeService {
         }
     }
     @Transactional(readOnly = true)
-    public RecipeDetailDto getRecipeDtl(Long id, String userEmail){
+    public RecipeDetailDto getRecipeDtl(Long id, String userEmail) {
 
         Recipe recipe = recipeRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
+                .orElseThrow(() -> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
 
-        // 비로그인 요청은 찜 여부를 false로 처리해 상세 조회가 항상 동작하도록 한다.
+        // 1. 찜(관심목록) 여부 확인
         RecipeWish wishid = null;
-
         if (userEmail != null) {
             wishid = recipeWishesRepository.findByUserEmailAndRecipeId(userEmail, id).orElse(null);
         }
         boolean isWished = (wishid != null);
-        return RecipeDetailDto.fromEntity(recipe, isWished, wishid);
 
-//        dto.getInstructionGroup().forEach(group -> {
-//            group.getInstructions().forEach(inst -> {
-//                // 조리문 원본 템플릿(@재료명)은 프론트에서 인분 변경 시 동적 치환하므로 원본을 유지한다.
-//                // String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
-//            });
-//        });
+        // 🚩 2. 추천(스푼) 여부 확인 추가
+        boolean isRecommended = false;
+        if (userEmail != null) {
+            // 추천 테이블에서 해당 유저와 레시피의 기록이 있는지 확인
+            isRecommended = recommendationRepository.existsByUserEmailAndRecipeId(userEmail, id);
+        }
 
-//        return dto;
-  }
+        // 🚩 3. DTO 생성 시 추천 정보도 함께 전달
+        // (RecipeDetailDto.fromEntity 메서드 파라미터에 isRecommended를 추가해야 합니다)
+        RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe, isWished, wishid, isRecommended);
+
+        // 기존 조리 순서 관련 로직 (필요 시 유지)
+        if (dto.getInstructionGroup() != null) {
+            dto.getInstructionGroup().forEach(group -> {
+                group.getInstructions().forEach(inst -> {
+                    // 원본 유지 로직
+                });
+            });
+        }
+
+        return dto;
+    }
 
     // 기존 컨트롤러 호출(파라미터 1개)과 호환되도록 오버로드를 제공한다.
     @Transactional(readOnly = true)
@@ -344,6 +361,7 @@ public class RecipeService {
             for (InstructionDto instDto : instGroupDto.getInstructions()) {
                 String savedFileName = instDto.getInstImg();
 
+                if(instDto.isHasNewFile()) {
                     if (instructionImages != null && fileIdx < instructionImages.size()) {
                         MultipartFile file = instructionImages.get(fileIdx);
 
@@ -357,6 +375,7 @@ public class RecipeService {
                         }
                         fileIdx++;
                     }
+                }
 
                 RecipeInstruction instruction = RecipeInstruction.builder()
                         .recipeInstructionGroup(instGroup)
@@ -436,5 +455,47 @@ public class RecipeService {
     public void removeWish(String email, Long id) {
         log.info("삭제" + id);
         recipeWishesRepository.deleteByUserEmailAndId(email, id);
+    }
+
+    @Transactional
+    public void toggleRecommendation(Long recipeId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 레시피입니다."));
+
+        // 1. 이미 추천했는지 확인
+        Optional<RecipeRecommendation> existing =
+                recommendationRepository.findByUserAndRecipe(user, recipe);
+
+        if (existing.isEmpty()) {
+            // [추천하기]
+            RecipeRecommendation rec = new RecipeRecommendation();
+            rec.setUser(user);
+            rec.setRecipe(recipe);
+            recommendationRepository.save(rec);
+
+            // 🚩 2. 포인트 지급 (레시피를 올린 유저에게만!)
+            User author = recipe.getUser();
+            if (author != null) {
+                // 본인이 본인 레시피를 추천하는 걸 막지 않았다면 본인에게 갈 것이고,
+                // 로직상 막았다면 타인이 추천했을 때 작성자에게만 스푼이 갑니다.
+                author.addSpoon(2); // 작성자에게 2스푼 (원하시는 수량으로 조절하세요!)
+                log.info("레시피 작성자 {}에게 스푼 지급 완료", author.getUserName());
+            }
+
+            // 🚩 추천 누른 유저(user)에게 주던 spoon 로직은 삭제했습니다.
+
+            // 3. 레시피 자체의 추천수 증가
+            recipe.incrementRecommendCount();
+
+        } else {
+            // [추천 취소]
+            recommendationRepository.delete(existing.get());
+            recipe.decrementRecommendCount();
+
+            // (선택사항) 추천 취소 시 지급했던 스푼을 회수할지 결정해야 합니다.
+            // 보통은 복잡해지므로 지급만 하고 취소 시 회수는 안 하는 경우가 많아요!
+        }
     }
 }

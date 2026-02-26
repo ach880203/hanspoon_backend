@@ -8,7 +8,6 @@ import com.project.hanspoon.recipe.dto.RecipeDetailDto;
 import com.project.hanspoon.recipe.dto.RecipeFormDto;
 import com.project.hanspoon.recipe.dto.RecipeListDto;
 import com.project.hanspoon.recipe.dto.WishDto;
-import com.project.hanspoon.recipe.entity.Recipe;
 import com.project.hanspoon.recipe.service.RecipeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class RecipeController {
             @Valid @RequestPart("recipe") RecipeFormDto recipeFormDto,
             @RequestPart(value = "recipeImage", required = false) MultipartFile recipeImage,
             @RequestPart(value = "instructionImages", required = false) List<MultipartFile> instructionImages,
+            @AuthenticationPrincipal CustomUserDetails UserDetails,
             BindingResult bindingResult) {
 
         if (recipeImage != null) {
@@ -58,7 +61,7 @@ public class RecipeController {
         }
 
         try {
-            recipeService.saveRecipe(recipeFormDto, recipeImage, instructionImages);
+            recipeService.saveRecipe(recipeFormDto, recipeImage, instructionImages, UserDetails);
             return ResponseEntity.ok(ApiResponse.ok("레시피가 등록되었습니다."));
         } catch (Exception e) {
             log.error("레시피 저장 중 오류 발생", e);
@@ -234,5 +237,31 @@ public class RecipeController {
         List<MyRecipeReviewDto> reviews = recipeService.getMyRecipeReviews(userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.ok(reviews));
     }
+    @PostMapping("/{id}/recommend")
+    public ResponseEntity<?> toggleRecommend(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails // 🚩 로그인한 유저 정보
+    ) {
+        // 1. 로그인 체크
+        if (userDetails == null) {
+            return ResponseEntity.status(401).body("로그인이 필요한 기능입니다.");
+        }
 
+        try {
+            // 2. 서비스 호출 (레시피 ID와 유저 ID 전달)
+            // userDetails.getUser().getId() 부분은 한나님의 UserDetails 구조에 맞게 수정하세요.
+            Long loginUserId = userDetails.getUser().getUserId();
+
+            recipeService.toggleRecommendation(id, loginUserId);
+
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "message", "추천 상태가 변경되었습니다."
+            ));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("추천 처리 중 오류가 발생했습니다.");
+        }
+    }
 }
