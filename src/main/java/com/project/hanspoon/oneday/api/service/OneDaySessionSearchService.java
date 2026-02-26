@@ -28,6 +28,7 @@ public class OneDaySessionSearchService {
             com.project.hanspoon.oneday.clazz.domain.RunType runType,
             com.project.hanspoon.oneday.clazz.domain.SessionSlot slot,
             Long instructorId,
+            String instructorName,
             LocalDateTime dateFrom,
             LocalDateTime dateTo,
             Boolean onlyAvailable,
@@ -41,6 +42,7 @@ public class OneDaySessionSearchService {
                 .and(ClassSessionSpecs.runType(runType))
                 .and(ClassSessionSpecs.slot(slot))
                 .and(ClassSessionSpecs.instructorId(instructorId))
+                .and(ClassSessionSpecs.instructorNameContains(instructorName))
                 .and(ClassSessionSpecs.startAtFrom(dateFrom))
                 .and(ClassSessionSpecs.startAtTo(dateTo))
                 .and(ClassSessionSpecs.titleContains(keyword))

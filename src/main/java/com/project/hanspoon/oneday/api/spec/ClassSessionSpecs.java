@@ -65,6 +65,17 @@ public final class ClassSessionSpecs {
         };
     }
 
+    public static Specification<ClassSession> instructorNameContains(String instructorName) {
+        return (root, query, cb) -> {
+            if (instructorName == null || instructorName.trim().isEmpty())
+                return cb.conjunction();
+            String normalizedInstructorName = "%" + instructorName.trim().toLowerCase() + "%";
+            return cb.like(
+                    cb.lower(root.get("classProduct").get("instructor").get("user").get("userName")),
+                    normalizedInstructorName);
+        };
+    }
+
     public static Specification<ClassSession> titleContains(String keyword) {
         return (root, query, cb) -> {
             if (keyword == null || keyword.trim().isEmpty())

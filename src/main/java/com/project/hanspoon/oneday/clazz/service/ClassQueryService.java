@@ -27,9 +27,10 @@ public class ClassQueryService {
             RunType runType,
             RecipeCategory category,
             Long instructorId,
+            String instructorName,
             String keyword,
             Pageable pageable) {
-        var spec = ClassProductSpec.search(level, runType, category, instructorId, keyword);
+        var spec = ClassProductSpec.search(level, runType, category, instructorId, instructorName, keyword);
 
         return classProductRepository.findAll(spec, pageable)
                 .map(ClassListItemResponse::from);
