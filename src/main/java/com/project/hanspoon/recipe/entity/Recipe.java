@@ -47,6 +47,10 @@ public class Recipe { //레시피 메인
     private int spiciness; //매운맛
 
     @Builder.Default
+    @Column(name = "recommend_count", columnDefinition = "INTEGER DEFAULT 0")
+    private Integer recommendCount = 0;
+
+    @Builder.Default
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean deleted = false;
 
@@ -95,16 +99,25 @@ public class Recipe { //레시피 메인
 
     }
 
+    public void incrementRecommendCount() {
+        this.recommendCount++;
+    }
 
+    public void decrementRecommendCount() {
+        if (this.recommendCount > 0) {
+            this.recommendCount--;
+        }
+    }
 
     public void updateRecipeImg(String recipeImg) {
         this.recipeImg = recipeImg;
     }
 
-    public static Recipe createRecipe(RecipeFormDto recipeFormDto) {
+    public static Recipe createRecipe(RecipeFormDto recipeFormDto, User user) {
 
         return Recipe.builder()
                 .title(recipeFormDto.getTitle())
+                .user(user)
                 .category(recipeFormDto.getCategory())
                 .baseServings(recipeFormDto.getBaseServings())
                 .recipeImg(recipeFormDto.getRecipeImg())
