@@ -1,6 +1,6 @@
 package com.project.hanspoon.mypage.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.mypage.dto.PointHistoryDto;
@@ -29,13 +29,13 @@ public class PointController {
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<PointHistoryDto> histories = pointService.getPointHistories(userDetails.getUserId(), pageable);
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(histories)));
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(histories)));
     }
 
     @GetMapping("/balance")
     public ResponseEntity<ApiResponse<Integer>> getPointBalance(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         int balance = pointService.getPointBalance(userDetails.getUserId());
-        return ResponseEntity.ok(ApiResponse.success(balance));
+        return ResponseEntity.ok(ApiResponse.ok(balance));
     }
 }

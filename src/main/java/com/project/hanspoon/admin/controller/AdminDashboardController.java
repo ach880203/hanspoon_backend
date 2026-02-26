@@ -2,7 +2,7 @@ package com.project.hanspoon.admin.controller;
 
 import com.project.hanspoon.admin.dto.AdminDashboardSummaryDto;
 import com.project.hanspoon.admin.service.AdminDashboardService;
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,6 @@ public class AdminDashboardController {
 
     @GetMapping("/summary")
     public ResponseEntity<ApiResponse<AdminDashboardSummaryDto>> getDashboardSummary() {
-        return ResponseEntity.ok(ApiResponse.success(dashboardService.getDashboardSummary()));
+        return ResponseEntity.ok(ApiResponse.ok(dashboardService.getDashboardSummary()));
     }
 }
