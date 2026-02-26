@@ -84,6 +84,7 @@ public class RecipeService {
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+            log.info("업로드 경로:" + uploadPath.toAbsolutePath());
 
             // 2. ★ transferTo 대신 Files.copy 사용 (이게 훨씬 안전합니다)
             Path filePath = uploadPath.resolve(savedFileName);
@@ -148,21 +149,22 @@ public class RecipeService {
                 .orElseThrow(()-> new EntityNotFoundException("레시피를 찾을 수 없습니다"));
 
         // 비로그인 요청은 찜 여부를 false로 처리해 상세 조회가 항상 동작하도록 한다.
-        boolean isWished = false;
+        RecipeWish wishid = null;
+
         if (userEmail != null) {
-            isWished = recipeWishesRepository.existsByUserEmailAndRecipeId(userEmail, id);
+            wishid = recipeWishesRepository.findByUserEmailAndRecipeId(userEmail, id).orElse(null);
         }
+        boolean isWished = (wishid != null);
+        return RecipeDetailDto.fromEntity(recipe, isWished, wishid);
 
-        RecipeDetailDto dto = RecipeDetailDto.fromEntity(recipe, isWished);
+//        dto.getInstructionGroup().forEach(group -> {
+//            group.getInstructions().forEach(inst -> {
+//                // 조리문 원본 템플릿(@재료명)은 프론트에서 인분 변경 시 동적 치환하므로 원본을 유지한다.
+//                // String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
+//            });
+//        });
 
-        dto.getInstructionGroup().forEach(group -> {
-            group.getInstructions().forEach(inst -> {
-                // 조리문 원본 템플릿(@재료명)은 프론트에서 인분 변경 시 동적 치환하므로 원본을 유지한다.
-                // String parsed = recipeParser.parse(inst.getContent(), dto.getIngredientMap(),1.0);
-            });
-        });
-
-        return dto;
+//        return dto;
   }
 
     // 기존 컨트롤러 호출(파라미터 1개)과 호환되도록 오버로드를 제공한다.
@@ -342,19 +344,19 @@ public class RecipeService {
             for (InstructionDto instDto : instGroupDto.getInstructions()) {
                 String savedFileName = instDto.getInstImg();
 
-                if (instructionImages != null && fileIdx < instructionImages.size()) {
-                    MultipartFile file = instructionImages.get(fileIdx);
+                    if (instructionImages != null && fileIdx < instructionImages.size()) {
+                        MultipartFile file = instructionImages.get(fileIdx);
 
-                    if (file != null && !file.isEmpty()) {
-                        try {
-                            savedFileName = uploadFile(file);
-                            log.info("조리 사진 저장 완료: " + savedFileName);
-                        } catch (Exception e) {
-                            log.info("파일 저장 중 에러 발생", e);
+                        if (file != null && !file.isEmpty()) {
+                            try {
+                                savedFileName = uploadFile(file);
+                                log.info("조리 사진 저장 완료: " + savedFileName);
+                            } catch (Exception e) {
+                                log.info("파일 저장 중 에러 발생", e);
+                            }
                         }
+                        fileIdx++;
                     }
-                    fileIdx++;
-                }
 
                 RecipeInstruction instruction = RecipeInstruction.builder()
                         .recipeInstructionGroup(instGroup)
