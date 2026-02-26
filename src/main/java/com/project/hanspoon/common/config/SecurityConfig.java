@@ -105,7 +105,7 @@ public class SecurityConfig {
                                                         response.setContentType("application/json;charset=UTF-8");
                                                         response.setStatus(401);
                                                         response.getWriter().write(
-                                                                        "{\"success\":false,\"message\":\"인증이 필요합니다.\"}");
+                                                                        "{\"success\":false,\"message\":\"로그인이 필요합니다.\"}");
                                                 })
                                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                                                         response.setContentType("application/json;charset=UTF-8");
