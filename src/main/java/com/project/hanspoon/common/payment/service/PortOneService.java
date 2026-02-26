@@ -175,6 +175,7 @@ public class PortOneService {
                     }
 
                     reservation.markPaid(java.time.LocalDateTime.now());
+                    reservation.linkPayment(savedPayment.getPayId());
                     classReservationRepository.save(reservation);
                     log.info("기존 예약 확정 및 결제 연동 완료: reservationId={}, payId={}", reservation.getId(),
                             savedPayment.getPayId());
@@ -193,6 +194,7 @@ public class PortOneService {
                             .build();
 
                     reservation.markPaid(java.time.LocalDateTime.now());
+                    reservation.linkPayment(savedPayment.getPayId());
                     classReservationRepository.save(reservation);
                     log.info("클래스 예약 자동 생성 및 결제 연동 완료: userId={}, sessionId={}, payId={}",
                             user.getUserId(), request.getClassId(), savedPayment.getPayId());

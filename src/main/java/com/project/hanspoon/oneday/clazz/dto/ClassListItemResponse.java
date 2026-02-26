@@ -8,6 +8,7 @@ import com.project.hanspoon.oneday.clazz.entity.ClassProduct;
 public record ClassListItemResponse(
         Long id,
         String title,
+        String mainImageData,
         Level level,
         RunType runType,
         RecipeCategory category,
@@ -23,6 +24,7 @@ public record ClassListItemResponse(
         return new ClassListItemResponse(
                 p.getId(),
                 p.getTitle(),
+                p.getDetailImageData(),
                 p.getLevel(),
                 p.getRunType(),
                 p.getCategory(),

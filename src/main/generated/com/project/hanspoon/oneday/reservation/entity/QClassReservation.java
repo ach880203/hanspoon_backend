@@ -26,6 +26,10 @@ public class QClassReservation extends EntityPathBase<ClassReservation> {
 
     public final DateTimePath<java.time.LocalDateTime> canceledAt = createDateTime("canceledAt", java.time.LocalDateTime.class);
 
+    public final StringPath cancelReason = createString("cancelReason");
+
+    public final DateTimePath<java.time.LocalDateTime> cancelRequestedAt = createDateTime("cancelRequestedAt", java.time.LocalDateTime.class);
+
     public final DateTimePath<java.time.LocalDateTime> completedAt = createDateTime("completedAt", java.time.LocalDateTime.class);
 
     //inherited
@@ -38,6 +42,8 @@ public class QClassReservation extends EntityPathBase<ClassReservation> {
     public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> legacyUserId = createNumber("legacyUserId", Long.class);
+
+    public final NumberPath<Long> linkedPayId = createNumber("linkedPayId", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> paidAt = createDateTime("paidAt", java.time.LocalDateTime.class);
 

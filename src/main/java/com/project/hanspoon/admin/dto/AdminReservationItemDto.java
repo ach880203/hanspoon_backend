@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * 프론트(AdminReservationList.jsx)에서 바로 사용할 수 있도록
  * 화면에서 쓰는 필드명을 중심으로 구성했습니다.
  * - reservationId, status, classTitle, price, createdAt
- * - userName, userEmail, sessionStart, cancelReason
+ * - userName, userEmail, sessionStart, cancelRequestedAt, cancelReason
  */
 public record AdminReservationItemDto(
         Long reservationId,
@@ -30,6 +30,7 @@ public record AdminReservationItemDto(
         LocalDateTime paidAt,
         boolean paymentCompleted,
         boolean couponIssued,
+        LocalDateTime cancelRequestedAt,
         String cancelReason
 ) {
 }

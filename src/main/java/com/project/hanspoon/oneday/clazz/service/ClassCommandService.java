@@ -272,11 +272,19 @@ public class ClassCommandService {
 
     private List<String> normalizeDetailImages(String detailImageData, List<String> detailImageDataList) {
         List<String> result = new ArrayList<>();
+        String main = trimOrEmpty(detailImageData);
+        // 메인 이미지는 상세 목록이 있어도 항상 첫 번째로 유지합니다.
+        if (!main.isEmpty()) {
+            result.add(main);
+        }
+
         if (detailImageDataList != null) {
             for (String imageData : detailImageDataList) {
                 String normalized = trimOrEmpty(imageData);
                 if (!normalized.isEmpty()) {
-                    result.add(normalized);
+                    if (!result.contains(normalized)) {
+                        result.add(normalized);
+                    }
                 }
             }
         }

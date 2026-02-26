@@ -73,17 +73,14 @@ public class AdminDashboardService {
                 todayReservations = reservationRepository.countBySessionStartAtBetweenAndStatusIn(
                         todayStart, todayEnd,
                         List.of(ReservationStatus.PAID, ReservationStatus.COMPLETED,
-                                ReservationStatus.CANCELED));
+                                ReservationStatus.CANCELED, ReservationStatus.CANCEL_REQUESTED));
 
-                // Current reservation domain has no explicit CANCEL_REQUESTED state.
-                pendingCancel = 0;
+                pendingCancel = reservationRepository.countByStatus(ReservationStatus.CANCEL_REQUESTED);
 
                 // 전체 취소 건수 (예약 취소 + 기간 만료)
                 totalCanceled = reservationRepository.countByStatus(ReservationStatus.CANCELED)
                         + reservationRepository.countByStatus(ReservationStatus.EXPIRED);
-
                 // reservationRepository를 통한 매출 계산 로직은 paymentRepository 합산 방식으로 통합되었으므로 제거
-
             } catch (Exception e) {
                 System.err.println("❌ Error fetching reservation counts: " + e.getMessage());
                 e.printStackTrace();

@@ -35,4 +35,36 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     
     // 기간별 결제 내역
     List<Payment> findByPayDateBetween(LocalDateTime start, LocalDateTime end);
+
+    /**
+     * 일자별 결산(매출 집계)용 합계 조회입니다.
+     * 초보자 참고:
+     * - 결제 상태가 이후에 바뀌어도(예: 예약 상태 COMPLETED/CANCELED 전환) 결제 시점 매출은 보존하기 위해
+     *   pay_date 기준으로 집계합니다.
+     */
+    @Query("""
+            select coalesce(sum(p.totalPrice), 0)
+            from Payment p
+            where p.payDate >= :start
+              and p.payDate <= :end
+            """)
+    Long sumTotalPriceByPayDateBetween(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+
+    @Query("""
+            select p
+            from Payment p
+            join p.paymentItems item
+            where p.user.userId = :userId
+              and item.classId = :sessionId
+              and p.status = :status
+            order by p.payDate desc
+            """)
+    List<Payment> findClassPaymentsByUserAndSessionAndStatus(
+            @Param("userId") Long userId,
+            @Param("sessionId") Long sessionId,
+            @Param("status") PaymentStatus status
+    );
 }

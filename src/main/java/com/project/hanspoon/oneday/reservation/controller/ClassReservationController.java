@@ -3,6 +3,7 @@ package com.project.hanspoon.oneday.reservation.controller;
 import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.common.exception.BusinessException;
+import com.project.hanspoon.oneday.reservation.dto.ReservationCancelRequest;
 import com.project.hanspoon.oneday.reservation.dto.ReservationResponse;
 import com.project.hanspoon.oneday.reservation.service.ClassReservationService;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,12 @@ public class ClassReservationController {
     @PostMapping({"/api/oneday/reservations/{reservationId}/cancel", "/api/mypage/reservations/{reservationId}/cancel"})
     public ApiResponse<ReservationResponse> cancel(
             @PathVariable Long reservationId,
+            @RequestBody(required = false) ReservationCancelRequest request,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ApiResponse.ok("예약이 취소되었습니다.", reservationService.cancel(reservationId, resolveUserId(userDetails)));
+        return ApiResponse.ok(
+                "취소 요청이 접수되었습니다.",
+                reservationService.cancel(reservationId, resolveUserId(userDetails), request != null ? request.cancelReason() : null)
+        );
     }
 
     private Long resolveUserId(CustomUserDetails userDetails) {

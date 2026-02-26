@@ -2,6 +2,10 @@ package com.project.hanspoon.admin.service;
 
 import com.project.hanspoon.admin.dto.AdminReservationItemDto;
 import com.project.hanspoon.common.exception.BusinessException;
+import com.project.hanspoon.common.payment.constant.PaymentStatus;
+import com.project.hanspoon.common.payment.repository.PaymentRepository;
+import com.project.hanspoon.common.payment.service.PortOneService;
+import com.project.hanspoon.oneday.clazz.repository.ClassSessionRepository;
 import com.project.hanspoon.oneday.coupon.repository.ClassUserCouponRepository;
 import com.project.hanspoon.oneday.reservation.domain.ReservationStatus;
 import com.project.hanspoon.oneday.reservation.entity.ClassReservation;
@@ -13,28 +17,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminReservationService {
+    private static final ZoneId KST_ZONE = ZoneId.of("Asia/Seoul");
 
     private final ClassReservationRepository reservationRepository;
     private final ClassUserCouponRepository classUserCouponRepository;
+    private final ClassSessionRepository classSessionRepository;
+    private final PortOneService portOneService;
+    private final PaymentRepository paymentRepository;
 
     /**
      * 관리자 예약 목록 조회
      *
      * status 파라미터 규칙:
      * - null/blank/ALL: 전체
-     * - HOLD/PAID/CANCELED/EXPIRED/COMPLETED: 해당 상태만
-     * - CANCEL_REQUESTED: 현재 예약 상태 enum에 없어 빈 목록
+     * - HOLD/PAID/CANCEL_REQUESTED/CANCELED/EXPIRED/COMPLETED: 해당 상태만
      */
     public List<AdminReservationItemDto> getReservations(String status) {
-        if ("CANCEL_REQUESTED".equalsIgnoreCase(trim(status))) {
-            return List.of();
-        }
-
         List<ClassReservation> rows;
         ReservationStatus parsed = parseStatus(status);
         if (parsed == null) {
@@ -51,24 +56,55 @@ public class AdminReservationService {
 
     /**
      * 취소 요청 목록 조회
-     * 현재 예약 상태 모델에 CANCEL_REQUESTED 상태가 없어서 임시로 빈 목록입니다.
      */
     public List<AdminReservationItemDto> getCancelRequests() {
-        return List.of();
+        return reservationRepository.findByStatus(ReservationStatus.CANCEL_REQUESTED).stream()
+                .sorted(Comparator.comparing(ClassReservation::getCreatedAt,
+                        Comparator.nullsLast(Comparator.reverseOrder())))
+                .map(this::toDto)
+                .toList();
     }
 
     /**
-     * 취소 승인/거절 플로우는 현재 예약 상태 모델상 존재하지 않습니다.
-     * 프론트 계약 경로 유지를 위해 명확한 안내 메시지를 반환합니다.
+     * 취소 요청 승인 시점에만 실제 취소/환불을 수행합니다.
      */
     @Transactional
     public void approveCancel(Long reservationId) {
-        throw new BusinessException("현재 시스템은 취소 승인 플로우(CANCEL_REQUESTED)를 사용하지 않습니다.");
+        ClassReservation reservation = reservationRepository.findByIdForUpdate(reservationId)
+                .orElseThrow(() -> new BusinessException("예약을 찾을 수 없습니다. id=" + reservationId));
+
+        if (reservation.getStatus() != ReservationStatus.CANCEL_REQUESTED) {
+            throw new BusinessException("취소 요청 상태의 예약만 승인할 수 있습니다.");
+        }
+
+        var session = classSessionRepository.findByIdForUpdate(reservation.getSession().getId())
+                .orElseThrow(() -> new BusinessException("세션을 찾을 수 없습니다."));
+
+        LocalDateTime now = LocalDateTime.now(KST_ZONE);
+        if (!session.getStartAt().isAfter(now)) {
+            throw new BusinessException("클래스 시작 이후에는 취소 승인 및 환불이 불가합니다.");
+        }
+
+        Long payId = resolvePayId(reservation);
+        if (payId == null) {
+            throw new BusinessException("결제 정보를 찾지 못해 자동 환불을 진행할 수 없습니다.");
+        }
+
+        portOneService.cancelPayment(payId, buildRefundReason(reservation));
+        session.decreaseReserved();
+        reservation.markCanceled(now);
     }
 
     @Transactional
     public void rejectCancel(Long reservationId) {
-        throw new BusinessException("현재 시스템은 취소 거절 플로우(CANCEL_REQUESTED)를 사용하지 않습니다.");
+        ClassReservation reservation = reservationRepository.findByIdForUpdate(reservationId)
+                .orElseThrow(() -> new BusinessException("예약을 찾을 수 없습니다. id=" + reservationId));
+
+        if (reservation.getStatus() != ReservationStatus.CANCEL_REQUESTED) {
+            throw new BusinessException("취소 요청 상태의 예약만 거절할 수 있습니다.");
+        }
+
+        reservation.rejectCancelRequest();
     }
 
     private AdminReservationItemDto toDto(ClassReservation r) {
@@ -76,7 +112,7 @@ public class AdminReservationService {
         var clazz = (session != null ? session.getClassProduct() : null);
         var user = r.getUser();
 
-        boolean paymentCompleted = r.getStatus() == ReservationStatus.PAID || r.getStatus() == ReservationStatus.COMPLETED;
+        boolean paymentCompleted = r.getPaidAt() != null;
         boolean couponIssued = classUserCouponRepository.existsByReservationId(r.getId());
 
         return new AdminReservationItemDto(
@@ -99,8 +135,40 @@ public class AdminReservationService {
                 r.getPaidAt(),
                 paymentCompleted,
                 couponIssued,
-                null
+                r.getCancelRequestedAt(),
+                r.getCancelReason()
         );
+    }
+
+    /**
+     * 기존 데이터(연결 payId 미보유)를 위해 결제 테이블에서 보정 조회를 제공합니다.
+     * PaymentItem.classId 컬럼은 "클래스 ID"라는 이름이지만 실제로는 세션 ID를 저장하고 있습니다.
+     */
+    private Long resolvePayId(ClassReservation reservation) {
+        if (reservation.getLinkedPayId() != null) {
+            return reservation.getLinkedPayId();
+        }
+
+        var user = reservation.getUser();
+        var session = reservation.getSession();
+        if (user == null || session == null) {
+            return null;
+        }
+
+        return paymentRepository.findClassPaymentsByUserAndSessionAndStatus(
+                user.getUserId(),
+                session.getId(),
+                PaymentStatus.PAID
+        ).stream().findFirst().map(p -> p.getPayId()).orElse(null);
+    }
+
+    private String buildRefundReason(ClassReservation reservation) {
+        String base = "관리자 승인 취소(예약ID:" + reservation.getId() + ")";
+        String reason = reservation.getCancelReason();
+        if (reason == null || reason.isBlank()) {
+            return base;
+        }
+        return base + " - " + reason.trim();
     }
 
     private ReservationStatus parseStatus(String status) {

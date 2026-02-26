@@ -24,6 +24,7 @@ public class ClassReservationService {
 
     private static final int HOLD_MINUTES = 10;
     private static final ZoneId KST_ZONE = ZoneId.of("Asia/Seoul");
+    private static final int CANCEL_REASON_MAX_LENGTH = 500;
 
     private final ClassSessionRepository classSessionRepository;
     private final ClassReservationRepository reservationRepository;
@@ -50,6 +51,9 @@ public class ClassReservationService {
         for (ClassReservation res : existingReservations) {
             if (res.getStatus() == ReservationStatus.PAID) {
                 throw new BusinessException("이미 결제 완료된 세션입니다.");
+            }
+            if (res.getStatus() == ReservationStatus.CANCEL_REQUESTED) {
+                throw new BusinessException("취소 요청 처리 중인 예약이 있습니다. 관리자 처리 후 다시 시도해 주세요.");
             }
             if (res.getStatus() == ReservationStatus.HOLD && !res.isExpired(now)) {
                 return ReservationResponse.from(res); // 이미 유효한 홀드가 있으면 반환
@@ -80,25 +84,51 @@ public class ClassReservationService {
 
     // 레거시 pay 메소드 제거됨. 결제 확정은 PortOneService.verifyAndSavePayment를 사용하세요.
 
-    public ReservationResponse cancel(Long reservationId, Long userId) {
+    public ReservationResponse cancel(Long reservationId, Long userId, String cancelReason) {
         validateUserId(userId);
 
         ClassReservation reservation = reservationRepository.findByIdAndUserIdForUpdate(reservationId, userId)
                 .orElseThrow(() -> new BusinessException("예약을 찾을 수 없습니다. id=" + reservationId));
 
+        if (reservation.getStatus() == ReservationStatus.CANCEL_REQUESTED) {
+            throw new BusinessException("이미 취소 요청이 접수된 예약입니다.");
+        }
         if (reservation.getStatus() == ReservationStatus.CANCELED) {
             throw new BusinessException("이미 취소된 예약입니다.");
         }
         if (reservation.getStatus() == ReservationStatus.EXPIRED) {
             throw new BusinessException("만료된 예약입니다.");
         }
+        if (reservation.getStatus() == ReservationStatus.COMPLETED) {
+            throw new BusinessException("수강이 완료된 클래스는 취소/환불이 불가합니다.");
+        }
+        if (reservation.getStatus() != ReservationStatus.PAID) {
+            throw new BusinessException("결제 완료된 예약만 취소 요청이 가능합니다.");
+        }
 
         ClassSession session = classSessionRepository.findByIdForUpdate(reservation.getSession().getId())
                 .orElseThrow(() -> new BusinessException("세션을 찾을 수 없습니다."));
 
-        session.decreaseReserved();
-        reservation.markCanceled(LocalDateTime.now(KST_ZONE));
+        LocalDateTime now = LocalDateTime.now(KST_ZONE);
+        // 클래스 시작 시각이 지난 뒤 미참여(노쇼) 상태에서는 환불이 불가하도록 차단합니다.
+        if (!session.getStartAt().isAfter(now)) {
+            throw new BusinessException("클래스 시작 이후에는 취소/환불이 불가합니다.");
+        }
+
+        // 즉시 취소하지 않고 관리자 검토가 가능한 취소요청 상태로 전환합니다.
+        reservation.markCancelRequested(now, normalizeCancelReason(cancelReason));
         return ReservationResponse.from(reservation);
+    }
+
+    private String normalizeCancelReason(String cancelReason) {
+        if (cancelReason == null || cancelReason.isBlank()) {
+            return "사유 미입력";
+        }
+        String normalized = cancelReason.trim();
+        if (normalized.length() > CANCEL_REASON_MAX_LENGTH) {
+            return normalized.substring(0, CANCEL_REASON_MAX_LENGTH);
+        }
+        return normalized;
     }
 
     private void validateUserId(Long userId) {
