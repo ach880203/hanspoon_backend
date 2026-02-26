@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.user.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.common.user.dto.UserUpdateDto;
 import com.project.hanspoon.common.user.entity.User;
@@ -31,7 +31,7 @@ public class UserController {
         }
         try {
             User updatedUser = userService.updateUser(userDetails.getUser().getUserId(), dto);
-            return ResponseEntity.ok(ApiResponse.success("회원 정보가 수정되었습니다.", updatedUser));
+            return ResponseEntity.ok(ApiResponse.ok("회원 정보가 수정되었습니다.", updatedUser));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

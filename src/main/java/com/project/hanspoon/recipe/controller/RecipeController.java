@@ -1,6 +1,6 @@
 package com.project.hanspoon.recipe.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.recipe.constant.Category;
 import com.project.hanspoon.recipe.dto.MyRecipeReviewDto;
@@ -59,7 +59,7 @@ public class RecipeController {
 
         try {
             recipeService.saveRecipe(recipeFormDto, recipeImage, instructionImages);
-            return ResponseEntity.ok(ApiResponse.success("레시피가 등록되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("레시피가 등록되었습니다."));
         } catch (Exception e) {
             log.error("레시피 저장 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -78,7 +78,7 @@ public class RecipeController {
         String email = (customUserDetails != null) ? customUserDetails.getEmail() : null;
 
         RecipeDetailDto detail = recipeService.getRecipeDtl(id, email);
-        return ResponseEntity.ok(ApiResponse.success(detail));
+        return ResponseEntity.ok(ApiResponse.ok(detail));
     }
 
     /**
@@ -93,7 +93,7 @@ public class RecipeController {
 
         Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category);
 
-        return ResponseEntity.ok(ApiResponse.success(recipeList));
+        return ResponseEntity.ok(ApiResponse.ok(recipeList));
     }
 
     /**
@@ -102,7 +102,7 @@ public class RecipeController {
     @GetMapping("/edit/{id}")
     public ResponseEntity<ApiResponse<RecipeDetailDto>> getUpdateRecipe(@PathVariable Long id) {
         RecipeDetailDto recipeDetailDto = recipeService.getRecipeDtl(id);
-        return ResponseEntity.ok(ApiResponse.success(recipeDetailDto));
+        return ResponseEntity.ok(ApiResponse.ok(recipeDetailDto));
     }
 
     /**
@@ -116,7 +116,7 @@ public class RecipeController {
         recipeFormDto.setId(id);
 
         Long updateRecipeId = recipeService.updateRecipe(id, recipeFormDto, recipeImage, instructionImages);
-        return ResponseEntity.ok(ApiResponse.success("레시피가 수정되었습니다.", updateRecipeId));
+        return ResponseEntity.ok(ApiResponse.ok("레시피가 수정되었습니다.", updateRecipeId));
     }
 
     /**
@@ -126,7 +126,7 @@ public class RecipeController {
     public ResponseEntity<ApiResponse<Void>> deleteRecipe(@PathVariable Long id) {
         try {
             recipeService.deleteRecipe(id);
-            return ResponseEntity.ok(ApiResponse.success("레시피가 삭제되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("레시피가 삭제되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.error("레시피 삭제에 실패했습니다."));
@@ -141,7 +141,7 @@ public class RecipeController {
             @RequestParam(required = false) Category category) {
 
         List<RecipeListDto> list = recipeService.getDeletedRecipes(category);
-        return ResponseEntity.ok(ApiResponse.success(list));
+        return ResponseEntity.ok(ApiResponse.ok(list));
     }
 
     /**
@@ -151,7 +151,7 @@ public class RecipeController {
     public ResponseEntity<ApiResponse<Void>> deleteReturn(@PathVariable Long id) {
         try {
             recipeService.deletereturn(id);
-            return ResponseEntity.ok(ApiResponse.success("레시피가 복원되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("레시피가 복원되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.error("레시피 복원에 실패했습니다."));
@@ -177,7 +177,7 @@ public class RecipeController {
         }
         try {
             recipeService.createWishes(id, customUserDetails.getEmail());
-            return ResponseEntity.ok(ApiResponse.success("관심목록에 등록되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("관심목록에 등록되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.error("관심목록 등록에 실패했습니다."));
@@ -204,7 +204,7 @@ public class RecipeController {
                 category != null ? category.name() : null,
                 pageable
         );
-        return ResponseEntity.ok(ApiResponse.success(wishes));
+        return ResponseEntity.ok(ApiResponse.ok(wishes));
     }
 
     @DeleteMapping("/deletewihses/{id}")
@@ -214,7 +214,7 @@ public class RecipeController {
 
         recipeService.removeWish(customUserDetails.getEmail(), id);
 
-        return ResponseEntity.ok(ApiResponse.success(null,"찜 목록에서 삭제되었습니다"));
+        return ResponseEntity.ok(ApiResponse.ok(null,"찜 목록에서 삭제되었습니다"));
     };
 
 
@@ -232,7 +232,7 @@ public class RecipeController {
         }
 
         List<MyRecipeReviewDto> reviews = recipeService.getMyRecipeReviews(userDetails.getUserId());
-        return ResponseEntity.ok(ApiResponse.success(reviews));
+        return ResponseEntity.ok(ApiResponse.ok(reviews));
     }
 
 }
