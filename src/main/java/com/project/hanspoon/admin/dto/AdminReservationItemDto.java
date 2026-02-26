@@ -3,9 +3,10 @@ package com.project.hanspoon.admin.dto;
 import java.time.LocalDateTime;
 
 /**
- * 愿由ъ옄 ?덉빟 紐⑸줉 移대뱶 1嫄댁쓣 ?쒗쁽?섎뒗 DTO?낅땲??
+ * 관리자 예약 목록 카드 1건을 표현하는 DTO입니다.
  *
- * ?꾨줎??AdminReservationList.jsx)媛 洹몃?濡??곕뒗 ?꾨뱶紐낆쑝濡?留욎떠?먯뿀?듬땲??
+ * 프론트(AdminReservationList.jsx)에서 바로 사용할 수 있도록
+ * 화면에서 쓰는 필드명을 중심으로 구성했습니다.
  * - reservationId, status, classTitle, price, createdAt
  * - userName, userEmail, sessionStart, cancelReason
  */

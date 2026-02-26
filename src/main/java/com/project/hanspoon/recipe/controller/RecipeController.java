@@ -228,7 +228,7 @@ public class RecipeController {
     ) {
         if (userDetails == null || userDetails.getUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error("濡쒓렇?몄씠 ?꾩슂?⑸땲??"));
+                    .body(ApiResponse.error("로그인이 필요합니다."));
         }
 
         List<MyRecipeReviewDto> reviews = recipeService.getMyRecipeReviews(userDetails.getUserId());

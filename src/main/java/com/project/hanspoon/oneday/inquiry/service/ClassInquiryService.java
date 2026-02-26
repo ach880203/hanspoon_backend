@@ -60,6 +60,7 @@ public class ClassInquiryService {
 
         return inquiries.stream()
                 .map(inquiry -> {
+                    // 목록 조회 시점에 권한을 계산해 두면, 프론트에서 버튼 노출/내용 마스킹을 동일 기준으로 처리할 수 있습니다.
                     boolean canViewContent = canView(inquiry, viewerUserId, isAdmin);
                     boolean canAnswer = canAnswer(inquiry, viewerUserId, isAdmin);
                     String writerName = names.getOrDefault(inquiry.getUserId(), "이름 없음");
@@ -80,7 +81,7 @@ public class ClassInquiryService {
                 .map(inquiry -> {
                     boolean canViewContent = canView(inquiry, userId, isAdmin);
                     boolean canAnswer = canAnswer(inquiry, userId, isAdmin);
-                    String writerName = names.getOrDefault(inquiry.getUserId(), "?대쫫 ?놁쓬");
+                    String writerName = names.getOrDefault(inquiry.getUserId(), "이름 없음");
                     return toResponse(inquiry, writerName, canViewContent, canAnswer);
                 })
                 .toList();
@@ -144,6 +145,7 @@ public class ClassInquiryService {
     }
 
     private boolean canView(ClassInquiry inquiry, Long viewerUserId, boolean isAdmin) {
+        // 공개 문의는 누구나 조회 가능하고, 비공개 문의는 관리자/작성자만 원문을 볼 수 있습니다.
         if (inquiry.getVisibility() == Visibility.PUBLIC) {
             return true;
         }
@@ -167,6 +169,7 @@ public class ClassInquiryService {
     }
 
     private ClassInquiryResponse toResponse(ClassInquiry inquiry, String writerName, boolean canViewContent, boolean canAnswer) {
+        // 비공개 문의를 권한 없이 조회한 경우 제목/본문을 같은 문구로 마스킹해 정보 노출을 막습니다.
         String title = canViewContent ? inquiry.getTitle() : "비밀글입니다.";
         String content = canViewContent ? inquiry.getContent() : "비밀글입니다.";
         String answerContent = canViewContent ? inquiry.getAnswerContent() : null;
