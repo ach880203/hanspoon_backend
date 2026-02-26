@@ -55,11 +55,13 @@ public class ClassController {
             @RequestParam(required = false) RunType runType,
             @RequestParam(required = false) RecipeCategory category,
             @RequestParam(required = false) Long instructorId,
+            @RequestParam(required = false) String instructorName,
             @RequestParam(required = false) String keyword,
             Pageable pageable) {
         // pageable 예시: /classes?page=0&size=10&sort=createdAt,desc
         return ApiResponse
-                .ok(classQueryService.searchClasses(level, runType, category, instructorId, keyword, pageable));
+                .ok(classQueryService.searchClasses(level, runType, category, instructorId, instructorName, keyword,
+                        pageable));
     }
 
     @GetMapping("/{classId}")

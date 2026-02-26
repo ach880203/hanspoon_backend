@@ -1,22 +1,21 @@
 package com.project.hanspoon.common.user.service;
 
+import com.project.hanspoon.common.user.entity.PointHistory;
+import com.project.hanspoon.common.user.repository.PointHistoryRepository;
+import com.project.hanspoon.common.user.repository.UserRepository;
+import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.common.user.dto.UserRegisterDto;
 import com.project.hanspoon.common.user.dto.UserUpdateDto;
-import com.project.hanspoon.common.user.entity.User;
-import com.project.hanspoon.common.user.repository.UserRepository;
+import com.project.hanspoon.oneday.reservation.repository.ClassReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import com.project.hanspoon.common.user.dto.UserHistoryDto;
 import com.project.hanspoon.shop.order.repository.OrderRepository;
-import com.project.hanspoon.shop.cart.repository.CartRepository;
-import com.project.hanspoon.oneday.reservation.repository.ClassReservationRepository;
 import com.project.hanspoon.common.payment.repository.PaymentRepository;
-import com.project.hanspoon.shop.order.entity.Order;
 import com.project.hanspoon.shop.order.dto.OrderResponseDto;
 import com.project.hanspoon.oneday.reservation.dto.ClassReservationResponseDto;
 import com.project.hanspoon.common.payment.dto.PaymentDto;
@@ -47,16 +46,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final OrderRepository orderRepository;
-    private final CartRepository cartRepository;
     private final ClassReservationRepository reservationRepository;
     private final PaymentRepository paymentRepository;
+    private final PointHistoryRepository pointHistoryRepository;
 
     @Transactional(readOnly = true)
     public AdminUserDetailResponse getAdminUserDetail(Long userId) {
         log.info("[Admin] Getting detail and history for user: {}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        
+
         // 상세 정보와 활동 이력을 한 번에 결합하여 반환
         UserHistoryDto history = getUserHistory(userId);
 
@@ -75,10 +74,11 @@ public class UserService {
     /**
      * 회원가입 처리
      *
-     * 입력: UserRegisterDto (email, password, passwordConfirm, userName, phone, address)
+     * 입력: UserRegisterDto (email, password, passwordConfirm, userName, phone,
+     * address)
      * 반환: 저장된 User 엔티티
      * 예외: 이미 사용중인 이메일 -> IllegalArgumentException
-     *       비밀번호 불일치 -> IllegalArgumentException
+     * 비밀번호 불일치 -> IllegalArgumentException
      * 주의: 비밀번호는 PasswordEncoder로 인코딩하여 저장합니다.
      */
     public User register(UserRegisterDto dto) {
@@ -97,10 +97,22 @@ public class UserService {
                 .address(dto.getAddress())
                 .status(com.project.hanspoon.common.user.constant.UserStatus.ACTIVE)
                 .role("ROLE_USER")
+                .spoonCount(3000) // 신규 가입 3,000 스푼 증정
                 .isDeleted(false)
                 .build();
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // 포인트 이력 추가
+        PointHistory history = PointHistory.builder()
+                .user(savedUser)
+                .amount(3000)
+                .type(com.project.hanspoon.common.user.constant.PointType.EVENT)
+                .description("신규 가입 축하 3,000 스푼")
+                .build();
+        pointHistoryRepository.save(history);
+
+        return savedUser;
     }
 
     /**
@@ -222,10 +234,11 @@ public class UserService {
         }
         userRepository.save(user);
     }
+
     @Transactional(readOnly = true)
     public UserHistoryDto getUserHistory(Long userId) {
         log.info("[Admin] Getting history for user: {}", userId);
-        
+
         // 1. 주문 내역
         List<OrderResponseDto> orders = orderRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
                 .map(OrderResponseDto::fromEntity)
