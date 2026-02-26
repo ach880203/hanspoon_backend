@@ -1,7 +1,7 @@
 package com.project.hanspoon.common.payment.controller;
 
 import com.project.hanspoon.common.config.PortOneConfig;
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.payment.dto.PaymentDto;
 import com.project.hanspoon.common.payment.dto.PortOneDto;
@@ -68,7 +68,7 @@ public class PaymentController {
                 .channelKeyTossPayments(portOneConfig.getChannelKey().getTossPayments())
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success(checkoutInfo));
+        return ResponseEntity.ok(ApiResponse.ok(checkoutInfo));
     }
 
     /**
@@ -89,7 +89,7 @@ public class PaymentController {
                 .amount(prepareRequest.getAmount())
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     /**
@@ -116,7 +116,7 @@ public class PaymentController {
         PortOneDto.PaymentResult result = portOneService.verifyAndSavePayment(user, verifyRequest);
 
         if (result.isSuccess()) {
-            return ResponseEntity.ok(ApiResponse.success("결제가 완료되었습니다.", result));
+            return ResponseEntity.ok(ApiResponse.ok("결제가 완료되었습니다.", result));
         } else {
             return ResponseEntity.badRequest().body(ApiResponse.error(result.getMessage()));
         }
@@ -139,7 +139,7 @@ public class PaymentController {
         PaymentDto paymentDto = paymentService.createPaymentForProduct(
                 user, request.getProductId(), request.getTotalAmount(), request.getQuantity());
 
-        return ResponseEntity.ok(ApiResponse.success("결제가 생성되었습니다.", paymentDto));
+        return ResponseEntity.ok(ApiResponse.ok("결제가 생성되었습니다.", paymentDto));
     }
 
     /**
@@ -159,7 +159,7 @@ public class PaymentController {
         PaymentDto paymentDto = paymentService.createPaymentForClass(
                 user, request.getClassId(), request.getTotalAmount(), request.getQuantity());
 
-        return ResponseEntity.ok(ApiResponse.success("결제가 생성되었습니다.", paymentDto));
+        return ResponseEntity.ok(ApiResponse.ok("결제가 생성되었습니다.", paymentDto));
     }
 
     /**
@@ -170,7 +170,7 @@ public class PaymentController {
     public ResponseEntity<ApiResponse<Void>> cancelPayment(@PathVariable Long payId) {
         try {
             paymentService.cancelPayment(payId);
-            return ResponseEntity.ok(ApiResponse.success("결제가 취소되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("결제가 취소되었습니다."));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -190,7 +190,7 @@ public class PaymentController {
         }
 
         Page<PaymentDto> dtoPage = paymentService.getPaymentHistory(userDetails.getUserId(), pageable);
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(dtoPage)));
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(dtoPage)));
     }
 
     /**
@@ -200,7 +200,7 @@ public class PaymentController {
     @GetMapping("/{payId}")
     public ResponseEntity<ApiResponse<PaymentDto>> getPaymentDetail(@PathVariable Long payId) {
         PaymentDto paymentDto = paymentService.getPayment(payId);
-        return ResponseEntity.ok(ApiResponse.success(paymentDto));
+        return ResponseEntity.ok(ApiResponse.ok(paymentDto));
     }
 
     /**
@@ -218,6 +218,6 @@ public class PaymentController {
                         portOneConfig.getChannelKey() != null ? portOneConfig.getChannelKey().getTossPayments() : null)
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success(configInfo));
+        return ResponseEntity.ok(ApiResponse.ok(configInfo));
     }
 }

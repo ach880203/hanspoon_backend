@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.faq.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.faq.dto.FaqDto;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.faq.service.FaqService;
@@ -30,7 +30,7 @@ public class AdminFaqController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<PageResponse<FaqDto>>> list(@PageableDefault(size = 20) Pageable pageable) {
         Page<FaqDto> faqs = faqService.getFaqList(pageable);
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(faqs)));
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(faqs)));
     }
 
     /**
@@ -39,7 +39,7 @@ public class AdminFaqController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<FaqDto>> get(@PathVariable("id") Long faqId) {
         try {
-            return ResponseEntity.ok(ApiResponse.success(faqService.getFaq(faqId)));
+            return ResponseEntity.ok(ApiResponse.ok(faqService.getFaq(faqId)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("FAQ를 찾을 수 없습니다."));
         }
@@ -51,7 +51,7 @@ public class AdminFaqController {
     @PostMapping
     public ResponseEntity<ApiResponse<FaqDto>> create(@Valid @RequestBody FaqDto dto) {
         try {
-            return ResponseEntity.ok(ApiResponse.success("FAQ가 등록되었습니다.", faqService.createFaq(dto)));
+            return ResponseEntity.ok(ApiResponse.ok("FAQ가 등록되었습니다.", faqService.createFaq(dto)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("등록에 실패했습니다."));
         }
@@ -63,7 +63,7 @@ public class AdminFaqController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<FaqDto>> update(@PathVariable("id") Long faqId, @Valid @RequestBody FaqDto dto) {
         try {
-            return ResponseEntity.ok(ApiResponse.success("FAQ가 수정되었습니다.", faqService.updateFaq(faqId, dto)));
+            return ResponseEntity.ok(ApiResponse.ok("FAQ가 수정되었습니다.", faqService.updateFaq(faqId, dto)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("수정에 실패했습니다."));
         }
@@ -76,7 +76,7 @@ public class AdminFaqController {
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") Long faqId) {
         try {
             faqService.deleteFaq(faqId);
-            return ResponseEntity.ok(ApiResponse.success("FAQ가 삭제되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("FAQ가 삭제되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("삭제에 실패했습니다."));
         }

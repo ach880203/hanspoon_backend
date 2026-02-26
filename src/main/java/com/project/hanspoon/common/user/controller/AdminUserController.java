@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.user.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.user.dto.AdminUserDetailResponse;
 import com.project.hanspoon.common.user.entity.User;
@@ -33,7 +33,7 @@ public class AdminUserController {
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<User> users = userService.findAll(search, pageable);
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(users)));
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(users)));
     }
 
     /**
@@ -43,7 +43,7 @@ public class AdminUserController {
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<AdminUserDetailResponse>> getUserDetail(@PathVariable Long userId) {
         AdminUserDetailResponse response = userService.getAdminUserDetail(userId);
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     /**
@@ -55,7 +55,7 @@ public class AdminUserController {
             @PathVariable Long userId,
             @RequestParam com.project.hanspoon.common.user.constant.UserStatus status) {
         userService.updateStatus(userId, status);
-        return ResponseEntity.ok(ApiResponse.success("사용자 상태가 변경되었습니다."));
+        return ResponseEntity.ok(ApiResponse.ok("사용자 상태가 변경되었습니다."));
     }
 
     /**
@@ -65,6 +65,6 @@ public class AdminUserController {
     @GetMapping("/{userId}/history")
     public ResponseEntity<ApiResponse<com.project.hanspoon.common.user.dto.UserHistoryDto>> getUserHistory(
             @PathVariable Long userId) {
-        return ResponseEntity.ok(ApiResponse.success(userService.getUserHistory(userId)));
+        return ResponseEntity.ok(ApiResponse.ok(userService.getUserHistory(userId)));
     }
 }

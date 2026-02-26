@@ -1,6 +1,6 @@
 package com.project.hanspoon.mypage.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.mypage.dto.MyPageSummaryDto;
 import com.project.hanspoon.mypage.service.MyPageService;
@@ -21,6 +21,6 @@ public class MyPageController {
     @GetMapping("/summary")
     public ResponseEntity<ApiResponse<MyPageSummaryDto>> getSummary(@AuthenticationPrincipal CustomUserDetails userDetails) {
         MyPageSummaryDto summary = myPageService.getMyPageSummary(userDetails.getUserId());
-        return ResponseEntity.ok(ApiResponse.success(summary));
+        return ResponseEntity.ok(ApiResponse.ok(summary));
     }
 }

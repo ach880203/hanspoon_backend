@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.notice.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.notice.dto.NoticeDto;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.notice.service.NoticeService;
@@ -37,7 +37,7 @@ public class NoticeController {
         } else {
             notices = noticeService.getNoticeList(pageable);
         }
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(notices)));
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(notices)));
     }
 
     /**
@@ -48,7 +48,7 @@ public class NoticeController {
     public ResponseEntity<ApiResponse<NoticeDto>> view(@PathVariable("id") Long noticeId) {
         try {
             NoticeDto notice = noticeService.getNotice(noticeId);
-            return ResponseEntity.ok(ApiResponse.success(notice));
+            return ResponseEntity.ok(ApiResponse.ok(notice));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("공지사항을 찾을 수 없습니다."));
         }

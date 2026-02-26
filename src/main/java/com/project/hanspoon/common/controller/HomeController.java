@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +28,7 @@ public class HomeController {
         data.put("timestamp", LocalDateTime.now());
         data.put("service", "hanspoon-api");
         
-        return ResponseEntity.ok(ApiResponse.success(data));
+        return ResponseEntity.ok(ApiResponse.ok(data));
     }
 
     /**
@@ -42,6 +42,6 @@ public class HomeController {
         info.put("version", "1.0.0");
         info.put("description", "한스푼 서비스 API");
         
-        return ResponseEntity.ok(ApiResponse.success(info));
+        return ResponseEntity.ok(ApiResponse.ok(info));
     }
 }

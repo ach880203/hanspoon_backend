@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.faq.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.faq.dto.FaqDto;
 import com.project.hanspoon.common.faq.service.FaqService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class FaqController {
         } else {
             faqs = faqService.getAllFaqList();
         }
-        return ResponseEntity.ok(ApiResponse.success(faqs));
+        return ResponseEntity.ok(ApiResponse.ok(faqs));
     }
 
     /**
@@ -42,7 +42,7 @@ public class FaqController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<FaqDto>> get(@PathVariable("id") Long faqId) {
         try {
-            return ResponseEntity.ok(ApiResponse.success(faqService.getFaq(faqId)));
+            return ResponseEntity.ok(ApiResponse.ok(faqService.getFaq(faqId)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("FAQ를 찾을 수 없습니다."));
         }
