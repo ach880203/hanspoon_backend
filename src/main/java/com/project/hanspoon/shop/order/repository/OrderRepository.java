@@ -42,6 +42,21 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findWithItemsByIdAndUserIdForUpdate(@Param("orderId") Long orderId,
                                                         @Param("userId") Long userId);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+        select distinct o from Order o
+        left join fetch o.items
+        where o.id = :orderId
+    """)
+    Optional<Order> findWithItemsByIdForUpdate(@Param("orderId") Long orderId);
+
+    @Query("""
+        select distinct o from Order o
+        left join fetch o.items
+        where o.id = :orderId
+    """)
+    Optional<Order> findWithItemsById(@Param("orderId") Long orderId);
+
     // ✅ 기간 및 상태 필터링 (마이페이지용)
     @Query("""
         SELECT o FROM Order o 
@@ -57,10 +72,25 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                                 @Param("status") com.project.hanspoon.shop.constant.OrderStatus status,
                                 Pageable pageable);
 
+    @Query("""
+        SELECT o FROM Order o
+        WHERE (:status IS NULL OR o.status = :status)
+        AND (
+          :keyword IS NULL OR :keyword = '' OR
+          CONCAT('', o.id) LIKE CONCAT('%', :keyword, '%') OR
+          o.receiverName LIKE CONCAT('%', :keyword, '%') OR
+          o.receiverPhone LIKE CONCAT('%', :keyword, '%') OR
+          o.trackingNumber LIKE CONCAT('%', :keyword, '%')
+        )
+        ORDER BY o.createdAt DESC
+    """)
+    Page<Order> findAllWithFilters(@Param("status") com.project.hanspoon.shop.constant.OrderStatus status,
+                                   @Param("keyword") String keyword,
+                                   Pageable pageable);
+
     long countByStatus(com.project.hanspoon.shop.constant.OrderStatus status);
 
     long countByStatusIn(java.util.List<com.project.hanspoon.shop.constant.OrderStatus> statuses);
 
     int countByUser_UserIdAndStatusIn(Long userId, java.util.List<com.project.hanspoon.shop.constant.OrderStatus> statuses);
 }
-
