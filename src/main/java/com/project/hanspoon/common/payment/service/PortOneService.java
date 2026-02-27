@@ -151,8 +151,9 @@ public class PortOneService {
 
             // 6. PaymentItem 생성 및 연결
             PaymentItem paymentItem;
+            String itemName = portOnePayment.getOrderName() != null ? portOnePayment.getOrderName() : "결제 상품";
             if (request.getProductId() != null) {
-                paymentItem = PaymentItem.createForProduct(request.getProductId(), request.getQuantity());
+                paymentItem = PaymentItem.createForProduct(request.getProductId(), itemName, request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
             } else if (request.getClassId() != null || request.getReservationId() != null) {
                 // 클래스 결제는 orderId 문자열 형식(PAY-...)과 무관하게 우선 처리해야 예약 반영이 누락되지 않습니다.
@@ -160,7 +161,7 @@ public class PortOneService {
                     throw new BusinessException("클래스 결제에는 세션 ID(classId)가 필요합니다.");
                 }
 
-                paymentItem = PaymentItem.createForClass(request.getClassId(), request.getQuantity());
+                paymentItem = PaymentItem.createForClass(request.getClassId(), itemName, request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
 
                 if (request.getReservationId() != null) {
@@ -206,6 +207,15 @@ public class PortOneService {
                     var order = orderRepository.findById(orderIdLong)
                             .orElseThrow(() -> new BusinessException(
                                     "주문 정보를 찾을 수 없습니다. (ID: " + request.getOrderId() + ")"));
+
+                    // Order 의 OrderItem 목록에서 PaymentItem 생성 (실제 상품명 스냅샷 저장)
+                    for (com.project.hanspoon.shop.order.entity.OrderItem oi : order.getItems()) {
+                        PaymentItem pi = PaymentItem.createForProduct(
+                                oi.getProductId(),
+                                oi.getProductName(),
+                                oi.getQuantity());
+                        savedPayment.addPaymentItem(pi);
+                    }
 
                     order.setStatus(com.project.hanspoon.shop.constant.OrderStatus.PAID);
                     order.setPaidAt(java.time.LocalDateTime.now());

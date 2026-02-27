@@ -27,6 +27,14 @@ public class PaymentDto {
     private List<PaymentItemDto> paymentItems;
 
     public static PaymentDto fromEntity(Payment payment) {
+        List<PaymentItem> items = payment.getPaymentItems();
+        String orderName;
+        if (items.isEmpty()) {
+            orderName = "결제 내역";
+        } else {
+            String firstName = items.get(0).getItemName() != null ? items.get(0).getItemName() : "상품 결제";
+            orderName = items.size() > 1 ? firstName + " 외 " + (items.size() - 1) + "건" : firstName;
+        }
         return PaymentDto.builder()
                 .payId(payment.getPayId())
                 .userId(payment.getUser().getUserId())
@@ -35,12 +43,10 @@ public class PaymentDto {
                 .totalPrice(payment.getTotalPrice())
                 .status(payment.getStatus())
                 .payDate(payment.getPayDate())
-                .paymentItems(payment.getPaymentItems().stream()
+                .paymentItems(items.stream()
                         .map(PaymentItemDto::fromEntity)
                         .collect(Collectors.toList()))
-                .orderName(payment.getPaymentItems().isEmpty() ? "결제 내역" : 
-                           (payment.getPaymentItems().size() > 1 ? 
-                            "상품 외 " + (payment.getPaymentItems().size() - 1) + "건" : "결제 상품"))
+                .orderName(orderName)
                 .build();
     }
 
@@ -62,6 +68,7 @@ public class PaymentDto {
         private Long productId;
         private Long classId;
         private Integer quantity;
+        private String itemName;
         private String itemType;
 
         public static PaymentItemDto fromEntity(PaymentItem item) {
@@ -70,6 +77,7 @@ public class PaymentDto {
                     .productId(item.getProductId())
                     .classId(item.getClassId())
                     .quantity(item.getQuantity())
+                    .itemName(item.getItemName())
                     .itemType(item.getProductId() != null ? "상품" : "클래스")
                     .build();
         }

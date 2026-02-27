@@ -20,4 +20,15 @@ public class AdminDashboardController {
     public ResponseEntity<ApiResponse<AdminDashboardSummaryDto>> getDashboardSummary() {
         return ResponseEntity.ok(ApiResponse.ok(dashboardService.getDashboardSummary()));
     }
+
+    @GetMapping("/sales-trend")
+    public ResponseEntity<ApiResponse<com.project.hanspoon.admin.dto.SalesTrendDto>> getSalesTrend(
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "7") int days) {
+        return ResponseEntity.ok(ApiResponse.ok(dashboardService.getSalesTrend(days)));
+    }
+
+    @GetMapping("/sales/statistics")
+    public ResponseEntity<ApiResponse<com.project.hanspoon.admin.dto.SalesStatisticsDto>> getSalesStatistics() {
+        return ResponseEntity.ok(ApiResponse.ok(dashboardService.getSalesStatistics()));
+    }
 }
