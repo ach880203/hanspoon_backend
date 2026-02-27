@@ -22,13 +22,27 @@ public class QRecipeRev extends EntityPathBase<RecipeRev> {
 
     public static final QRecipeRev recipeRev = new QRecipeRev("recipeRev");
 
+    public final StringPath answerContent = createString("answerContent");
+
+    public final DateTimePath<java.time.LocalDateTime> answeredAt = createDateTime("answeredAt", java.time.LocalDateTime.class);
+
+    public final NumberPath<Long> answeredByUserId = createNumber("answeredByUserId", Long.class);
+
     public final StringPath content = createString("content");
+
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = createDateTime("deletedAt", java.time.LocalDateTime.class);
+
+    public final BooleanPath delFlag = createBoolean("delFlag");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> rating = createNumber("rating", Integer.class);
 
     public final QRecipe recipe;
+
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public final com.project.hanspoon.common.user.entity.QUser user;
 

@@ -74,7 +74,9 @@ public class SecurityConfig {
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/api/recipe/list",
-                                                                "/api/recipe/detail/*")
+                                                                "/api/recipe/detail/*",
+                                                                "/api/recipe/reviews/recipes/*",
+                                                                "/api/recipe/inquiries/recipes/*")
                                                 .permitAll()
 
                                                 // 관리자 전용 API

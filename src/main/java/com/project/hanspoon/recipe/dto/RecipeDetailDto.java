@@ -78,6 +78,7 @@ public class RecipeDetailDto {
                 .ingredientMap(ingMap)
                 .reviews(recipe.getRecipeRevs() !=null ?
                         recipe.getRecipeRevs().stream()
+                                .filter(rev -> !rev.isDelFlag())
                                 .map(RevDto::fromEntity)
                                 .toList() : List.of())
                 .ingDtos(recipe.getRecipeIngs() !=null?

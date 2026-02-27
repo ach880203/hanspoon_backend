@@ -445,7 +445,7 @@ public class RecipeService {
      */
     @Transactional(readOnly = true)
     public List<MyRecipeReviewDto> getMyRecipeReviews(Long userId) {
-        return recipeRevRepository.findAllByUser_UserIdOrderByIdDesc(userId).stream()
+        return recipeRevRepository.findAllByUser_UserIdAndDelFlagFalseOrderByIdDesc(userId).stream()
                 .map(MyRecipeReviewDto::fromEntity)
                 .toList();
     }
