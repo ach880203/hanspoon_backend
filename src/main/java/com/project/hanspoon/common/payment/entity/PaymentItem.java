@@ -19,26 +19,28 @@ public class PaymentItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
-    private Payment payment;  // 연결된 결제 ID
+    private Payment payment; // 연결된 결제 ID
 
     @Column(name = "product_id")
-    private Long productId;  // 구매한 상품 ID (상품인 경우)
+    private Long productId; // 구매한 상품 ID (상품인 경우)
 
     @Column(name = "class_id")
-    private Long classId;  // 신청한 클래스 ID (클래스인 경우)
+    private Long classId; // 신청한 클래스 ID (클래스인 경우)
+
+    @Column(name = "item_name", length = 200)
+    private String itemName; // 결제 시점의 상품/클래스명 스냅샷
 
     @Column(name = "quantity")
     @Builder.Default
-    private Integer quantity = 1;  // 수량
-
-    // ========== 편의 메소드 ==========
+    private Integer quantity = 1; // 수량
 
     /**
      * 상품 주문 항목 생성
      */
-    public static PaymentItem createForProduct(Long productId, int quantity) {
+    public static PaymentItem createForProduct(Long productId, String productName, int quantity) {
         return PaymentItem.builder()
                 .productId(productId)
+                .itemName(productName)
                 .quantity(quantity)
                 .build();
     }
@@ -46,9 +48,10 @@ public class PaymentItem {
     /**
      * 클래스 주문 항목 생성
      */
-    public static PaymentItem createForClass(Long classId, int quantity) {
+    public static PaymentItem createForClass(Long classId, String className, int quantity) {
         return PaymentItem.builder()
                 .classId(classId)
+                .itemName(className)
                 .quantity(quantity)
                 .build();
     }

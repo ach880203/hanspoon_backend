@@ -140,15 +140,16 @@ public class PortOneService {
             Payment savedPayment = paymentRepository.save(payment);
 
             PaymentItem paymentItem;
+            String itemName = portOnePayment.getOrderName() != null ? portOnePayment.getOrderName() : "결제 상품";
             if (request.getProductId() != null) {
-                paymentItem = PaymentItem.createForProduct(request.getProductId(), request.getQuantity());
+                paymentItem = PaymentItem.createForProduct(request.getProductId(), itemName, request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
             } else if (request.getClassId() != null || request.getReservationId() != null) {
                 if (request.getClassId() == null) {
                     throw new BusinessException("클래스 결제에는 세션 ID(classId)가 필요합니다.");
                 }
 
-                paymentItem = PaymentItem.createForClass(request.getClassId(), request.getQuantity());
+                paymentItem = PaymentItem.createForClass(request.getClassId(), itemName, request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
 
                 if (request.getReservationId() != null) {
@@ -190,8 +191,22 @@ public class PortOneService {
             } else if (request.getOrderId() != null) {
                 try {
                     Long orderIdLong = Long.parseLong(request.getOrderId());
-                    orderService.completeOrderPaymentBySystem(orderIdLong);
-                    log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", orderIdLong, savedPayment.getPayId());
+                    var order = orderRepository.findById(orderIdLong)
+                            .orElseThrow(() -> new BusinessException(
+                                    "주문 정보를 찾을 수 없습니다. (ID: " + request.getOrderId() + ")"));
+
+                    // Order 의 OrderItem 목록에서 PaymentItem 생성 (실제 상품명 스냅샷 저장)
+                    for (com.project.hanspoon.shop.order.entity.OrderItem oi : order.getItems()) {
+                        PaymentItem pi = PaymentItem.createForProduct(
+                                oi.getProductId(),
+                                oi.getProductName(),
+                                oi.getQuantity());
+                        savedPayment.addPaymentItem(pi);
+                    }
+
+                    order.setStatus(com.project.hanspoon.shop.constant.OrderStatus.PAID);
+                    order.setPaidAt(java.time.LocalDateTime.now());
+                    log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", order.getId(), savedPayment.getPayId());
                 } catch (NumberFormatException e) {
                     log.warn("상품 주문 ID 형식이 올바르지 않습니다: {}", request.getOrderId());
                 }

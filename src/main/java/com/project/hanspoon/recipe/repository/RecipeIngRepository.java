@@ -14,4 +14,6 @@ public interface RecipeIngRepository extends JpaRepository<RecipeIng, Long> {
     List<RecipeIng> findAllByOrderByIdDesc();
 
     Optional<RecipeIng> findByIdAndUser_UserId(Long inquiryId, Long userId);
+
+    long countByIsAnsweredFalse();
 }
