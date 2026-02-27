@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class RecipeDetailDto {
     private Long id;
+    private Long userId;
     private String title;
     private String recipeImg;
     private double baseServings;
@@ -55,6 +56,7 @@ public class RecipeDetailDto {
 
         return RecipeDetailDto.builder()
                 .id(recipe.getId())
+                .userId(recipe.getUser() != null ? recipe.getUser().getUserId(): null)
                 .title(recipe.getTitle())
                 .isWished(wished)
                 .wihsid(recipeWish != null ? recipeWish.getId() : null)

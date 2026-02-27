@@ -92,9 +92,10 @@ public class RecipeController {
     public ResponseEntity<ApiResponse<Page<RecipeListDto>>> getRecipeList(
             @RequestParam(value = "category", required = false) Category category,
             @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "userId", required = false) Long userId,
             @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category);
+        Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category, userId);
 
         return ResponseEntity.ok(ApiResponse.ok(recipeList));
     }
@@ -158,6 +159,16 @@ public class RecipeController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.error("레시피 복원에 실패했습니다."));
+        }
+    }
+
+    @PostMapping("/hard_delete/{id}")
+    public ResponseEntity<?> hardDeleteRecipe(@PathVariable Long id) {
+        try {
+            recipeService.permanentDelete(id);
+            return ResponseEntity.ok().body("영구 삭제가 완료되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("삭제 중 오류 발생: " + e.getMessage());
         }
     }
 

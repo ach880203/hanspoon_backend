@@ -23,4 +23,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findByDeletedTrueAndCategory(Category category);
 
     List<Recipe> findByDeletedTrue();
+
+    Page<Recipe> findByUser_UserIdAndDeletedFalse(Long userId, Pageable pageable);
 }
