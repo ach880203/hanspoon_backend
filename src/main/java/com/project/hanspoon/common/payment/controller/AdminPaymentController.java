@@ -1,9 +1,8 @@
 package com.project.hanspoon.common.payment.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.payment.dto.PaymentDto;
-import com.project.hanspoon.common.payment.entity.Payment;
 import com.project.hanspoon.common.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,10 +32,8 @@ public class AdminPaymentController {
     public ResponseEntity<ApiResponse<PageResponse<PaymentDto>>> getPaymentList(
             @PageableDefault(size = 10, sort = "payDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Payment> payments = paymentService.findAll(pageable);
-        Page<PaymentDto> dtoPage = payments.map(PaymentDto::from);
-
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(dtoPage)));
+        Page<PaymentDto> dtoPage = paymentService.findAll(pageable);
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(dtoPage)));
     }
 
     /**
@@ -48,7 +45,7 @@ public class AdminPaymentController {
             @org.springframework.web.bind.annotation.PathVariable Long payId) {
         try {
             paymentService.cancelPayment(payId);
-            return ResponseEntity.ok(ApiResponse.success("결제가 취소되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("결제가 취소되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

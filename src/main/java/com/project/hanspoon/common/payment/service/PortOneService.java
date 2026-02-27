@@ -154,13 +154,16 @@ public class PortOneService {
             if (request.getProductId() != null) {
                 paymentItem = PaymentItem.createForProduct(request.getProductId(), request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
-            } else {
+            } else if (request.getClassId() != null || request.getReservationId() != null) {
+                // 클래스 결제는 orderId 문자열 형식(PAY-...)과 무관하게 우선 처리해야 예약 반영이 누락되지 않습니다.
+                if (request.getClassId() == null) {
+                    throw new BusinessException("클래스 결제에는 세션 ID(classId)가 필요합니다.");
+                }
+
                 paymentItem = PaymentItem.createForClass(request.getClassId(), request.getQuantity());
                 savedPayment.addPaymentItem(paymentItem);
 
-                // ✅ 클래스 예약 처리
                 if (request.getReservationId() != null) {
-                    // 기존 예약 홀드 -> 확정
                     com.project.hanspoon.oneday.reservation.entity.ClassReservation reservation = classReservationRepository
                             .findById(request.getReservationId())
                             .orElseThrow(() -> new IllegalArgumentException(
@@ -172,11 +175,11 @@ public class PortOneService {
                     }
 
                     reservation.markPaid(java.time.LocalDateTime.now());
+                    reservation.linkPayment(savedPayment.getPayId());
+                    classReservationRepository.save(reservation);
                     log.info("기존 예약 확정 및 결제 연동 완료: reservationId={}, payId={}", reservation.getId(),
                             savedPayment.getPayId());
-
-                } else if (request.getClassId() != null) {
-                    // (구) 로직: 예약 ID 없이 바로 결제 시 신규 생성
+                } else {
                     com.project.hanspoon.oneday.clazz.entity.ClassSession session = classSessionRepository
                             .findById(request.getClassId())
                             .orElseThrow(() -> new IllegalArgumentException(
@@ -191,14 +194,28 @@ public class PortOneService {
                             .build();
 
                     reservation.markPaid(java.time.LocalDateTime.now());
-
+                    reservation.linkPayment(savedPayment.getPayId());
                     classReservationRepository.save(reservation);
                     log.info("클래스 예약 자동 생성 및 결제 연동 완료: userId={}, sessionId={}, payId={}",
                             user.getUserId(), request.getClassId(), savedPayment.getPayId());
                 }
-            }
+            } else if (request.getOrderId() != null) {
+                // 일반 상품 주문(Order) 결제 처리
+                try {
+                    Long orderIdLong = Long.parseLong(request.getOrderId());
+                    var order = orderRepository.findById(orderIdLong)
+                            .orElseThrow(() -> new BusinessException(
+                                    "주문 정보를 찾을 수 없습니다. (ID: " + request.getOrderId() + ")"));
 
-            // ✅ 쿠폰 사용 처리
+                    order.setStatus(com.project.hanspoon.shop.constant.OrderStatus.PAID);
+                    order.setPaidAt(java.time.LocalDateTime.now());
+                    log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", order.getId(), savedPayment.getPayId());
+                } catch (NumberFormatException e) {
+                    log.warn("상품 주문 ID 형식이 올바르지 않습니다: {}", request.getOrderId());
+                }
+            } else {
+                throw new BusinessException("결제 대상 정보가 없습니다.");
+            }
             if (userCoupon != null) {
                 userCoupon.markUsed(java.time.LocalDateTime.now());
                 log.info("쿠폰 사용 처리 완료: userCouponId={}, userId={}", userCoupon.getId(), user.getUserId());

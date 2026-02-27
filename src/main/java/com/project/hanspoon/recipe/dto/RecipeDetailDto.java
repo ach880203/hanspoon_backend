@@ -3,6 +3,7 @@ package com.project.hanspoon.recipe.dto;
 import com.project.hanspoon.recipe.entity.Recipe;
 import com.project.hanspoon.recipe.entity.RecipeIngredient;
 import com.project.hanspoon.recipe.entity.RecipeInstruction;
+import com.project.hanspoon.recipe.entity.RecipeWish;
 import lombok.*;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class RecipeDetailDto {
     private int saltiness;
     private int spiciness;
     private boolean isWished;
+    private Long wihsid;
+    private boolean recommended; // 추천 여부
+    private Integer recommendCount; // 전체 추천수
 
     private List<Long> subrecipe;
 
@@ -37,7 +41,9 @@ public class RecipeDetailDto {
 
     private List<IngDto> ingDtos;
 
-    public static RecipeDetailDto fromEntity(Recipe recipe, boolean isWished) {
+    public static RecipeDetailDto fromEntity(
+            Recipe recipe, boolean wished,
+            RecipeWish recipeWish, boolean isRecommended) {
         Map<String, IngredientDto> ingMap = recipe.getRecipeIngredientGroup().stream()
                 .flatMap(group -> group.getIngredients().stream())
                 .map(IngredientDto::fromEntity)
@@ -50,6 +56,10 @@ public class RecipeDetailDto {
         return RecipeDetailDto.builder()
                 .id(recipe.getId())
                 .title(recipe.getTitle())
+                .isWished(wished)
+                .wihsid(recipeWish != null ? recipeWish.getId() : null)
+                .recommended(isRecommended)
+                .recommendCount(recipe.getRecommendCount())
                 .recipeImg(recipe.getRecipeImg())
                 .category(recipe.getCategory() !=null ?
                         recipe.getCategory().name() : null)
@@ -68,13 +78,13 @@ public class RecipeDetailDto {
                 .ingredientMap(ingMap)
                 .reviews(recipe.getRecipeRevs() !=null ?
                         recipe.getRecipeRevs().stream()
+                                .filter(rev -> !rev.isDelFlag())
                                 .map(RevDto::fromEntity)
                                 .toList() : List.of())
                 .ingDtos(recipe.getRecipeIngs() !=null?
                         recipe.getRecipeIngs().stream()
                                 .map(IngDto::fromEntity)
                                 .toList() : List.of())
-                .isWished(isWished)
                 .build();
     }
 }

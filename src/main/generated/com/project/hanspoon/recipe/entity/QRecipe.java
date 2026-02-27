@@ -40,6 +40,8 @@ public class QRecipe extends EntityPathBase<Recipe> {
 
     public final ListPath<RecipeRev, QRecipeRev> recipeRevs = this.<RecipeRev, QRecipeRev>createList("recipeRevs", RecipeRev.class, QRecipeRev.class, PathInits.DIRECT2);
 
+    public final NumberPath<Integer> recommendCount = createNumber("recommendCount", Integer.class);
+
     public final NumberPath<Integer> saltiness = createNumber("saltiness", Integer.class);
 
     public final NumberPath<Integer> spiciness = createNumber("spiciness", Integer.class);

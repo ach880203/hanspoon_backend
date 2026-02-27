@@ -13,4 +13,6 @@ public interface ClassProductRepository
         extends JpaRepository<ClassProduct, Long>, JpaSpecificationExecutor<ClassProduct> {
 
     List<ClassProduct> findAllByRunTypeOrderByCreatedAtDesc(RunType runType, Pageable pageable);
+
+    boolean existsByInstructor_Id(Long instructorId);
 }

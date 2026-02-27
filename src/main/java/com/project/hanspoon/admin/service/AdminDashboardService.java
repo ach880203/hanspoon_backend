@@ -32,10 +32,19 @@ public class AdminDashboardService {
         try {
             LocalDateTime todayStart = LocalDate.now().atStartOfDay();
             LocalDateTime todayEnd = LocalDate.now().atTime(23, 59, 59);
+            LocalDateTime yesterdayStart = todayStart.minusDays(1);
+            LocalDateTime yesterdayEnd = todayEnd.minusDays(1);
 
-            // 1. 매출 (Payment 기준, PAID 상태) - 임시 0
-            long todaySales = 0;
-            long yesterdaySales = 0;
+            // 1. 매출 (Payment 기준, PAID 상태)
+            long todaySales = paymentRepository.findByPayDateBetween(todayStart, todayEnd).stream()
+                    .filter(p -> p.getStatus() == com.project.hanspoon.common.payment.constant.PaymentStatus.PAID)
+                    .mapToLong(p -> p.getTotalPrice() != null ? p.getTotalPrice() : 0)
+                    .sum();
+
+            long yesterdaySales = paymentRepository.findByPayDateBetween(yesterdayStart, yesterdayEnd).stream()
+                    .filter(p -> p.getStatus() == com.project.hanspoon.common.payment.constant.PaymentStatus.PAID)
+                    .mapToLong(p -> p.getTotalPrice() != null ? p.getTotalPrice() : 0)
+                    .sum();
 
             // 2. 주문 상태
             long paymentCompleted = 0;
@@ -64,21 +73,14 @@ public class AdminDashboardService {
                 todayReservations = reservationRepository.countBySessionStartAtBetweenAndStatusIn(
                         todayStart, todayEnd,
                         List.of(ReservationStatus.PAID, ReservationStatus.COMPLETED,
-                                ReservationStatus.CANCELED));
+                                ReservationStatus.CANCELED, ReservationStatus.CANCEL_REQUESTED));
 
-                // Current reservation domain has no explicit CANCEL_REQUESTED state.
-                pendingCancel = 0;
+                pendingCancel = reservationRepository.countByStatus(ReservationStatus.CANCEL_REQUESTED);
 
                 // 전체 취소 건수 (예약 취소 + 기간 만료)
                 totalCanceled = reservationRepository.countByStatus(ReservationStatus.CANCELED)
                         + reservationRepository.countByStatus(ReservationStatus.EXPIRED);
-
-                // 오늘 매출 계산 (오늘 PAID 상태가 된 예약들의 금액 합계 - 임시)
-                todaySales = reservationRepository.findByStatus(ReservationStatus.PAID).stream()
-                        .filter(r -> r.getCreatedAt().isAfter(todayStart) && r.getCreatedAt().isBefore(todayEnd))
-                        .mapToLong(r -> r.getSession() != null ? r.getSession().getPrice() : 0)
-                        .sum();
-
+                // reservationRepository를 통한 매출 계산 로직은 paymentRepository 합산 방식으로 통합되었으므로 제거
             } catch (Exception e) {
                 System.err.println("❌ Error fetching reservation counts: " + e.getMessage());
                 e.printStackTrace();

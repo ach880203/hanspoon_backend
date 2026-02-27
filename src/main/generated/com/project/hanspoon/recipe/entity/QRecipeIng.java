@@ -24,13 +24,27 @@ public class QRecipeIng extends EntityPathBase<RecipeIng> {
 
     public final StringPath answer = createString("answer");
 
+    public final DateTimePath<java.time.LocalDateTime> answeredAt = createDateTime("answeredAt", java.time.LocalDateTime.class);
+
+    public final NumberPath<Long> answeredByUserId = createNumber("answeredByUserId", Long.class);
+
+    public final StringPath category = createString("category");
+
     public final StringPath content = createString("content");
+
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final BooleanPath isAnswered = createBoolean("isAnswered");
 
     public final QRecipe recipe;
+
+    public final BooleanPath secret = createBoolean("secret");
+
+    public final StringPath title = createString("title");
+
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public final com.project.hanspoon.common.user.entity.QUser user;
 

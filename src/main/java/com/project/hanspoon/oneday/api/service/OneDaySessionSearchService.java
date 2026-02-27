@@ -28,11 +28,12 @@ public class OneDaySessionSearchService {
             com.project.hanspoon.oneday.clazz.domain.RunType runType,
             com.project.hanspoon.oneday.clazz.domain.SessionSlot slot,
             Long instructorId,
+            String instructorName,
             LocalDateTime dateFrom,
             LocalDateTime dateTo,
             Boolean onlyAvailable,
-            String sort
-    ) {
+            String keyword,
+            String sort) {
         // Specification.where(...)는 최신 Spring Data JPA에서 제거 예정이라
         // 기본 스펙(fetchAll)에서 시작해 and(...)로 조건을 누적한다.
         Specification<ClassSession> spec = ClassSessionSpecs.fetchAll()
@@ -41,8 +42,10 @@ public class OneDaySessionSearchService {
                 .and(ClassSessionSpecs.runType(runType))
                 .and(ClassSessionSpecs.slot(slot))
                 .and(ClassSessionSpecs.instructorId(instructorId))
+                .and(ClassSessionSpecs.instructorNameContains(instructorName))
                 .and(ClassSessionSpecs.startAtFrom(dateFrom))
                 .and(ClassSessionSpecs.startAtTo(dateTo))
+                .and(ClassSessionSpecs.titleContains(keyword))
                 .and(ClassSessionSpecs.onlyAvailable(onlyAvailable));
 
         Sort s = toSort(sort);
@@ -53,7 +56,8 @@ public class OneDaySessionSearchService {
     }
 
     private Sort toSort(String sort) {
-        if (sort == null || sort.isBlank()) return Sort.by(Sort.Direction.ASC, "startAt");
+        if (sort == null || sort.isBlank())
+            return Sort.by(Sort.Direction.ASC, "startAt");
         return switch (sort) {
             case "startAtAsc" -> Sort.by(Sort.Direction.ASC, "startAt");
             case "priceAsc" -> Sort.by(Sort.Direction.ASC, "price").and(Sort.by("startAt"));

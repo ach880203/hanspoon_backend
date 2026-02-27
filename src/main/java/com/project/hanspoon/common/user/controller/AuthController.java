@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.user.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.security.CustomUserDetails;
 import com.project.hanspoon.common.security.jwt.JwtTokenProvider;
 import com.project.hanspoon.common.user.dto.LoginRequest;
@@ -64,10 +64,11 @@ public class AuthController {
                     .userId(user.getUserId())
                     .email(user.getEmail())
                     .userName(user.getUserName())
+                    .spoonBalance(user.getSpoonBalance()) // ✅ 추가
                     .role(resolveRole(user, userDetails))
                     .build();
 
-            return ResponseEntity.ok(ApiResponse.success("로그인에 성공했습니다.", response));
+            return ResponseEntity.ok(ApiResponse.ok("로그인에 성공했습니다.", response));
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("이메일 또는 비밀번호가 올바르지 않습니다."));
         } catch (LockedException e) {
@@ -85,7 +86,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> register(@Valid @RequestBody UserRegisterDto dto) {
         try {
             userService.register(dto);
-            return ResponseEntity.ok(ApiResponse.success("회원가입에 성공했습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("회원가입에 성공했습니다."));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -95,7 +96,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Boolean>> checkEmail(@RequestParam String email) {
         boolean available = !userService.isEmailExists(email);
         String message = available ? "사용 가능한 이메일입니다." : "이미 사용 중인 이메일입니다.";
-        return ResponseEntity.ok(ApiResponse.success(message, available));
+        return ResponseEntity.ok(ApiResponse.ok(message, available));
     }
 
     @GetMapping("/me")
@@ -110,10 +111,11 @@ public class AuthController {
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .userName(user.getUserName())
+                .spoonBalance(user.getSpoonBalance()) // ✅ 추가
                 .role(resolveRole(user, userDetails))
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @GetMapping("/oauth2/success")
@@ -124,8 +126,8 @@ public class AuthController {
         }
 
         User user = userDetails.getUser();
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                userDetails.getAuthorities());
         String token = jwtTokenProvider.createToken(authentication);
 
         LoginResponse response = LoginResponse.builder()
@@ -134,10 +136,11 @@ public class AuthController {
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .userName(user.getUserName())
+                .spoonBalance(user.getSpoonBalance()) // ✅ 추가
                 .role(resolveRole(user, userDetails))
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success("소셜 로그인에 성공했습니다.", response));
+        return ResponseEntity.ok(ApiResponse.ok("소셜 로그인에 성공했습니다.", response));
     }
 
     @GetMapping("/oauth2/failure")
@@ -149,7 +152,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<String>> findEmail(@RequestBody FindIdRequest request) {
         try {
             String email = userService.findEmail(request.getUserName(), request.getPhone());
-            return ResponseEntity.ok(ApiResponse.success("이메일 찾기에 성공했습니다.", email));
+            return ResponseEntity.ok(ApiResponse.ok("이메일 찾기에 성공했습니다.", email));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -160,7 +163,7 @@ public class AuthController {
         try {
             String tempPassword = userService.resetPassword(
                     request.getEmail(), request.getUserName(), request.getPhone());
-            return ResponseEntity.ok(ApiResponse.success("비밀번호 재설정에 성공했습니다.", tempPassword));
+            return ResponseEntity.ok(ApiResponse.ok("비밀번호 재설정에 성공했습니다.", tempPassword));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

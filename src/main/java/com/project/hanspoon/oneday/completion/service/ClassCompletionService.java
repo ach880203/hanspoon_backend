@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class ClassCompletionService {
+    private static final int COMPLETION_COUPON_VALID_MONTHS = 6;
 
     private final ClassReservationRepository reservationRepository;
     private final ClassCouponRepository couponRepository;
@@ -42,7 +43,13 @@ public class ClassCompletionService {
             // reservationId로 중복 발급 방지(유니크 + exists로 2중 안전)
             if (userCouponRepository.existsByReservationId(r.getId())) continue;
 
-            var issued = ClassUserCoupon.issue(r.getUser().getUserId(), coupon, r.getId(), now);
+            var issued = ClassUserCoupon.issueForMonths(
+                    r.getUser().getUserId(),
+                    coupon,
+                    r.getId(),
+                    now,
+                    COMPLETION_COUPON_VALID_MONTHS
+            );
             userCouponRepository.save(issued);
         }
 

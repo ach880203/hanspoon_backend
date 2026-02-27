@@ -1,6 +1,6 @@
 package com.project.hanspoon.common.notice.controller;
 
-import com.project.hanspoon.common.dto.ApiResponse;
+import com.project.hanspoon.common.response.ApiResponse;
 import com.project.hanspoon.common.notice.dto.NoticeDto;
 import com.project.hanspoon.common.dto.PageResponse;
 import com.project.hanspoon.common.notice.service.NoticeService;
@@ -32,7 +32,7 @@ public class AdminNoticeController {
     public ResponseEntity<ApiResponse<PageResponse<NoticeDto>>> list(
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<NoticeDto> notices = noticeService.getNoticeList(pageable);
-        return ResponseEntity.ok(ApiResponse.success(PageResponse.of(notices)));
+        return ResponseEntity.ok(ApiResponse.ok(PageResponse.of(notices)));
     }
 
     /**
@@ -41,7 +41,7 @@ public class AdminNoticeController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<NoticeDto>> get(@PathVariable("id") Long noticeId) {
         try {
-            return ResponseEntity.ok(ApiResponse.success(noticeService.getNotice(noticeId)));
+            return ResponseEntity.ok(ApiResponse.ok(noticeService.getNotice(noticeId)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("공지사항을 찾을 수 없습니다."));
         }
@@ -53,7 +53,7 @@ public class AdminNoticeController {
     @PostMapping
     public ResponseEntity<ApiResponse<NoticeDto>> create(@Valid @RequestBody NoticeDto dto) {
         try {
-            return ResponseEntity.ok(ApiResponse.success("공지사항이 등록되었습니다.", noticeService.createNotice(dto)));
+            return ResponseEntity.ok(ApiResponse.ok("공지사항이 등록되었습니다.", noticeService.createNotice(dto)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("등록에 실패했습니다."));
         }
@@ -66,7 +66,7 @@ public class AdminNoticeController {
     public ResponseEntity<ApiResponse<NoticeDto>> update(@PathVariable("id") Long noticeId,
             @Valid @RequestBody NoticeDto dto) {
         try {
-            return ResponseEntity.ok(ApiResponse.success("공지사항이 수정되었습니다.", noticeService.updateNotice(noticeId, dto)));
+            return ResponseEntity.ok(ApiResponse.ok("공지사항이 수정되었습니다.", noticeService.updateNotice(noticeId, dto)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("수정에 실패했습니다."));
         }
@@ -79,7 +79,7 @@ public class AdminNoticeController {
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") Long noticeId) {
         try {
             noticeService.deleteNotice(noticeId);
-            return ResponseEntity.ok(ApiResponse.success("공지사항이 삭제되었습니다."));
+            return ResponseEntity.ok(ApiResponse.ok("공지사항이 삭제되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("삭제에 실패했습니다."));
         }

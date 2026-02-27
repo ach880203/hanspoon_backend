@@ -26,6 +26,8 @@ public class QInstructor extends EntityPathBase<Instructor> {
 
     public final StringPath bio = createString("bio");
 
+    public final StringPath career = createString("career");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
@@ -34,6 +36,10 @@ public class QInstructor extends EntityPathBase<Instructor> {
     public final NumberPath<Long> legacyMemberId = createNumber("legacyMemberId", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> legacyUpdatedAt = createDateTime("legacyUpdatedAt", java.time.LocalDateTime.class);
+
+    public final StringPath profileImageData = createString("profileImageData");
+
+    public final StringPath specialty = createString("specialty");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

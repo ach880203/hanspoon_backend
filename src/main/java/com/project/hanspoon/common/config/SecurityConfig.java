@@ -58,7 +58,8 @@ public class SecurityConfig {
                                                 // 인증/인가 없이 접근 가능한 엔드포인트
                                                 .requestMatchers("/api/auth/**").permitAll()
                                                 .requestMatchers("/api/health", "/api/info").permitAll()
-                                                .requestMatchers(HttpMethod.GET, "/api/notice/**", "/api/faq/**")
+                                                .requestMatchers(HttpMethod.GET, "/api/notice/**", "/api/faq/**",
+                                                                "/api/events", "/api/events/**")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/api/products",
@@ -74,7 +75,9 @@ public class SecurityConfig {
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/api/recipe/list",
-                                                                "/api/recipe/detail/*")
+                                                                "/api/recipe/detail/*",
+                                                                "/api/recipe/reviews/recipes/*",
+                                                                "/api/recipe/inquiries/recipes/*")
                                                 .permitAll()
 
                                                 // 관리자 전용 API
@@ -105,7 +108,7 @@ public class SecurityConfig {
                                                         response.setContentType("application/json;charset=UTF-8");
                                                         response.setStatus(401);
                                                         response.getWriter().write(
-                                                                        "{\"success\":false,\"message\":\"인증이 필요합니다.\"}");
+                                                                        "{\"success\":false,\"message\":\"로그인이 필요합니다.\"}");
                                                 })
                                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                                                         response.setContentType("application/json;charset=UTF-8");

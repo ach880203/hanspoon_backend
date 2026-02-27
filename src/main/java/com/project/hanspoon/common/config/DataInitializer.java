@@ -21,13 +21,18 @@ import java.time.LocalDateTime;
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
 
+    //사용자 조회/저장
     private final UserRepository userRepository;
+    //쿠폰 마스터 조회/저장
     private final ClassCouponRepository couponRepository;
+    //사용자 쿠폰 발급 관리
     private final ClassUserCouponRepository userCouponRepository;
+    //비밀번호 암호화
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
+        //관리자 계정 생성 or 업데이트
         User admin = userRepository.findByEmail("admin@example.com")
                 .map(existingAdmin -> {
                     existingAdmin.setRole("ROLE_ADMIN");

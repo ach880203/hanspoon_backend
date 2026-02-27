@@ -60,6 +60,15 @@ public class ClassUserCoupon extends BaseTimeEntity {
                 now.plusDays(coupon.getValidDays()));
     }
 
+    public static ClassUserCoupon issueForMonths(Long userId, ClassCoupon coupon, Long reservationId, LocalDateTime now, int months) {
+        return new ClassUserCoupon(
+                userId,
+                coupon,
+                reservationId,
+                now,
+                now.plusMonths(months));
+    }
+
     public boolean isUsable(LocalDateTime now) {
         return usedAt == null && expiresAt.isAfter(now);
     }

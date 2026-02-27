@@ -11,6 +11,8 @@ public interface InqProductRepository extends JpaRepository<InqProduct, Long> {
 
     Page<InqProduct> findByProduct_IdOrderByIdDesc(Long productId, Pageable pageable);
 
+    Page<InqProduct> findAllByOrderByIdDesc(Pageable pageable);
+
     Page<InqProduct> findByUser_UserIdOrderByIdDesc(Long userId, Pageable pageable);
 
     Optional<InqProduct> findByIdAndUser_UserId(Long inqId, Long userId);

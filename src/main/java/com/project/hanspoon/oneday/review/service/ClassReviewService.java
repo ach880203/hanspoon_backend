@@ -33,7 +33,6 @@ public class ClassReviewService {
     public ClassReviewResponse create(Long userId, ClassReviewCreateRequest req) {
         validateCreateInput(userId, req);
 
-        // 동일 예약에 대한 리뷰는 한 건만 허용합니다.
         if (reviewRepository.existsByReservationIdAndDelFlagFalse(req.reservationId())) {
             throw new BusinessException("이미 리뷰가 작성된 예약입니다.");
         }
@@ -45,7 +44,7 @@ public class ClassReviewService {
             throw new BusinessException("본인 예약만 리뷰를 작성할 수 있습니다.");
         }
         if (reservation.getStatus() != ReservationStatus.COMPLETED) {
-            throw new BusinessException("수강 완료 상태인 예약만 리뷰를 작성할 수 있습니다.");
+            throw new BusinessException("수업 완료 상태의 예약만 리뷰를 작성할 수 있습니다.");
         }
 
         var classProduct = reservation.getSession().getClassProduct();
@@ -57,13 +56,16 @@ public class ClassReviewService {
         return toResponse(saved, reviewerName, null, false);
     }
 
-    // 리뷰 답글은 관리자만 등록할 수 있습니다.
-    public ClassReviewResponse answer(Long actorUserId, boolean isAdmin, Long reviewId, ClassReviewAnswerRequest req) {
+    // 리뷰 답글은 관리자 또는 해당 클래스 강사만 작성할 수 있습니다.
+    public ClassReviewResponse answer(
+            Long actorUserId,
+            boolean isAdmin,
+            boolean isInstructor,
+            Long reviewId,
+            ClassReviewAnswerRequest req
+    ) {
         if (actorUserId == null || actorUserId <= 0) {
             throw new BusinessException("로그인 정보가 올바르지 않습니다.");
-        }
-        if (!isAdmin) {
-            throw new BusinessException("리뷰 답글은 관리자만 작성할 수 있습니다.");
         }
         if (reviewId == null || reviewId <= 0) {
             throw new BusinessException("리뷰 ID가 올바르지 않습니다.");
@@ -74,6 +76,17 @@ public class ClassReviewService {
 
         ClassReview review = reviewRepository.findByIdAndDelFlagFalse(reviewId)
                 .orElseThrow(() -> new BusinessException("리뷰를 찾을 수 없습니다."));
+
+        Long instructorUserId = review.getClassProduct() != null
+                && review.getClassProduct().getInstructor() != null
+                && review.getClassProduct().getInstructor().getUser() != null
+                ? review.getClassProduct().getInstructor().getUser().getUserId()
+                : null;
+
+        boolean ownerInstructor = isInstructor && instructorUserId != null && instructorUserId.equals(actorUserId);
+        if (!isAdmin && !ownerInstructor) {
+            throw new BusinessException("리뷰 답글은 관리자 또는 해당 클래스 강사만 작성할 수 있습니다.");
+        }
 
         String answer = req.answerContent().trim();
         review.answer(answer, actorUserId, LocalDateTime.now(KST_ZONE));
@@ -106,10 +119,14 @@ public class ClassReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ClassReviewResponse> listByClass(Long classId, Long viewerUserId, boolean viewerIsAdmin) {
+    public List<ClassReviewResponse> listByClass(
+            Long classId,
+            Long viewerUserId,
+            boolean viewerIsAdmin,
+            boolean viewerIsInstructor
+    ) {
         List<ClassReview> reviews = reviewRepository.findAllByClassProduct_IdAndDelFlagFalseOrderByCreatedAtDesc(classId);
 
-        // 작성자명/답글작성자명을 한 번에 가져오기 위해 사용자 ID를 모아 조회합니다.
         List<Long> userIds = reviews.stream()
                 .flatMap(rv -> java.util.stream.Stream.of(rv.getUserId(), rv.getAnsweredByUserId()))
                 .filter(id -> id != null && id > 0)
@@ -125,7 +142,20 @@ public class ClassReviewService {
                     String answeredByName = rv.getAnsweredByUserId() == null
                             ? null
                             : nameByUserId.getOrDefault(rv.getAnsweredByUserId(), "관리자");
-                    boolean canAnswer = viewerIsAdmin;
+
+                    Long instructorUserId = rv.getClassProduct() != null
+                            && rv.getClassProduct().getInstructor() != null
+                            && rv.getClassProduct().getInstructor().getUser() != null
+                            ? rv.getClassProduct().getInstructor().getUser().getUserId()
+                            : null;
+
+                    boolean canAnswer = viewerIsAdmin || (
+                            viewerIsInstructor
+                                    && viewerUserId != null
+                                    && instructorUserId != null
+                                    && instructorUserId.equals(viewerUserId)
+                    );
+
                     return toResponse(rv, reviewerName, answeredByName, canAnswer);
                 })
                 .toList();
@@ -133,7 +163,7 @@ public class ClassReviewService {
 
     /**
      * 로그인 사용자가 작성한 원데이 리뷰 목록을 조회합니다.
-     * 마이페이지 통합 리뷰 화면에서 source=ONEDAY 항목으로 사용합니다.
+     * 마이페이지 통합 "내 리뷰" 탭에서 source=ONEDAY 항목으로 사용합니다.
      */
     @Transactional(readOnly = true)
     public List<ClassReviewResponse> listMy(Long userId, boolean viewerIsAdmin) {
@@ -150,10 +180,10 @@ public class ClassReviewService {
 
         return reviews.stream()
                 .map(rv -> {
-                    String reviewerName = nameByUserId.getOrDefault(rv.getUserId(), "?대쫫 ?놁쓬");
+                    String reviewerName = nameByUserId.getOrDefault(rv.getUserId(), "이름 없음");
                     String answeredByName = rv.getAnsweredByUserId() == null
                             ? null
-                            : nameByUserId.getOrDefault(rv.getAnsweredByUserId(), "愿由ъ옄");
+                            : nameByUserId.getOrDefault(rv.getAnsweredByUserId(), "관리자");
                     boolean canAnswer = viewerIsAdmin;
                     return toResponse(rv, reviewerName, answeredByName, canAnswer);
                 })
@@ -194,7 +224,7 @@ public class ClassReviewService {
             throw new BusinessException("예약 ID가 올바르지 않습니다.");
         }
         if (req.rating() < 1 || req.rating() > 5) {
-            throw new BusinessException("평점은 1~5여야 합니다.");
+            throw new BusinessException("평점은 1~5 사이여야 합니다.");
         }
         if (req.content() == null || req.content().isBlank()) {
             throw new BusinessException("리뷰 내용은 필수입니다.");

@@ -28,11 +28,13 @@ public class OneDaySessionSearchController {
             @RequestParam(required = false) RunType runType,
             @RequestParam(required = false) SessionSlot slot,
             @RequestParam(required = false) Long instructorId,
+            @RequestParam(required = false) String instructorName,
             @RequestParam(required = false) Boolean onlyAvailable,
+            @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo
-    ) {
-        return ApiResponse.ok(service.search(level, category, runType, slot, instructorId, dateFrom, dateTo, onlyAvailable, sort));
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo) {
+        return ApiResponse.ok(service.search(level, category, runType, slot, instructorId, instructorName, dateFrom,
+                dateTo, onlyAvailable, keyword, sort));
     }
 }

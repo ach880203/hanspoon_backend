@@ -17,11 +17,21 @@ public record ClassDetailResponse(
         RunType runType,
         RecipeCategory category,
         Long instructorId,
-        String instructorBio
+        String instructorName,
+        String instructorBio,
+        String instructorSpecialty,
+        String instructorCareer,
+        String instructorProfileImageData
 ) {
     public static ClassDetailResponse from(ClassProduct p) {
         Long instructorId = (p.getInstructor() != null) ? p.getInstructor().getId() : null;
+        String instructorName = (p.getInstructor() != null && p.getInstructor().getUser() != null)
+                ? p.getInstructor().getUser().getUserName()
+                : null;
         String instructorBio = (p.getInstructor() != null) ? p.getInstructor().getBio() : null;
+        String instructorSpecialty = (p.getInstructor() != null) ? p.getInstructor().getSpecialty() : null;
+        String instructorCareer = (p.getInstructor() != null) ? p.getInstructor().getCareer() : null;
+        String instructorProfileImageData = (p.getInstructor() != null) ? p.getInstructor().getProfileImageData() : null;
 
         return new ClassDetailResponse(
                 p.getId(),
@@ -34,7 +44,11 @@ public record ClassDetailResponse(
                 p.getRunType(),
                 p.getCategory(),
                 instructorId,
-                instructorBio
+                instructorName,
+                instructorBio,
+                instructorSpecialty,
+                instructorCareer,
+                instructorProfileImageData
         );
     }
 }

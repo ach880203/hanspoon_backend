@@ -51,7 +51,11 @@ public class ClassReservation extends BaseTimeEntity {
     private LocalDateTime holdExpiredAt;
 
     private LocalDateTime paidAt;
+    private LocalDateTime cancelRequestedAt;
     private LocalDateTime canceledAt;
+    @Column(length = 500)
+    private String cancelReason;
+    private Long linkedPayId;
 
     @Builder
     private ClassReservation(ClassSession session, User user,
@@ -84,9 +88,23 @@ public class ClassReservation extends BaseTimeEntity {
     public  void markPaid(LocalDateTime now){
         this.status = ReservationStatus.PAID;
         this.paidAt = now;
+        this.cancelRequestedAt = null;
+        this.cancelReason = null;
     }
 
     private LocalDateTime completedAt;
+
+    public void markCancelRequested(LocalDateTime now, String reason) {
+        this.status = ReservationStatus.CANCEL_REQUESTED;
+        this.cancelRequestedAt = now;
+        this.cancelReason = reason;
+    }
+
+    public void rejectCancelRequest() {
+        this.status = ReservationStatus.PAID;
+        this.cancelRequestedAt = null;
+        this.cancelReason = null;
+    }
 
     public void markCanceled(LocalDateTime now){
         this.status = ReservationStatus.CANCELED;
@@ -105,6 +123,10 @@ public class ClassReservation extends BaseTimeEntity {
 
     public  LocalDateTime getCompletedAt() {
         return  completedAt;
+    }
+
+    public void linkPayment(Long payId) {
+        this.linkedPayId = payId;
     }
 
 }
