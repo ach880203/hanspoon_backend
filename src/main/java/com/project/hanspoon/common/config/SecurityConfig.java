@@ -58,7 +58,8 @@ public class SecurityConfig {
                                                 // 인증/인가 없이 접근 가능한 엔드포인트
                                                 .requestMatchers("/api/auth/**").permitAll()
                                                 .requestMatchers("/api/health", "/api/info").permitAll()
-                                                .requestMatchers(HttpMethod.GET, "/api/notice/**", "/api/faq/**")
+                                                .requestMatchers(HttpMethod.GET, "/api/notice/**", "/api/faq/**",
+                                                                "/api/events", "/api/events/**")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/api/products",
