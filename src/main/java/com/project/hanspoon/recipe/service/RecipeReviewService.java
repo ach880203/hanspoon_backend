@@ -156,25 +156,24 @@ public class RecipeReviewService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<RecipeReviewResponse> listMy(Long userId, boolean isAdmin) {
-        if (userId == null || userId <= 0) {
-            throw new BusinessException("로그인 정보가 필요합니다.");
-        }
-
-        List<RecipeRev> reviews = recipeRevRepository.findAllByUser_UserIdAndDelFlagFalseOrderByIdDesc(userId);
-        Map<Long, String> names = buildNameMap(reviews);
-        boolean canAnswer = isAdmin;
-
-        return reviews.stream()
-                .map(review -> toResponse(
-                        review,
-                        names.getOrDefault(getUserId(review), "이름 없음"),
-                        names.getOrDefault(review.getAnsweredByUserId(), "관리자"),
-                        canAnswer
-                ))
-                .toList();
-    }
+//    @Transactional(readOnly = true)
+//    public List<RecipeReviewResponse> listMy(Long userId, boolean isAdmin) {
+//        if (userId == null || userId <= 0) {
+//            throw new BusinessException("로그인 정보가 필요합니다.");
+//        }
+//
+//        List<RecipeRev> reviews = recipeRevRepository.findAllByUser_UserIdAndDelFlagFalseOrderByIdDesc(userId);
+//        Map<Long, String> names = buildNameMap(reviews);
+//
+//        return reviews.stream()
+//                .map(review -> toResponse(
+//                        review,
+//                        names.getOrDefault(getUserId(review), "이름 없음"),
+//                        names.getOrDefault(review.getAnsweredByUserId(), "관리자"),
+//                        isAdmin
+//                ))
+//                .toList();
+//    }
 
     @Transactional(readOnly = true)
     public List<RecipeReviewResponse> listAllForAdmin(Long adminUserId, boolean isAdmin) {
@@ -245,11 +244,13 @@ public class RecipeReviewService {
     ) {
         Long recipeId = review.getRecipe() != null ? review.getRecipe().getId() : null;
         Long userId = getUserId(review);
+        String recipeTitle = (review.getRecipe() != null) ? review.getRecipe().getTitle() : "정보 없음";
         return new RecipeReviewResponse(
                 review.getId(),
                 recipeId,
                 userId,
                 reviewerName,
+                recipeTitle,
                 review.getRating(),
                 review.getContent(),
                 review.getCreatedAt(),
