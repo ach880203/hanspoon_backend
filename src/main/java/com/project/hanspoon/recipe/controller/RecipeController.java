@@ -23,8 +23,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -93,7 +91,7 @@ public class RecipeController {
             @RequestParam(value = "category", required = false) Category category,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "userId", required = false) Long userId,
-            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category, userId);
 
@@ -229,7 +227,7 @@ public class RecipeController {
         recipeService.removeWish(customUserDetails.getEmail(), id);
 
         return ResponseEntity.ok(ApiResponse.ok(null,"찜 목록에서 삭제되었습니다"));
-    };
+    }
 
 
     /**
@@ -271,7 +269,6 @@ public class RecipeController {
             ));
 
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.internalServerError().body("추천 처리 중 오류가 발생했습니다.");
         }
     }
