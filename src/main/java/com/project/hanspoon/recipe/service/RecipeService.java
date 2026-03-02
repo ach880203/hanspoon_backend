@@ -59,6 +59,7 @@ public class RecipeService {
             case "작은술" -> amount * 5;
             case "컵" -> amount * 200;
             case "근" -> amount * 600;
+            case "꼬집" -> amount *0.1;
             case "g" -> amount ;
             default -> amount; // 정의되지 않은 단위는 일단 그대로 반환
         };
@@ -196,33 +197,41 @@ public class RecipeService {
      */
 
     @Transactional(readOnly = true)
-    public Page<RecipeListDto> getRecipeListDto(String keyword, Pageable pageable, Category category) {
+    public Page<RecipeListDto> getRecipeListDto(
+            String keyword, Pageable pageable,
+            Category category, Long userId) { // 🚩 1. 파라미터에 userId 추가 (이제 4개!)
+
         String normalizedkeyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword.trim();
-        log.info("DEBUG: 카테고리=" + category + ", 키워드=[ " + normalizedkeyword + "]");
 
         Page<Recipe> recipePage;
 
-        if(category == null) {
-            if (normalizedkeyword.isEmpty()) {
-                recipePage = recipeRepository.findByDeletedFalse(pageable);
-            } else{
-                recipePage = recipeRepository.findByTitleContainingAndDeletedFalse
-                        (normalizedkeyword, pageable);
+        // 🚩 2. userId가 넘어온 경우 (내 레시피 목록 조회 시)
+        if (userId != null) {
+            // Repository에 findByUserIdAndDeletedFalse 같은 메서드가 필요합니다.
+            recipePage = recipeRepository.findByUser_UserIdAndDeletedFalse(userId, pageable);
+        }
+        // 🚩 3. 기존 로직 (전체 목록 조회 시)
+        else {
+            if(category == null) {
+                if (normalizedkeyword.isEmpty()) {
+                    recipePage = recipeRepository.findByDeletedFalse(pageable);
+                } else {
+                    recipePage = recipeRepository.findByTitleContainingAndDeletedFalse(normalizedkeyword, pageable);
+                }
+            } else {
+                recipePage = recipeRepository.findByCategoryAndTitleContainingAndDeletedFalse(category, normalizedkeyword, pageable);
             }
-        } else {
-            recipePage = recipeRepository.findByCategoryAndTitleContainingAndDeletedFalse
-                    (category, normalizedkeyword, pageable);
         }
 
-        log.info("DEBUG: DB 조회 결과 건수=" + recipePage.getContent().size());
-
-        // 2. 위에서 가져온 '필터링된 결과물'을 DTO로 변환만 하는 거예요.
         return recipePage.map(recipe -> RecipeListDto.builder()
                 .id(recipe.getId())
                 .title(recipe.getTitle())
                 .recipeImg(recipe.getRecipeImg())
                 .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
-                .reviewCount(recipe.getRecipeRevs().size()) // 이제 에러 안 남!
+                .reviewCount(recipe.getRecipeRevs().size())
+                .recommendCount(recipe.getRecommendCount())
+                .username(recipe.getUser().getUserName())
+                .userId(recipe.getUser().getUserId()) // 🚩 DTO에도 userId를 담아주면 프론트가 편해요!
                 .build());
     }
 
@@ -232,8 +241,8 @@ public class RecipeService {
      * 변환 책임을 서비스로 이동했다.
      */
     @Transactional(readOnly = true)
-    public Page<RecipeListDto> getRecipeListForView(String keyword, Pageable pageable, Category category) {
-        return getRecipeListDto(keyword, pageable, category);
+    public Page<RecipeListDto> getRecipeListForView(String keyword, Pageable pageable, Category category, Long userId) {
+        return getRecipeListDto(keyword, pageable, category, userId);
     }
 
     @Transactional
@@ -407,6 +416,7 @@ public class RecipeService {
                 .title(recipe.getTitle())
                 .recipeImg(recipe.getRecipeImg())
                 .category(String.valueOf(recipe.getCategory()))
+                .username(recipe.getUser().getUserName())
                 .build()).toList();
     }
 
@@ -478,13 +488,9 @@ public class RecipeService {
             // 🚩 2. 포인트 지급 (레시피를 올린 유저에게만!)
             User author = recipe.getUser();
             if (author != null) {
-                // 본인이 본인 레시피를 추천하는 걸 막지 않았다면 본인에게 갈 것이고,
-                // 로직상 막았다면 타인이 추천했을 때 작성자에게만 스푼이 갑니다.
                 author.addSpoon(2); // 작성자에게 2스푼 (원하시는 수량으로 조절하세요!)
                 log.info("레시피 작성자 {}에게 스푼 지급 완료", author.getUserName());
             }
-
-            // 🚩 추천 누른 유저(user)에게 주던 spoon 로직은 삭제했습니다.
 
             // 3. 레시피 자체의 추천수 증가
             recipe.incrementRecommendCount();
@@ -494,8 +500,16 @@ public class RecipeService {
             recommendationRepository.delete(existing.get());
             recipe.decrementRecommendCount();
 
-            // (선택사항) 추천 취소 시 지급했던 스푼을 회수할지 결정해야 합니다.
-            // 보통은 복잡해지므로 지급만 하고 취소 시 회수는 안 하는 경우가 많아요!
         }
+    }
+
+    @Transactional
+    public void permanentDelete(Long id) {
+        // 1. 레시피가 존재하는지 먼저 확인
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 레시피를 찾을 수 없습니다."));
+
+        // 2. DB에서 물리적으로 삭제 (DELETE 쿼리 실행)
+        recipeRepository.delete(recipe);
     }
 }

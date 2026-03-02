@@ -28,6 +28,8 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final NumberPath<Long> cartId = createNumber("cartId", Long.class);
 
+    public final DateTimePath<java.time.LocalDateTime> confirmedAt = createDateTime("confirmedAt", java.time.LocalDateTime.class);
+
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final DateTimePath<java.time.LocalDateTime> deliveredAt = createDateTime("deliveredAt", java.time.LocalDateTime.class);
@@ -51,6 +53,8 @@ public class QOrder extends EntityPathBase<Order> {
     public final EnumPath<com.project.hanspoon.shop.constant.OrderStatus> status = createEnum("status", com.project.hanspoon.shop.constant.OrderStatus.class);
 
     public final NumberPath<Integer> totalPrice = createNumber("totalPrice", Integer.class);
+
+    public final StringPath trackingNumber = createString("trackingNumber");
 
     public final com.project.hanspoon.common.user.entity.QUser user;
 

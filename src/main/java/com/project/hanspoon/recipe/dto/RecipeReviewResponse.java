@@ -8,6 +8,7 @@ public record RecipeReviewResponse(
         Long recipeId,
         Long userId,
         String reviewerName,
+        String recipeTitle,
         int rating,
         String content,
         LocalDateTime createdAt,

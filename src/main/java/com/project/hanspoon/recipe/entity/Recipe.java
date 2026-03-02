@@ -90,6 +90,9 @@ public class Recipe { //레시피 메인
     private List<RecipeIng> recipeIngs  =
             new ArrayList<>();
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeRecommendation> recommendations;
+
     @JsonIgnore
     @SuppressWarnings("unused")
     public List<RecipeIngredient> getAllIngredients() {

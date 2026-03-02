@@ -173,14 +173,13 @@ public class RecipeInquiryService {
 
         List<RecipeIng> inquiries = recipeIngRepository.findAllByUser_UserIdOrderByIdDesc(userId);
         Map<Long, String> names = buildNameMap(inquiries);
-        boolean canAnswer = isAdmin;
 
         return inquiries.stream()
                 .map(inquiry -> toResponse(
                         inquiry,
                         names.getOrDefault(getUserId(inquiry), "이름 없음"),
                         true,
-                        canAnswer
+                        isAdmin
                 ))
                 .toList();
     }
@@ -295,6 +294,7 @@ public class RecipeInquiryService {
                 recipeId,
                 userId,
                 writerName,
+                inquiry.getRecipe().getTitle(),
                 safeText(inquiry.getCategory(), "일반"),
                 title,
                 content,

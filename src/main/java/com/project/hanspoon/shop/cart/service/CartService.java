@@ -239,6 +239,7 @@ public class CartService {
                     .productId(p.getId())
                     .name(p.getName())
                     .price(p.getPrice())
+                    .stock(p.getStock())
                     .quantity(ci.getQuantity())
                     .lineTotal(lineTotal)
                     .thumbnailUrl(thumbMap.get(p.getId()))

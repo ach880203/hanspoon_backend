@@ -21,6 +21,8 @@ public class OrderResponseDto {
     private LocalDateTime paidAt;
     private LocalDateTime shippedAt;
     private LocalDateTime deliveredAt;
+    private LocalDateTime confirmedAt;
+    private String trackingNumber;
     private LocalDateTime refundedAt;
     private String refundReason;
 
@@ -42,6 +44,8 @@ public class OrderResponseDto {
                 .paidAt(order.getPaidAt())
                 .shippedAt(order.getShippedAt())
                 .deliveredAt(order.getDeliveredAt())
+                .confirmedAt(order.getConfirmedAt())
+                .trackingNumber(order.getTrackingNumber())
                 .refundedAt(order.getRefundedAt())
                 .refundReason(order.getRefundReason())
                 .receiverName(order.getReceiverName())
@@ -54,4 +58,3 @@ public class OrderResponseDto {
                 .build();
     }
 }
-

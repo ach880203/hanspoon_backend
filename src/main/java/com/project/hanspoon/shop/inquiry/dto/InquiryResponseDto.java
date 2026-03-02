@@ -19,6 +19,7 @@ public class InquiryResponseDto {
     private Boolean answeredYn;
 
     private Boolean secret;
+    private Boolean canViewSecret;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -8,6 +8,7 @@ public record RecipeInquiryResponse(
         Long recipeId,
         Long userId,
         String writerName,
+        String recipeTitle,
         String category,
         String title,
         String content,

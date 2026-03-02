@@ -23,5 +23,8 @@ public record ClassUpdateRequest(
         RunType runType,
         RecipeCategory category,
         Long instructorId,
+        String locationAddress,
+        Double locationLat,
+        Double locationLng,
         List<ClassSessionCreateRequest> sessions
 ) {}

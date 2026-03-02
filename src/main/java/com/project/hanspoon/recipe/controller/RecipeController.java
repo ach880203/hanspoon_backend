@@ -23,8 +23,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -92,9 +90,10 @@ public class RecipeController {
     public ResponseEntity<ApiResponse<Page<RecipeListDto>>> getRecipeList(
             @RequestParam(value = "category", required = false) Category category,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @RequestParam(value = "userId", required = false) Long userId,
+            @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category);
+        Page<RecipeListDto> recipeList = recipeService.getRecipeListDto(keyword, pageable, category, userId);
 
         return ResponseEntity.ok(ApiResponse.ok(recipeList));
     }
@@ -161,6 +160,16 @@ public class RecipeController {
         }
     }
 
+    @PostMapping("/hard_delete/{id}")
+    public ResponseEntity<?> hardDeleteRecipe(@PathVariable Long id) {
+        try {
+            recipeService.permanentDelete(id);
+            return ResponseEntity.ok().body("영구 삭제가 완료되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("삭제 중 오류 발생: " + e.getMessage());
+        }
+    }
+
     /**
      * 레시피 찜 등록 API.
      */
@@ -218,7 +227,7 @@ public class RecipeController {
         recipeService.removeWish(customUserDetails.getEmail(), id);
 
         return ResponseEntity.ok(ApiResponse.ok(null,"찜 목록에서 삭제되었습니다"));
-    };
+    }
 
 
     /**
@@ -260,7 +269,6 @@ public class RecipeController {
             ));
 
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.internalServerError().body("추천 처리 중 오류가 발생했습니다.");
         }
     }

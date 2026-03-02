@@ -45,7 +45,7 @@ public class PaymentService {
         int totalPrice = price * quantity;
         Payment payment = createPayment(user, totalPrice);
 
-        PaymentItem paymentItem = PaymentItem.createForProduct(productId, quantity);
+        PaymentItem paymentItem = PaymentItem.createForProduct(productId, null, quantity);
         payment.addPaymentItem(paymentItem);
 
         Payment savedPayment = paymentRepository.save(payment);
@@ -60,7 +60,7 @@ public class PaymentService {
         int totalPrice = price * quantity;
         Payment payment = createPayment(user, totalPrice);
 
-        PaymentItem paymentItem = PaymentItem.createForClass(classId, quantity);
+        PaymentItem paymentItem = PaymentItem.createForClass(classId, null, quantity);
         payment.addPaymentItem(paymentItem);
 
         Payment savedPayment = paymentRepository.save(payment);

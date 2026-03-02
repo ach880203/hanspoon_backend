@@ -101,6 +101,18 @@ public class ClassReview extends BaseTimeEntity {
         this.deletedAt = now;
     }
 
+    public void reactivate(ClassProduct classProduct, Long userId, int rating, String content) {
+        this.classProduct = classProduct;
+        this.userId = userId;
+        this.rating = rating;
+        this.content = content;
+        this.delFlag = false;
+        this.deletedAt = null;
+        this.answerContent = null;
+        this.answeredByUserId = null;
+        this.answeredAt = null;
+    }
+
     // 리뷰 원문 아래로 달리는 관리자 답글(대댓글)을 저장합니다.
     public void answer(String answerContent, Long answeredByUserId, LocalDateTime answeredAt) {
         this.answerContent = answerContent;
@@ -119,3 +131,4 @@ public class ClassReview extends BaseTimeEntity {
         this.legacyUpdatedAt = this.updatedAt;
     }
 }
+

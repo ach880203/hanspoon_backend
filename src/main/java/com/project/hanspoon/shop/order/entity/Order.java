@@ -65,6 +65,12 @@ public class Order {
     private LocalDateTime deliveredAt;
 
     @Column
+    private LocalDateTime confirmedAt;
+
+    @Column(length = 100)
+    private String trackingNumber;
+
+    @Column
     private LocalDateTime refundedAt;
 
     @Column(length = 500)

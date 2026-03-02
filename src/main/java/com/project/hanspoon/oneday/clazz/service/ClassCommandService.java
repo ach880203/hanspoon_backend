@@ -48,6 +48,9 @@ public class ClassCommandService {
                         .level(req.level())
                         .runType(req.runType())
                         .category(req.category())
+                        .locationAddress(trimOrNull(req.locationAddress()))
+                        .locationLat(req.locationLat())
+                        .locationLng(req.locationLng())
                         .instructor(instructor)
                         .build()
         );
@@ -89,6 +92,9 @@ public class ClassCommandService {
                 req.level(),
                 req.runType(),
                 req.category(),
+                trimOrNull(req.locationAddress()),
+                req.locationLat(),
+                req.locationLng(),
                 instructor
         );
 
@@ -159,6 +165,9 @@ public class ClassCommandService {
                 req == null ? null : req.runType(),
                 req == null ? null : req.category(),
                 req == null ? null : req.instructorId(),
+                req == null ? null : req.locationAddress(),
+                req == null ? null : req.locationLat(),
+                req == null ? null : req.locationLng(),
                 req == null ? null : req.sessions()
         );
     }
@@ -174,6 +183,9 @@ public class ClassCommandService {
                 req == null ? null : req.runType(),
                 req == null ? null : req.category(),
                 req == null ? null : req.instructorId(),
+                req == null ? null : req.locationAddress(),
+                req == null ? null : req.locationLat(),
+                req == null ? null : req.locationLng(),
                 req == null ? null : req.sessions()
         );
     }
@@ -188,11 +200,16 @@ public class ClassCommandService {
             com.project.hanspoon.oneday.clazz.domain.RunType runType,
             com.project.hanspoon.oneday.clazz.domain.RecipeCategory category,
             Long instructorId,
+            String locationAddress,
+            Double locationLat,
+            Double locationLng,
             List<ClassSessionCreateRequest> sessions
     ) {
         if (title == null && description == null && detailDescription == null
                 && detailImageData == null && detailImageDataList == null && level == null && runType == null
-                && category == null && instructorId == null && sessions == null) {
+                && category == null && instructorId == null
+                && locationAddress == null && locationLat == null && locationLng == null
+                && sessions == null) {
             throw new BusinessException("요청값이 비어 있습니다.");
         }
 
@@ -232,6 +249,18 @@ public class ClassCommandService {
         if (instructorId == null || instructorId <= 0) {
             throw new BusinessException("강사 ID는 필수입니다.");
         }
+        if (locationAddress != null && locationAddress.trim().length() > 255) {
+            throw new BusinessException("클래스 위치 주소는 최대 255자입니다.");
+        }
+        if ((locationLat == null) != (locationLng == null)) {
+            throw new BusinessException("클래스 위치 좌표는 위도/경도를 함께 입력해 주세요.");
+        }
+        if (locationLat != null && (locationLat < -90 || locationLat > 90)) {
+            throw new BusinessException("위도 값이 유효 범위를 벗어났습니다.");
+        }
+        if (locationLng != null && (locationLng < -180 || locationLng > 180)) {
+            throw new BusinessException("경도 값이 유효 범위를 벗어났습니다.");
+        }
 
         if (sessions == null || sessions.isEmpty()) {
             throw new BusinessException("세션은 최소 1개 이상 등록해야 합니다.");
@@ -268,6 +297,11 @@ public class ClassCommandService {
 
     private String trimOrEmpty(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private String trimOrNull(String value) {
+        String normalized = trimOrEmpty(value);
+        return normalized.isEmpty() ? null : normalized;
     }
 
     private List<String> normalizeDetailImages(String detailImageData, List<String> detailImageDataList) {

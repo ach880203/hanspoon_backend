@@ -14,4 +14,7 @@ public class RecipeListDto {
     private String category;
     private double averageRating;
     private int reviewCount;
+    private int recommendCount;
+    private String username;
+    private Long userId;
 }
