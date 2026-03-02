@@ -18,6 +18,7 @@ import com.project.hanspoon.recipe.repository.IngredientRepository;
 import com.project.hanspoon.recipe.repository.InstructionGroupRepository;
 import com.project.hanspoon.recipe.repository.InstructionRepository;
 import com.project.hanspoon.recipe.repository.RecipeRelationRepository;
+import com.project.hanspoon.recipe.repository.RecommendationRepository;
 import com.project.hanspoon.recipe.repository.RecipeRepository;
 import com.project.hanspoon.recipe.repository.RecipeRevRepository;
 import com.project.hanspoon.recipe.repository.RecipeWishesRepository;
@@ -64,6 +65,8 @@ class RecipeServiceTest {
     private RecipeRevRepository recipeRevRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private RecommendationRepository recommendationRepository;
 
     private RecipeService 서비스생성() {
         return new RecipeService(
@@ -76,7 +79,8 @@ class RecipeServiceTest {
                 recipeParser,
                 recipeWishesRepository,
                 recipeRevRepository,
-                userRepository
+                userRepository,
+                recommendationRepository
         );
     }
 

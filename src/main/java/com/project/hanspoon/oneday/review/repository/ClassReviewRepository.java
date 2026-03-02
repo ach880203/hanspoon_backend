@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface ClassReviewRepository extends JpaRepository<ClassReview, Long> {
     boolean existsByReservationIdAndDelFlagFalse(Long reservationId);
+    Optional<ClassReview> findByReservationId(Long reservationId);
 
     List<ClassReview> findAllByClassProduct_IdAndDelFlagFalseOrderByCreatedAtDesc(Long classId);
     List<ClassReview> findAllByUserIdAndDelFlagFalseOrderByCreatedAtDesc(Long userId);

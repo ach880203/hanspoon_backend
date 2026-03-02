@@ -22,5 +22,8 @@ public record ClassCreateRequest(
         RunType runType,
         RecipeCategory category,
         Long instructorId,
+        String locationAddress,
+        Double locationLat,
+        Double locationLng,
         List<ClassSessionCreateRequest> sessions
 ) {}

@@ -45,6 +45,12 @@ public class QClassProduct extends EntityPathBase<ClassProduct> {
 
     public final EnumPath<com.project.hanspoon.oneday.clazz.domain.Level> level = createEnum("level", com.project.hanspoon.oneday.clazz.domain.Level.class);
 
+    public final StringPath locationAddress = createString("locationAddress");
+
+    public final NumberPath<Double> locationLat = createNumber("locationLat", Double.class);
+
+    public final NumberPath<Double> locationLng = createNumber("locationLng", Double.class);
+
     public final EnumPath<com.project.hanspoon.oneday.clazz.domain.RunType> runType = createEnum("runType", com.project.hanspoon.oneday.clazz.domain.RunType.class);
 
     public final ListPath<ClassSession, QClassSession> session = this.<ClassSession, QClassSession>createList("session", ClassSession.class, QClassSession.class, PathInits.DIRECT2);

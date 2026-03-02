@@ -33,10 +33,6 @@ public class ClassReviewService {
     public ClassReviewResponse create(Long userId, ClassReviewCreateRequest req) {
         validateCreateInput(userId, req);
 
-        if (reviewRepository.existsByReservationIdAndDelFlagFalse(req.reservationId())) {
-            throw new BusinessException("이미 리뷰가 작성된 예약입니다.");
-        }
-
         var reservation = reservationRepository.findById(req.reservationId())
                 .orElseThrow(() -> new BusinessException("예약을 찾을 수 없습니다."));
 
@@ -47,11 +43,22 @@ public class ClassReviewService {
             throw new BusinessException("수업 완료 상태의 예약만 리뷰를 작성할 수 있습니다.");
         }
 
-        var classProduct = reservation.getSession().getClassProduct();
-        ClassReview saved = reviewRepository.save(
-                ClassReview.of(classProduct, userId, req.reservationId(), req.rating(), req.content().trim())
-        );
+        ClassReview existing = reviewRepository.findByReservationId(req.reservationId()).orElse(null);
+        if (existing != null && !existing.isDelFlag()) {
+            throw new BusinessException("이미 리뷰가 작성된 예약입니다.");
+        }
 
+        var classProduct = reservation.getSession().getClassProduct();
+        String trimmedContent = req.content().trim();
+        ClassReview saved;
+        if (existing != null) {
+            existing.reactivate(classProduct, userId, req.rating(), trimmedContent);
+            saved = existing;
+        } else {
+            saved = reviewRepository.save(
+                    ClassReview.of(classProduct, userId, req.reservationId(), req.rating(), trimmedContent)
+            );
+        }
         String reviewerName = reservation.getUser().getUserName();
         return toResponse(saved, reviewerName, null, false);
     }
@@ -231,3 +238,4 @@ public class ClassReviewService {
         }
     }
 }
+

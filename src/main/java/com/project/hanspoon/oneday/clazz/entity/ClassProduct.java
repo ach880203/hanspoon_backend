@@ -54,6 +54,13 @@ public class ClassProduct extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private RecipeCategory category;
 
+    @Column(length = 255)
+    private String locationAddress;
+
+    private Double locationLat;
+
+    private Double locationLng;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "instructor_id", foreignKey =
                     @ForeignKey(name = "fk_class_product_instructor"))
@@ -70,6 +77,7 @@ public class ClassProduct extends BaseTimeEntity {
     @Builder
     public ClassProduct(String title, String description, String detailDescription, String detailImageData, Level level,
                         RunType runType, RecipeCategory category,
+                        String locationAddress, Double locationLat, Double locationLng,
                         Instructor instructor){
         this.title = title;
         this.description = description;
@@ -78,6 +86,9 @@ public class ClassProduct extends BaseTimeEntity {
         this.level = level;
         this.runType = runType;
         this.category = category;
+        this.locationAddress = locationAddress;
+        this.locationLat = locationLat;
+        this.locationLng = locationLng;
         this.instructor = instructor;
 
     }
@@ -90,6 +101,9 @@ public class ClassProduct extends BaseTimeEntity {
             Level level,
             RunType runType,
             RecipeCategory category,
+            String locationAddress,
+            Double locationLat,
+            Double locationLng,
             Instructor instructor
     ) {
         this.title = title;
@@ -99,6 +113,9 @@ public class ClassProduct extends BaseTimeEntity {
         this.level = level;
         this.runType = runType;
         this.category = category;
+        this.locationAddress = locationAddress;
+        this.locationLat = locationLat;
+        this.locationLng = locationLng;
         this.instructor = instructor;
     }
 

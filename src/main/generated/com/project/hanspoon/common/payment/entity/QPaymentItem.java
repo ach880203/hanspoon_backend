@@ -26,6 +26,8 @@ public class QPaymentItem extends EntityPathBase<PaymentItem> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath itemName = createString("itemName");
+
     public final QPayment payment;
 
     public final NumberPath<Long> productId = createNumber("productId", Long.class);
