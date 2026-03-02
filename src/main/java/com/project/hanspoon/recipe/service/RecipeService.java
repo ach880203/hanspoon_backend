@@ -223,16 +223,22 @@ public class RecipeService {
             }
         }
 
-        return recipePage.map(recipe -> RecipeListDto.builder()
-                .id(recipe.getId())
-                .title(recipe.getTitle())
-                .recipeImg(recipe.getRecipeImg())
-                .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
-                .reviewCount(recipe.getRecipeRevs().size())
-                .recommendCount(recipe.getRecommendCount())
-                .username(recipe.getUser().getUserName())
-                .userId(recipe.getUser().getUserId()) // 🚩 DTO에도 userId를 담아주면 프론트가 편해요!
-                .build());
+        return recipePage.map(recipe -> {
+            User author = recipe.getUser();
+            int recommendCount = recipe.getRecommendCount() != null ? recipe.getRecommendCount() : 0;
+            int reviewCount = recipe.getRecipeRevs() != null ? recipe.getRecipeRevs().size() : 0;
+
+            return RecipeListDto.builder()
+                    .id(recipe.getId())
+                    .title(recipe.getTitle())
+                    .recipeImg(recipe.getRecipeImg())
+                    .category(recipe.getCategory() != null ? recipe.getCategory().name() : "ETC")
+                    .reviewCount(reviewCount)
+                    .recommendCount(recommendCount)
+                    .username(author != null ? author.getUserName() : "알 수 없음")
+                    .userId(author != null ? author.getUserId() : null) // 사용자 DTO에도 userId를 내려주면 프론트가 편해짐
+                    .build();
+        });
     }
 
     /**

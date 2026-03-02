@@ -168,7 +168,8 @@ public class ClassCommandService {
                 req == null ? null : req.locationAddress(),
                 req == null ? null : req.locationLat(),
                 req == null ? null : req.locationLng(),
-                req == null ? null : req.sessions()
+                req == null ? null : req.sessions(),
+                false
         );
     }
 
@@ -186,7 +187,8 @@ public class ClassCommandService {
                 req == null ? null : req.locationAddress(),
                 req == null ? null : req.locationLat(),
                 req == null ? null : req.locationLng(),
-                req == null ? null : req.sessions()
+                req == null ? null : req.sessions(),
+                true
         );
     }
 
@@ -203,7 +205,8 @@ public class ClassCommandService {
             String locationAddress,
             Double locationLat,
             Double locationLng,
-            List<ClassSessionCreateRequest> sessions
+            List<ClassSessionCreateRequest> sessions,
+            boolean allowPastSessionStartAt
     ) {
         if (title == null && description == null && detailDescription == null
                 && detailImageData == null && detailImageDataList == null && level == null && runType == null
@@ -280,7 +283,8 @@ public class ClassCommandService {
             if (session.startAt() == null) {
                 throw new BusinessException(prefix + "시작일시는 필수입니다.");
             }
-            if (session.startAt().isBefore(LocalDateTime.now())) {
+            // 수정 화면에서는 기존 과거 회차가 함께 전달될 수 있으므로 등록일 때만 현재 이후 제약을 강제합니다.
+            if (!allowPastSessionStartAt && session.startAt().isBefore(LocalDateTime.now())) {
                 throw new BusinessException(prefix + "시작일시는 현재 시각 이후여야 합니다.");
             }
             if (session.slot() == null) {
