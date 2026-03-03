@@ -12,6 +12,7 @@ import com.project.hanspoon.oneday.clazz.repository.ClassProductRepository;
 import com.project.hanspoon.oneday.clazz.repository.ClassSessionRepository;
 import com.project.hanspoon.oneday.instructor.entity.Instructor;
 import com.project.hanspoon.oneday.instructor.repository.InstructorRepository;
+import com.project.hanspoon.oneday.reservation.repository.ClassReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class ClassCommandService {
     private final ClassProductRepository classProductRepository;
     private final ClassSessionRepository classSessionRepository;
     private final InstructorRepository instructorRepository;
+    private final ClassReservationRepository classReservationRepository;
 
     public ClassCreateResponse createClass(Long actorUserId, boolean isAdmin, ClassCreateRequest req) {
         validateActor(actorUserId, isAdmin);
@@ -77,8 +79,9 @@ public class ClassCommandService {
         ClassProduct target = classProductRepository.findById(classId)
                 .orElseThrow(() -> new BusinessException("클래스를 찾을 수 없습니다. id=" + classId));
 
-        // 예약 데이터가 있는 클래스의 세션/가격을 바꾸면 결제·정산 데이터와 불일치가 생길 수 있어 수정을 막습니다.
-        if (classSessionRepository.existsByClassProductIdAndReservedCountGreaterThan(classId, 0)) {
+        // 예약 상태가 취소/만료여도 예약 레코드는 이력으로 남아 FK가 걸릴 수 있습니다.
+        // 따라서 reservedCount가 아니라 "예약 이력 존재 여부" 기준으로 수정을 차단합니다.
+        if (classReservationRepository.existsBySession_ClassProduct_Id(classId)) {
             throw new BusinessException("예약이 존재하는 클래스는 수정할 수 없습니다.");
         }
 
@@ -109,8 +112,9 @@ public class ClassCommandService {
     public void deleteClass(Long actorUserId, boolean isAdmin, Long classId) {
         validateActor(actorUserId, isAdmin);
 
-        // 이미 예약된 클래스를 삭제하면 사용자 예약 이력이 끊어지므로, 예약 이력이 있으면 삭제를 차단합니다.
-        if (classSessionRepository.existsByClassProductIdAndReservedCountGreaterThan(classId, 0)) {
+        // reservedCount가 0이어도 취소/만료 예약 이력이 남아 있으면 FK 제약으로 세션 삭제가 실패합니다.
+        // DB 오류(500) 대신 비즈니스 메시지(400)를 반환하도록 예약 이력 존재를 먼저 차단합니다.
+        if (classReservationRepository.existsBySession_ClassProduct_Id(classId)) {
             throw new BusinessException("예약이 존재하는 클래스는 삭제할 수 없습니다.");
         }
 

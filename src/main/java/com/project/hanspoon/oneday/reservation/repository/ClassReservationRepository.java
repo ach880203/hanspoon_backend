@@ -17,6 +17,10 @@ import java.util.Optional;
 
 public interface ClassReservationRepository extends JpaRepository<ClassReservation, Long> {
 
+        // 클래스에 연결된 예약 이력(상태 무관)이 1건이라도 있는지 확인합니다.
+        // 삭제/수정 시 FK 제약 위반을 사전에 막고, 사용자에게 의미 있는 안내 메시지를 주기 위해 사용합니다.
+        boolean existsBySession_ClassProduct_Id(Long classProductId);
+
         boolean existsBySession_IdAndUser_UserIdAndStatusIn(
                         Long sessionId,
                         Long userId, Collection<ReservationStatus> statuses);

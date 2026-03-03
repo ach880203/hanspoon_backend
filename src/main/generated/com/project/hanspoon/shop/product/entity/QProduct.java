@@ -21,6 +21,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final EnumPath<com.project.hanspoon.shop.constant.ProductCategory> category = createEnum("category", com.project.hanspoon.shop.constant.ProductCategory.class);
 
+    public final StringPath detailContent = createString("detailContent");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");

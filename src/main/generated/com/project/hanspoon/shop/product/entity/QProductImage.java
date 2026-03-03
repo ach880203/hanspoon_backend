@@ -24,6 +24,8 @@ public class QProductImage extends EntityPathBase<ProductImage> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final EnumPath<ProductImageType> imageType = createEnum("imageType", ProductImageType.class);
+
     public final StringPath imgUrl = createString("imgUrl");
 
     public final StringPath originalName = createString("originalName");
