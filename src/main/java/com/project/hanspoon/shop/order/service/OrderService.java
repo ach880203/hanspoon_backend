@@ -177,15 +177,16 @@ public class OrderService {
         Order order = orderRepository.findWithItemsByIdAndUserIdForUpdate(orderId, userId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "주문이 없습니다. orderId=" + orderId));
 
-        if (order.getStatus() == OrderStatus.CANCELED || order.getStatus() == OrderStatus.REFUNDED) {
+        if (order.getStatus() == OrderStatus.CANCELED
+                || order.getStatus() == OrderStatus.REFUND_REQUESTED
+                || order.getStatus() == OrderStatus.REFUNDED) {
             throw new ResponseStatusException(BAD_REQUEST, "이미 취소/환불된 주문입니다.");
         }
 
-        if (order.getStatus() == OrderStatus.SHIPPED || order.getStatus() == OrderStatus.DELIVERED) {
-            throw new ResponseStatusException(BAD_REQUEST, "배송 시작 이후에는 취소할 수 없습니다.");
-        }
-
-        if (order.getStatus() != OrderStatus.PAID) {
+        if (order.getStatus() != OrderStatus.PAID
+                && order.getStatus() != OrderStatus.SHIPPED
+                && order.getStatus() != OrderStatus.DELIVERED
+                && order.getStatus() != OrderStatus.CONFIRMED) {
             throw new ResponseStatusException(BAD_REQUEST, "취소 가능한 상태가 아닙니다. status=" + order.getStatus());
         }
 
@@ -193,15 +194,7 @@ public class OrderService {
             throw new ResponseStatusException(BAD_REQUEST, "환불 사유(reason)는 필수입니다.");
         }
 
-        for (OrderItem item : order.getItems()) {
-            Product product = productRepository.findByIdForUpdate(item.getProductId())
-                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
-                            "주문 상품이 삭제되었거나 존재하지 않습니다. productId=" + item.getProductId()));
-            product.setStock(product.getStock() + item.getQuantity());
-        }
-
-        order.setStatus(OrderStatus.REFUNDED);
-        order.setRefundedAt(LocalDateTime.now());
+        order.setStatus(OrderStatus.REFUND_REQUESTED);
         order.setRefundReason(reason.trim());
         return toResponse(order);
     }
@@ -211,7 +204,9 @@ public class OrderService {
         Order order = orderRepository.findWithItemsByIdAndUserIdForUpdate(orderId, userId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "주문이 없습니다. orderId=" + orderId));
 
-        if (order.getStatus() == OrderStatus.CANCELED || order.getStatus() == OrderStatus.REFUNDED) {
+        if (order.getStatus() == OrderStatus.CANCELED
+                || order.getStatus() == OrderStatus.REFUND_REQUESTED
+                || order.getStatus() == OrderStatus.REFUNDED) {
             throw new ResponseStatusException(BAD_REQUEST, "취소/환불된 주문은 결제할 수 없습니다.");
         }
 
@@ -248,7 +243,9 @@ public class OrderService {
         Order order = orderRepository.findWithItemsByIdAndUserIdForUpdate(orderId, userId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "주문이 없습니다. orderId=" + orderId));
 
-        if (order.getStatus() == OrderStatus.CANCELED || order.getStatus() == OrderStatus.REFUNDED) {
+        if (order.getStatus() == OrderStatus.CANCELED
+                || order.getStatus() == OrderStatus.REFUND_REQUESTED
+                || order.getStatus() == OrderStatus.REFUNDED) {
             throw new ResponseStatusException(BAD_REQUEST, "취소/환불된 주문은 배송 처리할 수 없습니다.");
         }
 
@@ -321,7 +318,9 @@ public class OrderService {
             throw new ResponseStatusException(BAD_REQUEST, "송장번호는 필수입니다.");
         }
 
-        if (order.getStatus() == OrderStatus.CANCELED || order.getStatus() == OrderStatus.REFUNDED) {
+        if (order.getStatus() == OrderStatus.CANCELED
+                || order.getStatus() == OrderStatus.REFUND_REQUESTED
+                || order.getStatus() == OrderStatus.REFUNDED) {
             throw new ResponseStatusException(BAD_REQUEST, "취소/환불된 주문은 배송 처리할 수 없습니다.");
         }
 
@@ -360,6 +359,39 @@ public class OrderService {
 
         order.setStatus(OrderStatus.CONFIRMED);
         order.setConfirmedAt(LocalDateTime.now());
+        return toResponse(order);
+    }
+
+    @Transactional
+    public OrderResponseDto completeRefundByAdmin(Long orderId, String reason) {
+        Order order = orderRepository.findWithItemsByIdForUpdate(orderId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "주문이 없습니다. orderId=" + orderId));
+
+        if (order.getStatus() == OrderStatus.REFUNDED) {
+            return toResponse(order);
+        }
+
+        if (order.getStatus() == OrderStatus.CANCELED) {
+            throw new ResponseStatusException(BAD_REQUEST, "취소된 주문은 환불 처리할 수 없습니다.");
+        }
+
+        if (order.getStatus() != OrderStatus.REFUND_REQUESTED && order.getStatus() != OrderStatus.PAID) {
+            throw new ResponseStatusException(BAD_REQUEST, "환불 완료 처리 가능한 상태가 아닙니다. status=" + order.getStatus());
+        }
+
+        for (OrderItem item : order.getItems()) {
+            Product product = productRepository.findByIdForUpdate(item.getProductId())
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
+                            "주문 상품이 존재하지 않습니다. productId=" + item.getProductId()));
+            product.setStock(product.getStock() + item.getQuantity());
+        }
+
+        order.setStatus(OrderStatus.REFUNDED);
+        order.setRefundedAt(LocalDateTime.now());
+        if (StringUtils.hasText(reason)) {
+            order.setRefundReason(reason.trim());
+        }
+
         return toResponse(order);
     }
 

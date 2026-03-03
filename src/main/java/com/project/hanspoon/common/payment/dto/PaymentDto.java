@@ -17,11 +17,13 @@ import java.util.stream.Collectors;
 public class PaymentDto {
 
     private Long payId;
+    private Long orderId;
     private Long userId;
     private String userName;
     private String email;
     private Integer totalPrice;
     private PaymentStatus status;
+    private String orderStatus;
     private LocalDateTime payDate;
     private String orderName;
     private List<PaymentItemDto> paymentItems;
@@ -37,6 +39,7 @@ public class PaymentDto {
         }
         return PaymentDto.builder()
                 .payId(payment.getPayId())
+                .orderId(payment.getOrderId())
                 .userId(payment.getUser().getUserId())
                 .userName(payment.getUser().getUserName())
                 .email(payment.getUser().getEmail())
