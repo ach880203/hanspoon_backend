@@ -6,12 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-
-    Optional<Recipe> findByTitle(String title);
 
     Page<Recipe> findByTitleContainingAndDeletedFalse(String keyword, Pageable pageable);
 
@@ -20,9 +17,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     Page<Recipe> findByDeletedFalse(Pageable pageable);
 
-    List<Recipe> findByDeletedTrueAndCategory(Category category);
+    Page<Recipe> findByDeletedTrueAndCategory(Category category, Pageable pageable);
 
-    List<Recipe> findByDeletedTrue();
+    Page<Recipe> findByDeletedTrue(Pageable pageable);
 
     Page<Recipe> findByUser_UserIdAndDeletedFalse(Long userId, Pageable pageable);
 }
