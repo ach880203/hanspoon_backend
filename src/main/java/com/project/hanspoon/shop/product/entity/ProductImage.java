@@ -84,4 +84,8 @@ public class ProductImage {
      */
     @Column(nullable = false)
     private boolean repYn;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "image_type", length = 20)
+    private ProductImageType imageType;
 }

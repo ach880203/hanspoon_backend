@@ -55,6 +55,8 @@ public class ProductDetailResponseDto {
      */
     private int stock;
 
+    private String detailContent;
+
     /**
      * 썸네일 URL (대표 이미지)
      * - 상세 페이지 상단/리스트 카드에서 빠르게 보여주기 위한 대표 이미지 1장
@@ -69,4 +71,6 @@ public class ProductDetailResponseDto {
      * - ProductImageResponseDto로 내려주면 엔티티 노출 없이 필요한 값만 전달 가능
      */
     private List<ProductImageResponseDto> images;
+
+    private List<ProductImageResponseDto> detailImages;
 }

@@ -204,8 +204,8 @@ public class PortOneService {
                         savedPayment.addPaymentItem(pi);
                     }
 
-                    order.setStatus(com.project.hanspoon.shop.constant.OrderStatus.PAID);
-                    order.setPaidAt(java.time.LocalDateTime.now());
+                    // Use unified order payment completion flow to keep stock/cart handling consistent.
+                    orderService.completeOrderPaymentBySystem(orderIdLong);
                     log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", order.getId(), savedPayment.getPayId());
                 } catch (NumberFormatException e) {
                     log.warn("상품 주문 ID 형식이 올바르지 않습니다: {}", request.getOrderId());

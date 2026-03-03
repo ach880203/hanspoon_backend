@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
@@ -86,6 +87,24 @@ public class ReviewProductController {
         Long userId = requireUserId(userDetails);
         reviewService.delete(userId, revId);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/admin/reviews/{revId}")
+    public ResponseEntity<Void> deleteByAdmin(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long revId
+    ) {
+        if (!isAdmin(userDetails)) {
+            throw new ResponseStatusException(FORBIDDEN, "관리자 권한이 필요합니다.");
+        }
+        reviewService.deleteByAdmin(revId);
+        return ResponseEntity.noContent().build();
+    }
+
+    private boolean isAdmin(CustomUserDetails userDetails) {
+        if (userDetails == null) return false;
+        return userDetails.getAuthorities().stream()
+                .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
     }
 
     private Long requireUserId(CustomUserDetails userDetails) {

@@ -124,6 +124,13 @@ public class InquiryProductService {
         inqProductRepository.delete(inq);
     }
 
+    @Transactional
+    public void deleteInquiryByAdmin(Long inqId) {
+        InqProduct inq = inqProductRepository.findById(inqId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "문의가 없습니다. inqId=" + inqId));
+        inqProductRepository.delete(inq);
+    }
+
     // ✅ 답변 등록 (관리자/판매자용으로 쓰는 메서드)
     // 역할체크(ADMIN 등)는 Controller/Security에서 걸어주면 됨
     @Transactional
@@ -146,6 +153,7 @@ public class InquiryProductService {
         return InquiryResponseDto.builder()
                 .inqId(i.getId())
                 .productId(i.getProduct().getId())
+                .productName(i.getProduct().getName())
                 .userId(i.getUser().getUserId())
                 .content(i.getContent())
                 .answer(i.getAnswer())
@@ -171,6 +179,7 @@ public class InquiryProductService {
         return InquiryResponseDto.builder()
                 .inqId(i.getId())
                 .productId(i.getProduct().getId())
+                .productName(i.getProduct().getName())
                 .userId(i.getUser().getUserId())
                 .content(content)
                 .answer(answer)

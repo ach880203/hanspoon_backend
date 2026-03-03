@@ -109,6 +109,17 @@ public class InquiryProductController {
         return ResponseEntity.ok(inquiryService.listAllForAdmin(page, size));
     }
 
+    @DeleteMapping("/admin/inquiries/{inqId}")
+    public ResponseEntity<Void> deleteAdminInquiry(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long inqId) {
+        if (!isAdmin(userDetails)) {
+            throw new ResponseStatusException(FORBIDDEN, "관리자 권한이 필요합니다.");
+        }
+        inquiryService.deleteInquiryByAdmin(inqId);
+        return ResponseEntity.noContent().build();
+    }
+
     private Long requireUserId(CustomUserDetails userDetails) {
         if (userDetails == null || userDetails.getUser() == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "로그인이 필요합니다.");

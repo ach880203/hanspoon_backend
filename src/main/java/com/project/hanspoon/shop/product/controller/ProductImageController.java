@@ -1,6 +1,7 @@
 package com.project.hanspoon.shop.product.controller;
 
 import com.project.hanspoon.shop.product.dto.ProductImageResponseDto;
+import com.project.hanspoon.shop.product.entity.ProductImageType;
 import com.project.hanspoon.shop.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +50,10 @@ public class ProductImageController {
     public ResponseEntity<List<ProductImageResponseDto>> upload(
             @PathVariable Long productId,
             @RequestPart("files") List<MultipartFile> files,
-            @RequestParam(required = false) Integer repIndex
+            @RequestParam(required = false) Integer repIndex,
+            @RequestParam(defaultValue = "MAIN") ProductImageType type
     ) {
-        return ResponseEntity.ok(productImageService.upload(productId, files, repIndex));
+        return ResponseEntity.ok(productImageService.upload(productId, files, repIndex, type));
     }
 
     /**
@@ -64,8 +66,11 @@ public class ProductImageController {
      * - 해당 상품의 이미지 리스트(대표가 먼저 오도록 정렬된 형태)
      */
     @GetMapping
-    public ResponseEntity<List<ProductImageResponseDto>> list(@PathVariable Long productId) {
-        return ResponseEntity.ok(productImageService.list(productId));
+    public ResponseEntity<List<ProductImageResponseDto>> list(
+            @PathVariable Long productId,
+            @RequestParam(defaultValue = "MAIN") ProductImageType type
+    ) {
+        return ResponseEntity.ok(productImageService.list(productId, type));
     }
 
     /**
