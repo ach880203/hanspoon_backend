@@ -139,6 +139,13 @@ public class ReviewProductService {
         revProductRepository.delete(review);
     }
 
+    @Transactional
+    public void deleteByAdmin(Long revId) {
+        RevProduct review = revProductRepository.findById(revId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "리뷰가 없습니다. revId=" + revId));
+        revProductRepository.delete(review);
+    }
+
     private ReviewResponseDto toDto(RevProduct r) {
         return ReviewResponseDto.builder()
                 .revId(r.getId())

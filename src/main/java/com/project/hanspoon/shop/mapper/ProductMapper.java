@@ -22,6 +22,7 @@ public final class ProductMapper {
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
         product.setStock(dto.getStock());
+        product.setDetailContent(dto.getDetailContent());
         return product;
     }
 
@@ -37,6 +38,7 @@ public final class ProductMapper {
         entity.setName(dto.getName());
         entity.setPrice(dto.getPrice());
         entity.setStock(dto.getStock());
+        entity.setDetailContent(dto.getDetailContent());
     }
 
     /**
@@ -65,15 +67,22 @@ public final class ProductMapper {
                 .build();
     }
 
-    public static ProductDetailResponseDto toDetailDto(Product p, String thumbnailUrl, List<ProductImageResponseDto> images) {
+    public static ProductDetailResponseDto toDetailDto(
+            Product p,
+            String thumbnailUrl,
+            List<ProductImageResponseDto> images,
+            List<ProductImageResponseDto> detailImages
+    ) {
         return ProductDetailResponseDto.builder()
                 .id(p.getId())
                 .category(p.getCategory())
                 .name(p.getName())
                 .price(p.getPrice())
                 .stock(p.getStock())
+                .detailContent(p.getDetailContent())
                 .thumbnailUrl(thumbnailUrl)
                 .images(images)
+                .detailImages(detailImages)
                 .build();
     }
 }

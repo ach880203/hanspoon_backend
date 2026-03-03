@@ -12,6 +12,7 @@ public class InquiryResponseDto {
 
     private Long inqId;
     private Long productId;
+    private String productName;
     private Long userId;
 
     private String content;

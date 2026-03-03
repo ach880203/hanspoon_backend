@@ -1,5 +1,6 @@
 package com.project.hanspoon.shop.product.dto;
 
+import com.project.hanspoon.shop.product.entity.ProductImageType;
 import lombok.*;
 
 /**
@@ -56,4 +57,6 @@ public class ProductImageResponseDto {
      * - “대표 배지” 표시 등의 UI 처리 가능
      */
     private boolean repYn;
+
+    private ProductImageType imageType;
 }

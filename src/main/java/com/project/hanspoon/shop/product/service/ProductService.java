@@ -4,6 +4,7 @@ import com.project.hanspoon.shop.constant.ProductSort;
 import com.project.hanspoon.shop.product.dto.*;
 import com.project.hanspoon.shop.product.entity.Product;
 import com.project.hanspoon.shop.product.entity.ProductImage;
+import com.project.hanspoon.shop.product.entity.ProductImageType;
 import com.project.hanspoon.shop.mapper.ProductMapper;
 import com.project.hanspoon.shop.product.repository.ProductImageRepository;
 import com.project.hanspoon.shop.product.repository.ProductRepository;
@@ -157,7 +158,8 @@ public class ProductService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "상품이 없습니다. id=" + id));
 
         // 해당 상품의 이미지 목록을 DTO 형태로 가져옴
-        List<ProductImageResponseDto> images = productImageService.list(id);
+        List<ProductImageResponseDto> images = productImageService.list(id, ProductImageType.MAIN);
+        List<ProductImageResponseDto> detailImages = productImageService.list(id, ProductImageType.DETAIL);
 
         // 대표 이미지(repYn=true)의 imgUrl을 찾아 thumbnailUrl로 사용
         // 대표가 없으면 null (프론트에서 placeholder 처리 등)
@@ -168,7 +170,7 @@ public class ProductService {
                 .orElse(null);
 
         // 상품 엔티티 + thumbnailUrl + images 를 상세 DTO로 조립
-        return ProductMapper.toDetailDto(product, thumbnailUrl, images);
+        return ProductMapper.toDetailDto(product, thumbnailUrl, images, detailImages);
     }
 
     /**
@@ -214,7 +216,7 @@ public class ProductService {
 
         // 이미지 업로드/저장 처리
         // repIndex는 대표 이미지 선택(예: 0번 파일이 대표) 같은 정책에 사용될 가능성이 큼
-        productImageService.upload(saved.getId(), files, repIndex);
+        productImageService.upload(saved.getId(), files, repIndex, ProductImageType.MAIN);
 
         // 최종 상세 응답 반환 (상품 + 이미지 포함)
         return getDetail(saved.getId());

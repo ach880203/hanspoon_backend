@@ -77,4 +77,8 @@ public class Product {
     @Column(nullable = false)
     // NOT NULL 제약
     private int stock;
+
+    @Lob
+    @Column(name = "detail_content")
+    private String detailContent;
 }

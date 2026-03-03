@@ -78,4 +78,7 @@ public class ProductRequestDto {
      */
     @Min(value = 0, message = "재고는 0 이상이어야 합니다.")
     private int stock;
+
+    @Size(max = 50000, message = "상품 상세 내용은 50000자 이하로 입력해주세요.")
+    private String detailContent;
 }
