@@ -26,43 +26,38 @@ public class Payment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // 결제 회원
+    private User user;
 
     @Column(name = "total_price")
-    private Integer totalPrice; // 총 결제 합계액
+    private Integer totalPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     @Builder.Default
-    private PaymentStatus status = PaymentStatus.PAID; // 상태 (결제완료, 취소)
+    private PaymentStatus status = PaymentStatus.PAID;
 
     @CreationTimestamp
     @Column(name = "pay_date")
-    private LocalDateTime payDate; // 결제 승인 일시
+    private LocalDateTime payDate;
 
     @Column(name = "portone_payment_id")
-    private String portOnePaymentId; // 포트원 고유 결제 ID (환불용)
+    private String portOnePaymentId;
+
+    @Column(name = "order_id")
+    private Long orderId;
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<PaymentItem> paymentItems = new ArrayList<>(); // 주문 항목 목록
+    private List<PaymentItem> paymentItems = new ArrayList<>();
 
-    // ========== 비즈니스 메소드 ==========
-
-    /**
-     * 주문 항목 추가
-     */
     public void addPaymentItem(PaymentItem paymentItem) {
         this.paymentItems.add(paymentItem);
         paymentItem.setPayment(this);
     }
 
-    /**
-     * 결제 취소
-     */
     public boolean cancelPayment() {
         if (this.status == PaymentStatus.CANCELLED) {
-            return false; // 이미 취소된 결제
+            return false;
         }
         this.status = PaymentStatus.CANCELLED;
         return true;

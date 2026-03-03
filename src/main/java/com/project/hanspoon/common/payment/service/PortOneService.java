@@ -39,6 +39,14 @@ public class PortOneService {
             PortOneDto.PaymentVerifyRequest request) {
 
         String paymentId = request.getPaymentId();
+        Long orderIdLong = null;
+        if (request.getOrderId() != null) {
+            try {
+                orderIdLong = Long.parseLong(request.getOrderId());
+            } catch (NumberFormatException e) {
+                log.warn("올바르지 않은 주문 ID 형식: {}", request.getOrderId());
+            }
+        }
 
         try {
             PortOneDto.PortOnePaymentResponse portOnePayment = getPaymentFromPortOne(paymentId);
@@ -67,15 +75,10 @@ public class PortOneService {
                         .orElseThrow(() -> new BusinessException(
                                 "클래스 세션 정보를 찾을 수 없습니다. (ID: " + request.getClassId() + ")"));
                 expectedTotalBeforeDiscount = session.getPrice() * request.getQuantity();
-            } else if (request.getOrderId() != null) {
-                try {
-                    Long orderIdLong = Long.parseLong(request.getOrderId());
-                    var order = orderRepository.findById(orderIdLong)
-                            .orElseThrow(() -> new BusinessException("주문 정보를 찾을 수 없습니다."));
-                    expectedTotalBeforeDiscount = order.getTotalPrice();
-                } catch (NumberFormatException e) {
-                    log.warn("올바르지 않은 주문 ID 형식: {}", request.getOrderId());
-                }
+            } else if (orderIdLong != null) {
+                var order = orderRepository.findById(orderIdLong)
+                        .orElseThrow(() -> new BusinessException("주문 정보를 찾을 수 없습니다."));
+                expectedTotalBeforeDiscount = order.getTotalPrice();
             }
 
             if (expectedTotalBeforeDiscount > 0 && request.getAmount() != expectedTotalBeforeDiscount) {
@@ -134,6 +137,7 @@ public class PortOneService {
                     .totalPrice(paidAmount)
                     .status(PaymentStatus.PAID)
                     .portOnePaymentId(paymentId)
+                    .orderId(orderIdLong)
                     .payDate(java.time.LocalDateTime.now())
                     .build();
 
@@ -188,28 +192,23 @@ public class PortOneService {
                     log.info("클래스 예약 자동 생성 및 결제 연동 완료: userId={}, sessionId={}, payId={}",
                             user.getUserId(), request.getClassId(), savedPayment.getPayId());
                 }
-            } else if (request.getOrderId() != null) {
-                try {
-                    Long orderIdLong = Long.parseLong(request.getOrderId());
-                    var order = orderRepository.findById(orderIdLong)
-                            .orElseThrow(() -> new BusinessException(
-                                    "주문 정보를 찾을 수 없습니다. (ID: " + request.getOrderId() + ")"));
+            } else if (orderIdLong != null) {
+                var order = orderRepository.findById(orderIdLong)
+                        .orElseThrow(() -> new BusinessException(
+                                "주문 정보를 찾을 수 없습니다. (ID: " + request.getOrderId() + ")"));
 
-                    // Order 의 OrderItem 목록에서 PaymentItem 생성 (실제 상품명 스냅샷 저장)
-                    for (com.project.hanspoon.shop.order.entity.OrderItem oi : order.getItems()) {
-                        PaymentItem pi = PaymentItem.createForProduct(
-                                oi.getProductId(),
-                                oi.getProductName(),
-                                oi.getQuantity());
-                        savedPayment.addPaymentItem(pi);
-                    }
-
-                    // Use unified order payment completion flow to keep stock/cart handling consistent.
-                    orderService.completeOrderPaymentBySystem(orderIdLong);
-                    log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", order.getId(), savedPayment.getPayId());
-                } catch (NumberFormatException e) {
-                    log.warn("상품 주문 ID 형식이 올바르지 않습니다: {}", request.getOrderId());
+                // Order 의 OrderItem 목록에서 PaymentItem 생성 (실제 상품명 스냅샷 저장)
+                for (com.project.hanspoon.shop.order.entity.OrderItem oi : order.getItems()) {
+                    PaymentItem pi = PaymentItem.createForProduct(
+                            oi.getProductId(),
+                            oi.getProductName(),
+                            oi.getQuantity());
+                    savedPayment.addPaymentItem(pi);
                 }
+
+                // Use unified order payment completion flow to keep stock/cart handling consistent.
+                orderService.completeOrderPaymentBySystem(orderIdLong);
+                log.info("상품 주문 결제 완료 처리 완료: orderId={}, payId={}", order.getId(), savedPayment.getPayId());
             } else {
                 throw new BusinessException("결제 대상 정보가 없습니다.");
             }
@@ -290,6 +289,7 @@ public class PortOneService {
         if (paymentId == null || paymentId.isBlank()) {
             log.warn("결제 ID(paymentId)가 없어 자동 환불이 불가합니다. payId={}", payId);
             payment.setStatus(PaymentStatus.CANCELLED);
+            applyOrderRefundStatus(payment, reason);
             return PortOneDto.PaymentResult.builder()
                     .success(true)
                     .message("결제 ID가 없어 DB 상태만 취소로 변경되었습니다. (수동 환불 필요)")
@@ -308,6 +308,7 @@ public class PortOneService {
                     .block();
 
             payment.setStatus(PaymentStatus.CANCELLED);
+            applyOrderRefundStatus(payment, reason);
             log.info("포트원 외부 환불 성공: paymentId={}, reason={}", paymentId, reason);
 
             return PortOneDto.PaymentResult.builder()
@@ -323,6 +324,18 @@ public class PortOneService {
     }
 
     private record PortOneCancelRequest(String reason) {
+    }
+
+    private void applyOrderRefundStatus(Payment payment, String reason) {
+        if (payment.getOrderId() == null) {
+            return;
+        }
+        try {
+            orderService.completeRefundByAdmin(payment.getOrderId(), reason);
+        } catch (Exception e) {
+            log.error("환불 완료 후 주문 상태 업데이트 실패: orderId={}, payId={}, error={}",
+                    payment.getOrderId(), payment.getPayId(), e.getMessage());
+        }
     }
 
     public String generateOrderId() {

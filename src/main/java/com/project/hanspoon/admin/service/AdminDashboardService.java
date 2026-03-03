@@ -59,7 +59,7 @@ public class AdminDashboardService {
                                         + reservationRepository.countByStatus(ReservationStatus.PAID);
                         long preparing = orderRepository.countByStatus(OrderStatus.CREATED);
                         long shipping = orderRepository.countByStatus(OrderStatus.SHIPPED);
-                        long refundRequested = orderRepository.countByStatus(OrderStatus.REFUNDED);
+                        long refundRequested = orderRepository.countByStatus(OrderStatus.REFUND_REQUESTED);
 
                         // 3. 예약 현황
                         long todayReservations = reservationRepository.countByCreatedAtBetweenAndStatusIn(

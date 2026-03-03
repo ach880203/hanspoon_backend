@@ -7,6 +7,7 @@ import com.project.hanspoon.common.payment.dto.PaymentDto;
 import com.project.hanspoon.common.user.entity.User;
 import com.project.hanspoon.common.payment.repository.PaymentItemRepository;
 import com.project.hanspoon.common.payment.repository.PaymentRepository;
+import com.project.hanspoon.shop.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentItemRepository paymentItemRepository;
     private final PortOneService portOneService;
+    private final OrderRepository orderRepository;
 
     /**
      * 결제 생성
@@ -85,7 +87,7 @@ public class PaymentService {
     public PaymentDto getPayment(Long payId) {
         Payment payment = paymentRepository.findById(payId)
                 .orElseThrow(() -> new IllegalArgumentException("결제 정보를 찾을 수 없습니다."));
-        return PaymentDto.from(payment);
+        return enrichOrderStatus(PaymentDto.from(payment));
     }
 
     /**
@@ -94,7 +96,8 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public Page<PaymentDto> getPaymentHistory(Long userId, Pageable pageable) {
         return paymentRepository.findByUserUserIdOrderByPayDateDesc(userId, pageable)
-                .map(PaymentDto::from);
+                .map(PaymentDto::from)
+                .map(this::enrichOrderStatus);
     }
 
     /**
@@ -111,6 +114,16 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public Page<PaymentDto> findAll(Pageable pageable) {
         return paymentRepository.findAll(pageable)
-                .map(PaymentDto::from);
+                .map(PaymentDto::from)
+                .map(this::enrichOrderStatus);
+    }
+
+    private PaymentDto enrichOrderStatus(PaymentDto dto) {
+        if (dto.getOrderId() == null) {
+            return dto;
+        }
+        orderRepository.findById(dto.getOrderId())
+                .ifPresent(order -> dto.setOrderStatus(order.getStatus().name()));
+        return dto;
     }
 }
