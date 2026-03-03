@@ -322,22 +322,24 @@ public class RecipeService {
         ingredientGroupRepository.deleteByRecipe(recipe);
         instructionGroupRepository.deleteByRecipe(recipe);
 
-        double mainTotalAmount = recipeFormDto.getIngredientGroup().stream()
-                .flatMap(group -> group.getIngredients().stream())
-                .filter(IngredientDto::isMain)
-                .mapToDouble(dto -> convertToGram(dto.getUnit(), dto.getBaseAmount()))
-                .sum();
+        // 1. 재료 그룹별 반복 시작
+        recipeFormDto.getIngredientGroup().forEach(groupDto -> {
 
-        if (mainTotalAmount <= 0) {
-            mainTotalAmount = recipeFormDto.getIngredientGroup().stream()
-                    .flatMap(group -> group.getIngredients().stream())
+            // 🚩 [수정] 해당 그룹 안에서만 '메인' 재료들의 합계를 구합니다.
+            double groupMainTotal = groupDto.getIngredients().stream()
+                    .filter(IngredientDto::isMain)
                     .mapToDouble(dto -> convertToGram(dto.getUnit(), dto.getBaseAmount()))
                     .sum();
-        }
 
-        final double finalBasis = mainTotalAmount;
+            // 만약 그룹 내에 메인이 하나도 없다면, 그룹 전체 합계를 기준으로 잡습니다.
+            if (groupMainTotal <= 0) {
+                groupMainTotal = groupDto.getIngredients().stream()
+                        .mapToDouble(dto -> convertToGram(dto.getUnit(), dto.getBaseAmount()))
+                        .sum();
+            }
 
-        recipeFormDto.getIngredientGroup().forEach(groupDto -> {
+            final double finalGroupBasis = groupMainTotal; // 이 그룹의 100% 기준량
+
             RecipeIngredientGroup group = RecipeIngredientGroup.builder()
                     .name(groupDto.getName())
                     .recipe(recipe)
@@ -345,9 +347,12 @@ public class RecipeService {
                     .build();
             ingredientGroupRepository.save(group);
 
+            // 2. 그룹 내부 재료들 저장
             groupDto.getIngredients().forEach(ingreDto -> {
                 double currentGram = convertToGram(ingreDto.getUnit(), ingreDto.getBaseAmount());
-                double calculatedRatio = (finalBasis > 0) ? (currentGram / finalBasis) * 100 : 0;
+
+                // 🚩 [수정] 위에서 구한 '이 그룹만의 기준량'으로 비율을 계산합니다.
+                double calculatedRatio = (finalGroupBasis > 0) ? (currentGram / finalGroupBasis) * 100 : 0;
 
                 RecipeIngredient ingredient = RecipeIngredient.builder()
                         .recipeIngredientGroup(group)
