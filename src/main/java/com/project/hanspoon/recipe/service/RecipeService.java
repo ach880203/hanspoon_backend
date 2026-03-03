@@ -43,7 +43,6 @@ public class RecipeService {
     private final InstructionRepository instructionRepository; // 개별 조리 방법 레포스토리
     private final InstructionGroupRepository instructionGroupRepository; // 조리 방법 그룹 레포스토리
     private final RecipeRelationRepository recipeRelationRepository; // 서브 레시피 레포스토리
-    private final RecipeParser recipeParser; //
     private final RecipeWishesRepository recipeWishesRepository;
     private final RecipeRevRepository recipeRevRepository;
     private final UserRepository userRepository;
@@ -79,7 +78,7 @@ public class RecipeService {
 
         int extensionIndex = originalFileName.lastIndexOf(".");
         String extension = extensionIndex >= 0 ? originalFileName.substring(extensionIndex) : "";
-        String savedFileName = UUID.randomUUID().toString() + extension;
+        String savedFileName = UUID.randomUUID()+ extension;
         log.info("저장될 파일명: "+ savedFileName);
 
         try {
@@ -246,10 +245,6 @@ public class RecipeService {
      * 컨트롤러 레벨에서 지연 로딩 컬렉션을 직접 접근하면 LazyInitializationException이 날 수 있어
      * 변환 책임을 서비스로 이동했다.
      */
-    @Transactional(readOnly = true)
-    public Page<RecipeListDto> getRecipeListForView(String keyword, Pageable pageable, Category category, Long userId) {
-        return getRecipeListDto(keyword, pageable, category, userId);
-    }
 
     @Transactional
     public void deleteRecipe(Long id) {
@@ -417,18 +412,21 @@ public class RecipeService {
 
     }
 
-    public List<RecipeListDto> getDeletedRecipes(Category category) {
-        List<Recipe> recipes = (category == null)
-            ? recipeRepository.findByDeletedTrue()
-            : recipeRepository.findByDeletedTrueAndCategory(category);
+    public Page<RecipeListDto> getDeletedRecipes(Category category, Pageable pageable) {
+        // 1. 레포지토리에서 페이징된 엔티티(Page<Recipe>)를 가져옵니다.
+        Page<Recipe> recipePage = (category == null)
+                ? recipeRepository.findByDeletedTrue(pageable)
+                : recipeRepository.findByDeletedTrueAndCategory(category, pageable);
 
-        return recipes.stream().map(recipe -> RecipeListDto.builder()
+        // 2. Page 객체의 map 메서드를 사용하여 DTO로 변환합니다.
+        // (이렇게 하면 전체 페이지 수, 현재 페이지 정보 등이 그대로 유지됩니다.)
+        return recipePage.map(recipe -> RecipeListDto.builder()
                 .id(recipe.getId())
                 .title(recipe.getTitle())
                 .recipeImg(recipe.getRecipeImg())
                 .category(String.valueOf(recipe.getCategory()))
-                .username(recipe.getUser().getUserName())
-                .build()).toList();
+                .username(recipe.getUser() != null ? recipe.getUser().getUserName() : "알 수 없음")
+                .build());
     }
 
     /**

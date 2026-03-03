@@ -139,10 +139,14 @@ public class RecipeController {
      * 삭제된 레시피 목록 조회 API.
      */
     @GetMapping("/deleted")
-    public ResponseEntity<ApiResponse<List<RecipeListDto>>> getDeletedRecipes(
-            @RequestParam(required = false) Category category) {
+    public ResponseEntity<ApiResponse<Page<RecipeListDto>>> getDeletedRecipes(
+            @RequestParam(required = false) Category category,
+            // 🚩 Pageable 파라미터 추가 (기본값 설정)
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<RecipeListDto> list = recipeService.getDeletedRecipes(category);
+        // 🚩 서비스 호출 시 pageable을 같이 넘겨주도록 수정
+        Page<RecipeListDto> list = recipeService.getDeletedRecipes(category, pageable);
+
         return ResponseEntity.ok(ApiResponse.ok(list));
     }
 
