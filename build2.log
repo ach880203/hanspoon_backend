@@ -1,0 +1,4489 @@
+﻿
+> Task :compileJava FAILED
+./gradlew : D:\project\
+hanspoon_backend\src\ma
+in\java\com\project\han
+spoon\admin\controller\
+AdminReservationControl
+ler.java:38: error: unm
+appable character (0xB9
+) for encoding UTF-8
+위치 줄:1 문자:1
++ ./gradlew compileJava
+ > build.log 2>&1 ; cat
+ build.log
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (D:\project\ha   
+ ns... encoding UTF    
+-8:String) [], Rem    o
+teException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+        return ApiRespo
+nse.ok("痍⑥냼 ?占쎌씤 泥섎━?占쎌
+뿀?占쎈땲??", null);
+                       
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+controller\AdminReserva
+tionController.java:38:
+ error: unmappable char
+acter (0x98) for encodi
+ng UTF-8
+        return ApiRespo
+nse.ok("痍⑥냼 ?占쎌씤 泥섎━?占쎌
+뿀?占쎈땲??", null);
+                       
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+controller\AdminReserva
+tionController.java:38:
+ error: unmappable char
+acter (0xB5) for encodi
+ng UTF-8
+        return ApiRespo
+nse.ok("痍⑥냼 ?占쎌씤 泥섎━?占쎌
+뿀?占쎈땲??", null);
+                       
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+controller\AdminReserva
+tionController.java:44:
+ error: unmappable char
+acter (0x98) for encodi
+ng UTF-8
+        return ApiRespo
+nse.ok("痍⑥냼 嫄곗젅 泥섎━?占쎌뿀
+?占쎈땲??", null);
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+controller\AdminReserva
+tionController.java:44:
+ error: unmappable char
+acter (0xB5) for encodi
+ng UTF-8
+        return ApiRespo
+nse.ok("痍⑥냼 嫄곗젅 泥섎━?占쎌뿀
+?占쎈땲??", null);
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:25: error: u
+nmappable character (0x
+84) for encoding UTF-8
+        private long pa
+ymentCompleted; // 寃곗젣?
+占쎈즺 (諛곗넚以占???
+                       
+                      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:25: error: u
+nmappable character (0x
+EBB9) for encoding UTF-
+8
+        private long pa
+ymentCompleted; // 寃곗젣?
+占쎈즺 (諛곗넚以占???
+                       
+                       
+      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:26: error: u
+nmappable character (0x
+81) for encoding UTF-8
+        private long pr
+eparing; // ?占쏀뭹以鍮꾩쨷
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:27: error: u
+nmappable character (0x
+ECA4) for encoding UTF-
+8
+        private long sh
+ipping; // 諛곗넚占?       
+ private long refundReq
+uested; // ?占쎈텋?占쎌껌 (誘몄
+쿂占?
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:27: error: u
+nmappable character (0x
+98) for encoding UTF-8
+        private long sh
+ipping; // 諛곗넚占?       
+ private long refundReq
+uested; // ?占쎈텋?占쎌껌 (誘몄
+쿂占?
+                       
+                       
+                       
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:27: error: u
+nmappable character (0x
+94) for encoding UTF-8
+        private long sh
+ipping; // 諛곗넚占?       
+ private long refundReq
+uested; // ?占쎈텋?占쎌껌 (誘몄
+쿂占?
+                       
+                       
+                       
+              ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:27: error: u
+nmappable character (0x
+EBA6) for encoding UTF-
+8
+        private long sh
+ipping; // 諛곗넚占?       
+ private long refundReq
+uested; // ?占쎈텋?占쎌껌 (誘몄
+쿂占?
+                       
+                       
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:42: error: u
+nmappable character (0x
+A0) for encoding UTF-8
+        private long ne
+wUsersToday; // ?占쎄퇋 媛
+??    }
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0xBF
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0xB1
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+       ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0x89
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0xEC
+A4) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0xEB
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0xEB
+B1) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0x97
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+                       
+         ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0x8E
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:6: error: unm
+appable character (0x85
+) for encoding UTF-8
+ * ?占승?占싼딆쁽 ??占쎈튋 筌뤴뫖占
+?燁삼옙?占?1椰꾨똻????占쎌겱??占쎈뮉
+ DTO??占쎈빍??
+                       
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:8: error: unm
+appable character (0xE6
+BF) for encoding UTF-8
+ * ?袁⑥쨴??AdminReservati
+onList.jsx)揶쎛 域밸챶?占??怨
+뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占??
+??占쎈빍??
+                       
+                ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:8: error: unm
+appable character (0x9D
+) for encoding UTF-8
+ * ?袁⑥쨴??AdminReservati
+onList.jsx)揶쎛 域밸챶?占??怨
+뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占??
+??占쎈빍??
+                       
+                       
+     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:8: error: unm
+appable character (0xEB
+A8) for encoding UTF-8
+ * ?袁⑥쨴??AdminReservati
+onList.jsx)揶쎛 域밸챶?占??怨
+뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占??
+??占쎈빍??
+                       
+                       
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminReservationIte
+mDto.java:8: error: unm
+appable character (0xAC
+) for encoding UTF-8
+ * ?袁⑥쨴??AdminReservati
+onList.jsx)揶쎛 域밸챶?占??怨
+뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占??
+??占쎈빍??
+                       
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:36: error: 
+unmappable character (0
+xEC) for encoding UTF-8
+            // 1. 留ㅼ텧 (
+Payment 湲곤옙?, PAID ?占쏀깭
+) - ?占쎌떆 0
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:36: error: 
+unmappable character (0
+x81) for encoding UTF-8
+            // 1. 留ㅼ텧 (
+Payment 湲곤옙?, PAID ?占쏀깭
+) - ?占쎌떆 0
+                       
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:36: error: 
+unmappable character (0
+x84) for encoding UTF-8
+            // 1. 留ㅼ텧 (
+Payment 湲곤옙?, PAID ?占쏀깭
+) - ?占쎌떆 0
+                       
+                       
+  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:40: error: 
+unmappable character (0
+x81) for encoding UTF-8
+            // 2. 二쇰Ц ?
+占쏀깭
+                      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:56: error: 
+unmappable character (0
+x88) for encoding UTF-8
+            // 3. ?占쎌빟 
+?占쏀솴
+                   ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:56: error: 
+unmappable character (0
+x84) for encoding UTF-8
+            // 3. ?占쎌빟 
+?占쏀솴
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+xA4) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+x9C) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+x98) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+xEC) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+xA4) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+               ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+x9D) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+                   ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+x88) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+xEC) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+                       
+     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+xBC) for encoding UTF-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:63: error: 
+unmappable character (0
+xEAB2) for encoding UTF
+-8
+                // ?占쎈뒛
+ ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈뒛 
+?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂占
+?                todayR
+eservations = reservati
+onRepository.countBySes
+sionStartAtBetweenAndSt
+atusIn(
+                       
+                       
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:71: error: 
+unmappable character (0
+x84) for encoding UTF-8
+                // ?占쎌껜
+ 痍⑥냼 嫄댁닔 (?占쎌빟 痍⑥냼 + 湲곌
+컙 留뚮즺)
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:71: error: 
+unmappable character (0
+x88) for encoding UTF-8
+                // ?占쎌껜
+ 痍⑥냼 嫄댁닔 (?占쎌빟 痍⑥냼 + 湲곌
+컙 留뚮즺)
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+xA4) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+xA4) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+x81) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+x88) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                       
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+xA4) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                       
+                       
+    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+xA9) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                       
+                       
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:75: error: 
+unmappable character (0
+x84) for encoding UTF-8
+                // ?占쎈뒛
+ 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?占쏀
+깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占쎄퀎
+ - ?占쎌떆)
+                       
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:86: error: 
+unmappable character (0
+x8C) for encoding UTF-8
+            // 4. CS & 
+?占쎌썝
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:106: error:
+ unmappable character (
+0x81) for encoding UTF-
+8
+                       
+     .refundRequested(r
+efundRequested + pendin
+gCancel) // ?占쏀뭹 ?占쎈텋 +
+ ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:106: error:
+ unmappable character (
+0x98) for encoding UTF-
+8
+                       
+     .refundRequested(r
+efundRequested + pendin
+gCancel) // ?占쏀뭹 ?占쎈텋 +
+ ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:106: error:
+ unmappable character (
+0xB4) for encoding UTF-
+8
+                       
+     .refundRequested(r
+efundRequested + pendin
+gCancel) // ?占쏀뭹 ?占쎈텋 +
+ ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:106: error:
+ unmappable character (
+0x94) for encoding UTF-
+8
+                       
+     .refundRequested(r
+efundRequested + pendin
+gCancel) // ?占쏀뭹 ?占쎈텋 +
+ ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:106: error:
+ unmappable character (
+0xA9) for encoding UTF-
+8
+                       
+     .refundRequested(r
+efundRequested + pendin
+gCancel) // ?占쏀뭹 ?占쎈텋 +
+ ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                       
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0x80) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0x9C) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0x94) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                       
+  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0x9D) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                       
+      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0xA4) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                       
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0x88) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                       
+              ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:121: error:
+ unmappable character (
+0x88) for encoding UTF-
+8
+            throw new R
+untimeException("?占?占쎈낫
+???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿?占
+쎈떎.", e);
+                       
+                       
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:26: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+     * 愿由ъ옄 ?占쎌빟 紐⑸줉 議
+고쉶
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:28: error
+: unmappable character 
+(0x8C) for encoding UTF
+-8
+     * status ?占쎈씪誘명꽣 洹
+쒖튃:
+               ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:29: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * - null/blank/ALL
+: ?占쎌껜
+                       
+   ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0xB4) for encoding UTF
+-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0xEBA7) for encoding U
+TF-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+                       
+               ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+                       
+                   ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+                       
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0x86) for encoding UTF
+-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+                       
+                       
+          ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:30: error
+: unmappable character 
+(0xEBB9) for encoding U
+TF-8
+     * - HOLD/PAID/CANC
+ELED/EXPIRED/COMPLETED:
+ ?占쎈떦 ?占쏀깭占?     * - CA
+NCEL_REQUESTED: ?占쎌옱 ?占
+쎌빟 ?占쏀깭 enum???占쎌뼱 占?紐⑸
+줉
+                       
+                       
+                       
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:52: error
+: unmappable character 
+(0x94) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌껌 紐⑸줉 議고쉶
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                       
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x86) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                       
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                       
+                       
+     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0xEBA1) for encoding U
+TF-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                       
+                       
+       ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0xEBB9) for encoding U
+TF-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                       
+                       
+         ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:53: error
+: unmappable character 
+(0x85) for encoding UTF
+-8
+     * ?占쎌옱 ?占쎌빟 ?占쏀깭 紐
+⑤뜽??CANCEL_REQUESTED ?占
+쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸줉?
+占쎈땲??
+                       
+                       
+              ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0xB9) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x8C) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0xB0) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+          ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x98) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0xEC) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x8A) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                       
+  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:60: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+     * 痍⑥냼 ?占쎌씤/嫄곗젅 ?占쎈
+줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 紐⑤
+뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                       
+     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:61: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * ?占쎈줎??怨꾩빟 寃쎈줈 ?占
+쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫붿떆
+吏占?諛섑솚?占쎈땲??
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:61: error
+: unmappable character 
+(0xA0) for encoding UTF
+-8
+     * ?占쎈줎??怨꾩빟 寃쎈줈 ?占
+쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫붿떆
+吏占?諛섑솚?占쎈땲??
+                   ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:61: error
+: unmappable character 
+(0xEC) for encoding UTF
+-8
+     * ?占쎈줎??怨꾩빟 寃쎈줈 ?占
+쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫붿떆
+吏占?諛섑솚?占쎈땲??
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:61: error
+: unmappable character 
+(0xEBA5) for encoding U
+TF-8
+     * ?占쎈줎??怨꾩빟 寃쎈줈 ?占
+쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫붿떆
+吏占?諛섑솚?占쎈땲??
+                      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminReservatio
+nService.java:61: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+     * ?占쎈줎??怨꾩빟 寃쎈줈 ?占
+쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫붿떆
+吏占?諛섑솚?占쎈땲??
+                       
+  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+dto\AdminDashboardSumma
+ryDto.java:43: error: r
+eached end of file whil
+e parsing
+}
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:64: error: 
+not a statement
+                       
+ todayStart, todayEnd,
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:64: error: 
+';' expected
+                       
+ todayStart, todayEnd,
+                       
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:64: error: 
+not a statement
+                       
+ todayStart, todayEnd,
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:64: error: 
+';' expected
+                       
+ todayStart, todayEnd,
+                       
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\admin\
+service\AdminDashboardS
+ervice.java:66: error: 
+';' expected
+                       
+         ReservationSta
+tus.CANCELED));
+                       
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\config\DataInitializer
+.java:125: error: ';' e
+xpected
+                       
+ LocalDateTime.now());
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\config\PortOneConfig.j
+ava:43: error: ';' expe
+cted
+                .defaul
+tHeader("Content-Type",
+ "application/json")
+                       
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\constant\Payme
+ntStatus.java:7: error:
+ unclosed string litera
+l
+    PENDING("寃곗젣?占쏙옙?),
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\dto\PaymentDto
+.java:43: error: : expe
+cted
+                       
+     "?占쏀뭹 ??" + (payme
+nt.getPaymentItems().si
+ze() - 1) + "占? : "寃곗젣 
+?占쏀뭹"))
+                       
+                       
+                       
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\dto\PaymentDto
+.java:43: error: illega
+l character: '\ufffd'
+                       
+     "?占쏀뭹 ??" + (payme
+nt.getPaymentItems().si
+ze() - 1) + "占? : "寃곗젣 
+?占쏀뭹"))
+                       
+                       
+                       
+                      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\dto\PaymentDto
+.java:43: error: unclos
+ed string literal
+                       
+     "?占쏀뭹 ??" + (payme
+nt.getPaymentItems().si
+ze() - 1) + "占? : "寃곗젣 
+?占쏀뭹"))
+                       
+                       
+                       
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\dto\PaymentDto
+.java:43: error: not a 
+statement
+                       
+     "?占쏀뭹 ??" + (payme
+nt.getPaymentItems().si
+ze() - 1) + "占? : "寃곗젣 
+?占쏀뭹"))
+                       
+                       
+                       
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\dto\PaymentDto
+.java:73: error: unclos
+ed string literal
+                    .it
+emType(item.getProductI
+d() != null ? "?占쏀뭹" : 
+"?占쎈옒??)
+                       
+                       
+                      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\payment\service\PortOn
+eService.java:140: erro
+r: illegal start of exp
+ression
+                    .us
+er(user)
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\security\CustomOAuth2U
+serService.java:117: er
+ror: unclosed string li
+teral
+                .userNa
+me(userInfo.name() != n
+ull ? userInfo.name() :
+ "?占쎌슜??)
+                       
+                       
+                       
+ ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\security\CustomUserDet
+ails.java:79: error: il
+legal start of type
+        return user.get
+UserId();
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\security\CustomUserDet
+ails.java:79: error: <i
+dentifier> expected
+        return user.get
+UserId();
+                       
+      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\security\CustomUserDet
+ails.java:82: error: un
+named classes are a pre
+view feature and are di
+sabled by default.
+    public String getUs
+erName() {
+           ^
+  (use --enable-preview
+ to enable unnamed clas
+ses)
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\security\CustomUserDet
+ails.java:100: error: c
+lass, interface, enum, 
+or record expected
+}
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\common
+\security\CustomUserDet
+ails.java:1: error: unn
+amed class should not h
+ave package declaration
+package com.project.han
+spoon.common.security;
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\api\spec\ClassSessionS
+pecs.java:26: error: ';
+' expected
+    }
+     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\api\spec\ClassSessionS
+pecs.java:28: error: il
+legal start of expressi
+on
+    public static Speci
+fication<ClassSession> 
+startAtFrom(LocalDateTi
+me from) {
+    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\coupon\seed\ClassCoupo
+nSeed.java:36: error: <
+identifier> expected
+        couponRepositor
+y.save(coupon);
+                       
+      ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\coupon\seed\ClassCoupo
+nSeed.java:36: error: <
+identifier> expected
+        couponRepositor
+y.save(coupon);
+                       
+             ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\coupon\seed\ClassCoupo
+nSeed.java:37: error: <
+identifier> expected
+        log.info("Seede
+d default coupon: {}", 
+coupon.getName());
+                ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\coupon\seed\ClassCoupo
+nSeed.java:37: error: i
+llegal start of type
+        log.info("Seede
+d default coupon: {}", 
+coupon.getName());
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\coupon\seed\ClassCoupo
+nSeed.java:39: error: c
+lass, interface, enum, 
+or record expected
+}
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\oneday
+\reservation\domain\Res
+ervationStatus.java:4: 
+error: unclosed string 
+literal
+    HOLD("?占쎌빟 ?占쏙옙?),
+         ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\controller\RecipeContr
+oller.java:174: error: 
+unclosed string literal
+            log.info("?
+占쎌쬆 媛앹껜媛 null?占쎈땲??);
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\controller\RecipeContr
+oller.java:217: error: 
+unclosed string literal
+        return Response
+Entity.ok(ApiResponse.o
+k(null,"占?紐⑸줉?占쎌꽌 ??占쏙옙
+?占쎌뿀?占쎈땲??));
+                       
+                       
+       ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\dto\RecipeFormDto.java
+:34: error: illegal sta
+rt of type
+}
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:50: error: unclose
+d string literal
+            case "?占쏙옙?
+?? -> amount * 5;
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:51: error: unclose
+d string literal
+            case "占? ->
+ amount * 200;
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:52: error: unclose
+d string literal
+            case "占? ->
+ amount * 600;
+                 ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:114: error: invali
+d method declaration; r
+eturn type required
+        saveRecipeRelat
+ions(mainRecipe, recipe
+FormDto.getSubrecipe())
+;
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:114: error: <ident
+ifier> expected
+        saveRecipeRelat
+ions(mainRecipe, recipe
+FormDto.getSubrecipe())
+;
+                       
+               ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:114: error: <ident
+ifier> expected
+        saveRecipeRelat
+ions(mainRecipe, recipe
+FormDto.getSubrecipe())
+;
+                       
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:121: error: unname
+d classes are a preview
+ feature and are disabl
+ed by default.
+    private void saveRe
+cipeRelations(Recipe ma
+inRecipe, List<Long> su
+bRecipeIds) {
+            ^
+  (use --enable-preview
+ to enable unnamed clas
+ses)
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:429: error: class,
+ interface, enum, or re
+cord expected
+}
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\recipe
+\service\RecipeService.
+java:1: error: unnamed 
+class should not have p
+ackage declaration
+package com.project.han
+spoon.recipe.service;
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\c
+art\dto\CartItemRespons
+eDto.java:18: error: re
+ached end of file while
+ parsing
+    private String thum
+bnailUrl; // ?占???占쎈꽕??
+}
+                       
+         ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\c
+art\dto\CartResponseDto
+.java:15: error: reache
+d end of file while par
+sing
+    private int totalQu
+antity; // ?占쎌껜 ?占쎈웾 ??
+    private int totalPr
+ice;    // ?占쎌껜 湲덉븸 ??}
+                       
+       ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\c
+onstant\OrderStatus.jav
+a:6: error: unclosed st
+ring literal
+    SHIPPED("諛곗넚占?),
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\c
+onstant\ProductSort.jav
+a:5: error: reached end
+ of file while parsing
+    PRICE_ASC,   // 媛占
+??????    PRICE_DESC   
+// 媛占??占쏙옙???}
+              ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\dto\ProductRespo
+nseDto.java:34: error: 
+unnamed classes are a p
+review feature and are 
+disabled by default.
+    private Long id;
+            ^
+  (use --enable-preview
+ to enable unnamed clas
+ses)
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\dto\ProductRespo
+nseDto.java:56: error: 
+class, interface, enum,
+ or record expected
+}
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\dto\ProductRespo
+nseDto.java:1: error: u
+nnamed class should not
+ have package declarati
+on
+package com.project.han
+spoon.shop.product.dto;
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:139: e
+rror: illegal start of 
+expression
+
+[Incubating] Problems report is available at: file:///D:/project/hanspoon_backend/build/reports/problems/problems-report.html
+                .stream
+()
+                ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:163: e
+rror: illegal start of 
+type
+        try {
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:165: e
+rror: illegal start of 
+type
+        } catch (IOExce
+ption e) {
+          ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:165: e
+rror: ';' expected
+        } catch (IOExce
+ption e) {
+                       
+       ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:174: e
+rror: <identifier> expe
+cted
+        productImageRep
+ository.delete(image);
+                       
+              ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:174: e
+rror: <identifier> expe
+cted
+        productImageRep
+ository.delete(image);
+                       
+                    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:177: e
+rror: illegal start of 
+type
+        if (wasRep) {
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:177: e
+rror: <identifier> expe
+cted
+        if (wasRep) {
+                  ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:186: e
+rror: class, interface,
+ enum, or record expect
+ed
+        return ProductI
+mageResponseDto.builder
+()
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:192: e
+rror: class, interface,
+ enum, or record expect
+ed
+    }
+    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:198: e
+rror: class, interface,
+ enum, or record expect
+ed
+        } catch (IOExce
+ption e) {
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:200: e
+rror: class, interface,
+ enum, or record expect
+ed
+        }
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:206: e
+rror: class, interface,
+ enum, or record expect
+ed
+        if (idx < 0 || 
+idx == filename.length(
+) - 1) return "";
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:207: e
+rror: class, interface,
+ enum, or record expect
+ed
+        return filename
+.substring(idx + 1);
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\p
+roduct\service\ProductI
+mageService.java:208: e
+rror: class, interface,
+ enum, or record expect
+ed
+    }
+    ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:42: error:
+ illegal start of expre
+ssion
+                .map(w 
+-> w.getProduct().getId
+())
+                ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:73: error:
+ <identifier> expected
+        wishProductRepo
+sitory.save(
+                       
+           ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:74: error:
+ <identifier> expected
+                WishPro
+duct.builder()
+                       
+            ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:80: error:
+ illegal start of type
+        return WishTogg
+leResponseDto.builder()
+.productId(productId).w
+ished(true).build();
+        ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:80: error:
+ <identifier> expected
+        return WishTogg
+leResponseDto.builder()
+.productId(productId).w
+ished(true).build();
+                       
+                     ^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:80: error:
+ ';' expected
+        return WishTogg
+leResponseDto.builder()
+.productId(productId).w
+ished(true).build();
+                       
+                       
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:85: error:
+ unnamed classes are a 
+preview feature and are
+ disabled by default.
+    public WishToggleRe
+sponseDto removeWish(Lo
+ng userId, Long product
+Id) {
+           ^
+  (use --enable-preview
+ to enable unnamed clas
+ses)
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:129: error
+: class, interface, enu
+m, or record expected
+}
+^
+D:\project\hanspoon_bac
+kend\src\main\java\com\
+project\hanspoon\shop\w
+ish\service\WishProduct
+Service.java:1: error: 
+unnamed class should no
+t have package declarat
+ion
+package com.project.han
+spoon.shop.wish.service
+;
+^
+172 errors
+
+FAILURE: Build failed w
+ith an exception.
+
+* What went wrong:
+Execution failed for ta
+sk ':compileJava'.
+> Compilation failed; s
+ee the compiler output 
+below.
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\security\CustomUserD
+etails.java:82: error: 
+unnamed classes are a p
+review feature and are 
+disabled by default.
+      public String get
+UserName() {
+             ^
+    (use --enable-previ
+ew to enable unnamed cl
+asses)
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:121: error: unna
+med classes are a previ
+ew feature and are disa
+bled by default.
+      private void save
+RecipeRelations(Recipe 
+mainRecipe, List<Long> 
+subRecipeIds) {
+              ^
+    (use --enable-previ
+ew to enable unnamed cl
+asses)
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\dto\ProductRes
+ponseDto.java:34: error
+: unnamed classes are a
+ preview feature and ar
+e disabled by default.
+      private Long id;
+              ^
+    (use --enable-previ
+ew to enable unnamed cl
+asses)
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:85: erro
+r: unnamed classes are 
+a preview feature and a
+re disabled by default.
+      public WishToggle
+ResponseDto removeWish(
+Long userId, Long produ
+ctId) {
+             ^
+    (use --enable-previ
+ew to enable unnamed cl
+asses)
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:64: error
+: not a statement
+                       
+   todayStart, todayEnd
+,
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:64: error
+: not a statement
+                       
+   todayStart, todayEnd
+,
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\dto\PaymentD
+to.java:43: error: not 
+a statement
+                       
+       "?占쏀뭹 ??" + (pay
+ment.getPaymentItems().
+size() - 1) + "占? : "寃곗
+젣 ?占쏀뭹"))
+                       
+                       
+                       
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:43: error:
+ reached end of file wh
+ile parsing
+  }
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\cart\dto\CartItemRespo
+nseDto.java:18: error: 
+reached end of file whi
+le parsing
+      private String th
+umbnailUrl; // ?占???占쎈꽕
+??}
+                       
+           ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\cart\dto\CartResponseD
+to.java:15: error: reac
+hed end of file while p
+arsing
+      private int total
+Quantity; // ?占쎌껜 ?占쎈웾 
+??    private int total
+Price;    // ?占쎌껜 湲덉븸 ?
+?}
+                       
+         ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\constant\ProductSort.j
+ava:5: error: reached e
+nd of file while parsin
+g
+      PRICE_ASC,   // 媛
+占??????    PRICE_DESC 
+  // 媛占??占쏙옙???}
+                ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\security\CustomUserD
+etails.java:100: error:
+ class, interface, enum
+, or record expected
+  }
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\coupon\seed\ClassCou
+ponSeed.java:39: error:
+ class, interface, enum
+, or record expected
+  }
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:429: error: clas
+s, interface, enum, or 
+record expected
+  }
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\dto\ProductRes
+ponseDto.java:56: error
+: class, interface, enu
+m, or record expected
+  }
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:186:
+ error: class, interfac
+e, enum, or record expe
+cted
+          return Produc
+tImageResponseDto.build
+er()
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:192:
+ error: class, interfac
+e, enum, or record expe
+cted
+      }
+      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:198:
+ error: class, interfac
+e, enum, or record expe
+cted
+          } catch (IOEx
+ception e) {
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:200:
+ error: class, interfac
+e, enum, or record expe
+cted
+          }
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:206:
+ error: class, interfac
+e, enum, or record expe
+cted
+          if (idx < 0 |
+| idx == filename.lengt
+h() - 1) return "";
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:207:
+ error: class, interfac
+e, enum, or record expe
+cted
+          return filena
+me.substring(idx + 1);
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:208:
+ error: class, interfac
+e, enum, or record expe
+cted
+      }
+      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:129: err
+or: class, interface, e
+num, or record expected
+  }
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\service\Port
+OneService.java:140: er
+ror: illegal start of e
+xpression
+                      .
+user(user)
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\api\spec\ClassSessio
+nSpecs.java:28: error: 
+illegal start of expres
+sion
+      public static Spe
+cification<ClassSession
+> startAtFrom(LocalDate
+Time from) {
+      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:139:
+ error: illegal start o
+f expression
+                  .stre
+am()
+                  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:42: erro
+r: illegal start of exp
+ression
+                  .map(
+w -> w.getProduct().get
+Id())
+                  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\security\CustomUserD
+etails.java:79: error: 
+illegal start of type
+          return user.g
+etUserId();
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\coupon\seed\ClassCou
+ponSeed.java:37: error:
+ illegal start of type
+          log.info("See
+ded default coupon: {}"
+, coupon.getName());
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\dto\RecipeFormDto.ja
+va:34: error: illegal s
+tart of type
+  }
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:163:
+ error: illegal start o
+f type
+          try {
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:165:
+ error: illegal start o
+f type
+          } catch (IOEx
+ception e) {
+            ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:177:
+ error: illegal start o
+f type
+          if (wasRep) {
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:80: erro
+r: illegal start of typ
+e
+          return WishTo
+ggleResponseDto.builder
+().productId(productId)
+.wished(true).build();
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\security\CustomUserD
+etails.java:1: error: u
+nnamed class should not
+ have package declarati
+on
+  package com.project.h
+anspoon.common.security
+;
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:1: error: unname
+d class should not have
+ package declaration
+  package com.project.h
+anspoon.recipe.service;
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\dto\ProductRes
+ponseDto.java:1: error:
+ unnamed class should n
+ot have package declara
+tion
+  package com.project.h
+anspoon.shop.product.dt
+o;
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:1: error
+: unnamed class should 
+not have package declar
+ation
+  package com.project.h
+anspoon.shop.wish.servi
+ce;
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\dto\PaymentD
+to.java:43: error: ille
+gal character: '\ufffd'
+                       
+       "?占쏀뭹 ??" + (pay
+ment.getPaymentItems().
+size() - 1) + "占? : "寃곗
+젣 ?占쏀뭹"))
+                       
+                       
+                       
+                       
+ ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:114: error: inva
+lid method declaration;
+ return type required
+          saveRecipeRel
+ations(mainRecipe, reci
+peFormDto.getSubrecipe(
+));
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:64: error
+: ';' expected
+                       
+   todayStart, todayEnd
+,
+                       
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:64: error
+: ';' expected
+                       
+   todayStart, todayEnd
+,
+                       
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:66: error
+: ';' expected
+                       
+           ReservationS
+tatus.CANCELED));
+                       
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\config\DataInitializ
+er.java:125: error: ';'
+ expected
+                       
+   LocalDateTime.now())
+;
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\config\PortOneConfig
+.java:43: error: ';' ex
+pected
+                  .defa
+ultHeader("Content-Type
+", "application/json")
+                       
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\dto\PaymentD
+to.java:43: error: : ex
+pected
+                       
+       "?占쏀뭹 ??" + (pay
+ment.getPaymentItems().
+size() - 1) + "占? : "寃곗
+젣 ?占쏀뭹"))
+                       
+                       
+                       
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\security\CustomUserD
+etails.java:79: error: 
+<identifier> expected
+          return user.g
+etUserId();
+                       
+        ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\api\spec\ClassSessio
+nSpecs.java:26: error: 
+';' expected
+      }
+       ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\coupon\seed\ClassCou
+ponSeed.java:36: error:
+ <identifier> expected
+          couponReposit
+ory.save(coupon);
+                       
+        ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\coupon\seed\ClassCou
+ponSeed.java:36: error:
+ <identifier> expected
+          couponReposit
+ory.save(coupon);
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\coupon\seed\ClassCou
+ponSeed.java:37: error:
+ <identifier> expected
+          log.info("See
+ded default coupon: {}"
+, coupon.getName());
+                  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:114: error: <ide
+ntifier> expected
+          saveRecipeRel
+ations(mainRecipe, reci
+peFormDto.getSubrecipe(
+));
+                       
+                 ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:114: error: <ide
+ntifier> expected
+          saveRecipeRel
+ations(mainRecipe, reci
+peFormDto.getSubrecipe(
+));
+                       
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:165:
+ error: ';' expected
+          } catch (IOEx
+ception e) {
+                       
+         ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:174:
+ error: <identifier> ex
+pected
+          productImageR
+epository.delete(image)
+;
+                       
+                ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:174:
+ error: <identifier> ex
+pected
+          productImageR
+epository.delete(image)
+;
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\product\service\Produc
+tImageService.java:177:
+ error: <identifier> ex
+pected
+          if (wasRep) {
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:73: erro
+r: <identifier> expecte
+d
+          wishProductRe
+pository.save(
+                       
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:74: erro
+r: <identifier> expecte
+d
+                  WishP
+roduct.builder()
+                       
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:80: erro
+r: <identifier> expecte
+d
+          return WishTo
+ggleResponseDto.builder
+().productId(productId)
+.wished(true).build();
+                       
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\wish\service\WishProdu
+ctService.java:80: erro
+r: ';' expected
+          return WishTo
+ggleResponseDto.builder
+().productId(productId)
+.wished(true).build();
+                       
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\constant\Pay
+mentStatus.java:7: erro
+r: unclosed string lite
+ral
+      PENDING("寃곗젣?占쏙옙?
+),
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\dto\PaymentD
+to.java:43: error: uncl
+osed string literal
+                       
+       "?占쏀뭹 ??" + (pay
+ment.getPaymentItems().
+size() - 1) + "占? : "寃곗
+젣 ?占쏀뭹"))
+                       
+                       
+                       
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\payment\dto\PaymentD
+to.java:73: error: uncl
+osed string literal
+                      .
+itemType(item.getProduc
+tId() != null ? "?占쏀뭹" 
+: "?占쎈옒??)
+                       
+                       
+                       
+ ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\comm
+on\security\CustomOAuth
+2UserService.java:117: 
+error: unclosed string 
+literal
+                  .user
+Name(userInfo.name() !=
+ null ? userInfo.name()
+ : "?占쎌슜??)
+                       
+                       
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\oned
+ay\reservation\domain\R
+eservationStatus.java:4
+: error: unclosed strin
+g literal
+      HOLD("?占쎌빟 ?占쏙옙?)
+,
+           ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\controller\RecipeCon
+troller.java:174: error
+: unclosed string liter
+al
+              log.info(
+"?占쎌쬆 媛앹껜媛 null?占쎈땲??)
+;
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\controller\RecipeCon
+troller.java:217: error
+: unclosed string liter
+al
+          return Respon
+seEntity.ok(ApiResponse
+.ok(null,"占?紐⑸줉?占쎌꽌 ??占
+쏙옙?占쎌뿀?占쎈땲??));
+                       
+                       
+         ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:50: error: unclo
+sed string literal
+              case "?占쏙
+옙??? -> amount * 5;
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:51: error: unclo
+sed string literal
+              case "占? 
+-> amount * 200;
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\reci
+pe\service\RecipeServic
+e.java:52: error: unclo
+sed string literal
+              case "占? 
+-> amount * 600;
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\shop
+\constant\OrderStatus.j
+ava:6: error: unclosed 
+string literal
+      SHIPPED("諛곗넚占?),
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\controller\AdminReser
+vationController.java:3
+8: error: unmappable ch
+aracter (0xB9) for enco
+ding UTF-8
+          return ApiRes
+ponse.ok("痍⑥냼 ?占쎌씤 泥섎━?
+占쎌뿀?占쎈땲??", null);
+                       
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\controller\AdminReser
+vationController.java:3
+8: error: unmappable ch
+aracter (0x98) for enco
+ding UTF-8
+          return ApiRes
+ponse.ok("痍⑥냼 ?占쎌씤 泥섎━?
+占쎌뿀?占쎈땲??", null);
+                       
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\controller\AdminReser
+vationController.java:3
+8: error: unmappable ch
+aracter (0xB5) for enco
+ding UTF-8
+          return ApiRes
+ponse.ok("痍⑥냼 ?占쎌씤 泥섎━?
+占쎌뿀?占쎈땲??", null);
+                       
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\controller\AdminReser
+vationController.java:4
+4: error: unmappable ch
+aracter (0x98) for enco
+ding UTF-8
+          return ApiRes
+ponse.ok("痍⑥냼 嫄곗젅 泥섎━?占
+쎌뿀?占쎈땲??", null);
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\controller\AdminReser
+vationController.java:4
+4: error: unmappable ch
+aracter (0xB5) for enco
+ding UTF-8
+          return ApiRes
+ponse.ok("痍⑥냼 嫄곗젅 泥섎━?占
+쎌뿀?占쎈땲??", null);
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:25: error:
+ unmappable character (
+0x84) for encoding UTF-
+8
+          private long 
+paymentCompleted; // 寃곗
+젣?占쎈즺 (諛곗넚以占???
+                       
+                       
+ ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:25: error:
+ unmappable character (
+0xEBB9) for encoding UT
+F-8
+          private long 
+paymentCompleted; // 寃곗
+젣?占쎈즺 (諛곗넚以占???
+                       
+                       
+        ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:26: error:
+ unmappable character (
+0x81) for encoding UTF-
+8
+          private long 
+preparing; // ?占쏀뭹以鍮꾩쨷
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:27: error:
+ unmappable character (
+0xECA4) for encoding UT
+F-8
+          private long 
+shipping; // 諛곗넚占?     
+   private long refundR
+equested; // ?占쎈텋?占쎌껌 (
+誘몄쿂占?
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:27: error:
+ unmappable character (
+0x98) for encoding UTF-
+8
+          private long 
+shipping; // 諛곗넚占?     
+   private long refundR
+equested; // ?占쎈텋?占쎌껌 (
+誘몄쿂占?
+                       
+                       
+                       
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:27: error:
+ unmappable character (
+0x94) for encoding UTF-
+8
+          private long 
+shipping; // 諛곗넚占?     
+   private long refundR
+equested; // ?占쎈텋?占쎌껌 (
+誘몄쿂占?
+                       
+                       
+                       
+                ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:27: error:
+ unmappable character (
+0xEBA6) for encoding UT
+F-8
+          private long 
+shipping; // 諛곗넚占?     
+   private long refundR
+equested; // ?占쎈텋?占쎌껌 (
+誘몄쿂占?
+                       
+                       
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminDashboardSum
+maryDto.java:42: error:
+ unmappable character (
+0xA0) for encoding UTF-
+8
+          private long 
+newUsersToday; // ?占쎄퇋 
+媛??    }
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+BF) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+B1) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+         ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+89) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+ECA4) for encoding UTF-
+8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+EB) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+EBB1) for encoding UTF-
+8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+97) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+                       
+           ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+8E) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:6: error: u
+nmappable character (0x
+85) for encoding UTF-8
+   * ?占승?占싼딆쁽 ??占쎈튋 筌뤴
+뫖占?燁삼옙?占?1椰꾨똻????占쎌겱??占
+쎈뮉 DTO??占쎈빍??
+                       
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:8: error: u
+nmappable character (0x
+E6BF) for encoding UTF-
+8
+   * ?袁⑥쨴??AdminReserva
+tionList.jsx)揶쎛 域밸챶?占?
+?怨뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占
+????占쎈빍??
+                       
+                  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:8: error: u
+nmappable character (0x
+9D) for encoding UTF-8
+   * ?袁⑥쨴??AdminReserva
+tionList.jsx)揶쎛 域밸챶?占?
+?怨뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占
+????占쎈빍??
+                       
+                       
+       ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:8: error: u
+nmappable character (0x
+EBA8) for encoding UTF-
+8
+   * ?袁⑥쨴??AdminReserva
+tionList.jsx)揶쎛 域밸챶?占?
+?怨뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占
+????占쎈빍??
+                       
+                       
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\dto\AdminReservationI
+temDto.java:8: error: u
+nmappable character (0x
+AC) for encoding UTF-8
+   * ?袁⑥쨴??AdminReserva
+tionList.jsx)揶쎛 域밸챶?占?
+?怨뺣뮉 ?袁⑤굡筌뤿굞?占썸에?筌띿쉸??占
+????占쎈빍??
+                       
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:36: error
+: unmappable character 
+(0xEC) for encoding UTF
+-8
+              // 1. 留ㅼ텧
+ (Payment 湲곤옙?, PAID ?占
+쏀깭) - ?占쎌떆 0
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:36: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+              // 1. 留ㅼ텧
+ (Payment 湲곤옙?, PAID ?占
+쏀깭) - ?占쎌떆 0
+                       
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:36: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+              // 1. 留ㅼ텧
+ (Payment 湲곤옙?, PAID ?占
+쏀깭) - ?占쎌떆 0
+                       
+                       
+    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:40: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+              // 2. 二쇰Ц
+ ?占쏀깭
+                       
+ ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:56: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+              // 3. ?占쎌
+빟 ?占쏀솴
+                     ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:56: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+              // 3. ?占쎌
+빟 ?占쏀솴
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0xA4) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0x9C) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0x98) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0xEC) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0xA4) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+                 ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0x9D) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+                     ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0xEC) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+                       
+       ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0xBC) for encoding UTF
+-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:63: error
+: unmappable character 
+(0xEAB2) for encoding U
+TF-8
+                  // ?占
+쎈뒛 ?占쎌옉?占쎌뾽 湲곤옙? -> ?占쎈
+뒛 ?占쎌꽦???占쎌빟 湲곤옙??占쎈줈 蹂
+占?                toda
+yReservations = reserva
+tionRepository.countByS
+essionStartAtBetweenAnd
+StatusIn(
+                       
+                       
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:71: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+                  // ?占
+쎌껜 痍⑥냼 嫄댁닔 (?占쎌빟 痍⑥냼 + 
+湲곌컙 留뚮즺)
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:71: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+                  // ?占
+쎌껜 痍⑥냼 嫄댁닔 (?占쎌빟 痍⑥냼 + 
+湲곌컙 留뚮즺)
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0xA4) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0xA4) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0x81) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0x88) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                       
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0xA4) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                       
+                       
+      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0xA9) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                       
+                       
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:75: error
+: unmappable character 
+(0x84) for encoding UTF
+-8
+                  // ?占
+쎈뒛 留ㅼ텧 怨꾩궛 (?占쎈뒛 PAID ?
+占쏀깭媛 ???占쎌빟?占쎌쓽 湲덉븸 ?占
+쎄퀎 - ?占쎌떆)
+                       
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:86: error
+: unmappable character 
+(0x8C) for encoding UTF
+-8
+              // 4. CS 
+& ?占쎌썝
+                       
+   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:106: erro
+r: unmappable character
+ (0x81) for encoding UT
+F-8
+                       
+       .refundRequested
+(refundRequested + pend
+ingCancel) // ?占쏀뭹 ?占쎈텋
+ + ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:106: erro
+r: unmappable character
+ (0x98) for encoding UT
+F-8
+                       
+       .refundRequested
+(refundRequested + pend
+ingCancel) // ?占쏀뭹 ?占쎈텋
+ + ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:106: erro
+r: unmappable character
+ (0xB4) for encoding UT
+F-8
+                       
+       .refundRequested
+(refundRequested + pend
+ingCancel) // ?占쏀뭹 ?占쎈텋
+ + ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:106: erro
+r: unmappable character
+ (0x94) for encoding UT
+F-8
+                       
+       .refundRequested
+(refundRequested + pend
+ingCancel) // ?占쏀뭹 ?占쎈텋
+ + ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:106: erro
+r: unmappable character
+ (0xA9) for encoding UT
+F-8
+                       
+       .refundRequested
+(refundRequested + pend
+ingCancel) // ?占쏀뭹 ?占쎈텋
+ + ?占쎈옒??痍⑥냼 ?占쎌껌 ?占쎌궛
+                       
+                       
+                       
+                       
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0x80) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0x9C) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0x94) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                       
+    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0x9D) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                       
+        ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0xA4) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                       
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0x88) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                       
+                ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminDashboar
+dService.java:121: erro
+r: unmappable character
+ (0x88) for encoding UT
+F-8
+              throw new
+ RuntimeException("?占?占
+쎈낫???占쎌빟 ?占쎌꽦???占쏀뙣?占쎌뒿
+?占쎈떎.", e);
+                       
+                       
+                   ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:26: err
+or: unmappable characte
+r (0x88) for encoding U
+TF-8
+       * 愿由ъ옄 ?占쎌빟 紐⑸줉
+ 議고쉶
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:28: err
+or: unmappable characte
+r (0x8C) for encoding U
+TF-8
+       * status ?占쎈씪誘명꽣
+ 洹쒖튃:
+                 ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:29: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * - null/blank/A
+LL: ?占쎌껜
+                       
+     ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0xB4) for encoding U
+TF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0x81) for encoding U
+TF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+        ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0xEBA7) for encoding
+ UTF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+                       
+                 ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0x88) for encoding U
+TF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+                       
+                     ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0x81) for encoding U
+TF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+                       
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0x86) for encoding U
+TF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+                       
+                       
+            ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:30: err
+or: unmappable characte
+r (0xEBB9) for encoding
+ UTF-8
+       * - HOLD/PAID/CA
+NCELED/EXPIRED/COMPLETE
+D: ?占쎈떦 ?占쏀깭占?     * - 
+CANCEL_REQUESTED: ?占쎌옱 
+?占쎌빟 ?占쏀깭 enum???占쎌뼱 占?
+紐⑸줉
+                       
+                       
+                       
+                       
+               ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:52: err
+or: unmappable characte
+r (0x94) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌껌 紐⑸줉 議
+고쉶
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x88) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+              ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x81) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x81) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                       
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x86) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                       
+                       
+  ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                       
+                       
+       ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0xEBA1) for encoding
+ UTF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                       
+                       
+         ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0xEBB9) for encoding
+ UTF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                       
+                       
+           ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:53: err
+or: unmappable characte
+r (0x85) for encoding U
+TF-8
+       * ?占쎌옱 ?占쎌빟 ?占쏀깭
+ 紐⑤뜽??CANCEL_REQUESTED 
+?占쏀깭媛 ?占쎌뼱???占쎌떆占?占?紐⑸
+줉?占쎈땲??
+                       
+                       
+                ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0xB9) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+             ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x8C) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0xB0) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x88) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+        ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x81) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+            ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x98) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+1 actionable task: 1 executed
+                       
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0xEC) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                       
+^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x8A) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                       
+    ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:60: err
+or: unmappable characte
+r (0x88) for encoding U
+TF-8
+       * 痍⑥냼 ?占쎌씤/嫄곗젅 ?
+占쎈줈?占쎈뒗 ?占쎌옱 ?占쎌빟 ?占쏀깭 
+紐⑤뜽??議댁옱?占쏙옙? ?占쎌뒿?占쎈떎.
+                       
+                       
+       ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:61: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * ?占쎈줎??怨꾩빟 寃쎈줈 
+?占쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫
+붿떆吏占?諛섑솚?占쎈땲??
+          ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:61: err
+or: unmappable characte
+r (0xA0) for encoding U
+TF-8
+       * ?占쎈줎??怨꾩빟 寃쎈줈 
+?占쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫
+붿떆吏占?諛섑솚?占쎈땲??
+                     ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:61: err
+or: unmappable characte
+r (0xEC) for encoding U
+TF-8
+       * ?占쎈줎??怨꾩빟 寃쎈줈 
+?占쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫
+붿떆吏占?諛섑솚?占쎈땲??
+                      ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:61: err
+or: unmappable characte
+r (0xEBA5) for encoding
+ UTF-8
+       * ?占쎈줎??怨꾩빟 寃쎈줈 
+?占쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫
+붿떆吏占?諛섑솚?占쎈땲??
+                       
+ ^
+  D:\project\hanspoon_b
+ackend\src\main\java\co
+m\project\hanspoon\admi
+n\service\AdminReservat
+ionService.java:61: err
+or: unmappable characte
+r (0x84) for encoding U
+TF-8
+       * ?占쎈줎??怨꾩빟 寃쎈줈 
+?占쏙옙?占??占쏀빐 紐낇솗???占쎈궡 硫
+붿떆吏占?諛섑솚?占쎈땲??
+                       
+    ^
+  172 errors
+
+* Try:
+> Check your code and d
+ependencies to fix the 
+compilation error(s)
+> Run with --scan to ge
+t full insights.
+
+BUILD FAILED in 2s
