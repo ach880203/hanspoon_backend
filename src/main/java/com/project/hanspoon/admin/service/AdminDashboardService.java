@@ -14,6 +14,7 @@ import com.project.hanspoon.oneday.inquiry.repository.ClassInquiryRepository;
 import com.project.hanspoon.shop.inquiry.repository.InqProductRepository;
 import com.project.hanspoon.recipe.repository.RecipeIngRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class AdminDashboardService {
 
         private final PaymentRepository paymentRepository;
@@ -54,14 +56,21 @@ public class AdminDashboardService {
                                         .mapToLong(p -> p.getTotalPrice() != null ? p.getTotalPrice() : 0)
                                         .sum();
 
-                        // 2. 주문 상태
-                        long paymentCompleted = orderRepository.countByStatus(OrderStatus.PAID)
-                                        + reservationRepository.countByStatus(ReservationStatus.PAID);
-                        long preparing = orderRepository.countByStatus(OrderStatus.CREATED);
+                        // 2. 상점 주문 (Shop Order)
+                        // 'preparing' (배송 준비)는 결제가 완료되어 배송을 준비중인(PAID) 주문 건수를 의미합니다.
+                        // 'shipping' (실제 배송중)은 출고 처리가 된(SHIPPED) 주문 건수를 의미합니다.
+                        long paymentCompleted = orderRepository.countByStatus(OrderStatus.PAID);
+                        long preparing = orderRepository.countByStatus(OrderStatus.PAID);
+                        // 'shipping' (실제 배송중)은 현재 배송 중인 건만 표시하도록 집계 (기존에 섞였을 가능성 차단)
                         long shipping = orderRepository.countByStatus(OrderStatus.SHIPPED);
                         long refundRequested = orderRepository.countByStatus(OrderStatus.REFUND_REQUESTED);
 
-                        // 3. 예약 현황
+                        // 3. 클래스 예약 (Class Reservation)
+                        // 'activeReservations'는 예약 확정(PAID) 또는 수강완료(COMPLETED)된 모든 예약 건수를 의미합니다. (날짜 제한
+                        // 해제)
+                        long activeReservations = reservationRepository.countByStatus(ReservationStatus.PAID)
+                                        + reservationRepository.countByStatus(ReservationStatus.COMPLETED);
+
                         long todayReservations = reservationRepository.countByCreatedAtBetweenAndStatusIn(
                                         todayStart, todayEnd,
                                         List.of(ReservationStatus.PAID, ReservationStatus.COMPLETED,
@@ -79,6 +88,18 @@ public class AdminDashboardService {
                                         + inqProductRepository.countByAnsweredYnFalse()
                                         + recipeIngRepository.countByIsAnsweredFalse();
 
+                        // [Diagnostic Logging]
+                        System.out.println("====== Admin Dashboard Diagnostics ======");
+                        System.out.println("Orders by Status:");
+                        for (OrderStatus status : OrderStatus.values()) {
+                                System.out.println("  " + status + ": " + orderRepository.countByStatus(status));
+                        }
+                        System.out.println("Reservations by Status:");
+                        for (ReservationStatus status : ReservationStatus.values()) {
+                                System.out.println("  " + status + ": " + reservationRepository.countByStatus(status));
+                        }
+                        System.out.println("=========================================");
+
                         return AdminDashboardSummaryDto.builder()
                                         .sales(AdminDashboardSummaryDto.SalesSummary.builder()
                                                         .todaySales(todaySales)
@@ -88,10 +109,11 @@ public class AdminDashboardService {
                                                         .paymentCompleted(paymentCompleted)
                                                         .preparing(preparing)
                                                         .shipping(shipping)
-                                                        .refundRequested(refundRequested + pendingCancel)
+                                                        .refundRequested(refundRequested)
                                                         .build())
                                         .reservations(AdminDashboardSummaryDto.ReservationSummary.builder()
                                                         .todayCount(todayReservations)
+                                                        .activeCount(activeReservations)
                                                         .pendingCancel(pendingCancel)
                                                         .totalCanceled(totalCanceled)
                                                         .build())
@@ -101,7 +123,9 @@ public class AdminDashboardService {
                                                         .build())
                                         .build();
                 } catch (Exception e) {
-                        throw new RuntimeException("대시보드 요약 생성에 실패했습니다.", e);
+                        System.err.println("Dashboard Error: " + e.getMessage());
+                        e.printStackTrace();
+                        throw new RuntimeException("대시보드 요약 정보를 생성하는 중 오류가 발생했습니다.", e);
                 }
         }
 

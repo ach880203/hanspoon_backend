@@ -21,18 +21,18 @@ import java.time.LocalDateTime;
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
 
-    //사용자 조회/저장
+    // 사용자 조회/저장
     private final UserRepository userRepository;
-    //쿠폰 마스터 조회/저장
+    // 쿠폰 마스터 조회/저장
     private final ClassCouponRepository couponRepository;
-    //사용자 쿠폰 발급 관리
+    // 사용자 쿠폰 발급 관리
     private final ClassUserCouponRepository userCouponRepository;
-    //비밀번호 암호화
+    // 비밀번호 암호화
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
-        //관리자 계정 생성 or 업데이트
+        // 관리자 계정 생성 or 업데이트
         User admin = userRepository.findByEmail("admin@example.com")
                 .map(existingAdmin -> {
                     existingAdmin.setRole("ROLE_ADMIN");
@@ -67,7 +67,8 @@ public class DataInitializer implements CommandLineRunner {
                     .anyMatch(uc -> uc.getCoupon().getId().equals(adminCoupon.getId()) && uc.getUsedAt() == null);
 
             if (!hasCoupon) {
-                ClassUserCoupon issued = ClassUserCoupon.issue(admin.getUserId(), adminCoupon, null, LocalDateTime.now());
+                ClassUserCoupon issued = ClassUserCoupon.issue(admin.getUserId(), adminCoupon, null,
+                        LocalDateTime.now());
                 userCouponRepository.save(issued);
                 log.info("관리자 계정에 테스트 쿠폰 지급 완료");
             }

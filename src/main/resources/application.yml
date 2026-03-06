@@ -23,9 +23,13 @@ spring:
     password: 1234
 
   jpa:
+    defer-datasource-initialization: true
     open-in-view: false
     hibernate:
       ddl-auto: update
+  sql:
+    init:
+      mode: always
     show-sql: false
     properties:
       hibernate:
