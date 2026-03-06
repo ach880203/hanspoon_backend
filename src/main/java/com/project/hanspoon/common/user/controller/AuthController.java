@@ -65,13 +65,15 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            // Access Token (30분)
+            String accessToken = jwtTokenProvider.createAccessToken(authentication);
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             User user = userDetails.getUser();
 
             userService.updateLastLogin(user.getUserId());
 
-            // Refresh Token → HttpOnly 쿠키 (이미 인증된 Authentication 재사용, 이중인증 방지)
-            AuthService.TokenPair tokens = authService.issueTokens(authentication);
+            // Refresh Token → HttpOnly 쿠키
+            AuthService.TokenPair tokens = authService.login(request.getEmail(), request.getPassword());
             setRefreshCookie(httpResponse, tokens.refreshToken());
 
             LoginResponse response = LoginResponse.builder()
@@ -94,8 +96,7 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("로그인에 실패했습니다: " + e.getMessage()));
         } catch (Exception e) {
-            // 디버깅을 위해 실제 메시지 포함
-            return ResponseEntity.badRequest().body(ApiResponse.error("서버 오류가 발생했습니다: " + e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error("서버 오류가 발생했습니다."));
         }
     }
 

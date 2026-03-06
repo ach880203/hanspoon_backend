@@ -2,6 +2,7 @@ package com.project.hanspoon.admin.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @Builder
@@ -31,7 +32,6 @@ public class AdminDashboardSummaryDto {
     @Builder
     public static class ReservationSummary {
         private long todayCount;
-        private long activeCount; // 예약 확정 건수
         private long pendingCancel;
         private long totalCanceled;
     }

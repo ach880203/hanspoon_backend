@@ -5,8 +5,10 @@ import com.project.hanspoon.common.security.CustomUserDetailsService;
 import com.project.hanspoon.common.security.jwt.JwtTokenProvider;
 import com.project.hanspoon.common.security.jwt.entity.RefreshToken;
 import com.project.hanspoon.common.security.jwt.repository.RefreshTokenRepository;
+import com.project.hanspoon.common.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthService {
 
+    private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final CustomUserDetailsService userDetailsService;
@@ -37,14 +40,17 @@ public class AuthService {
     // ----------------------------------------------------------------
 
     /**
-     * 이미 인증된 Authentication 객체로 Access + Refresh Token 발급.
-     * (컨트롤러에서 authenticationManager.authenticate() 완료 후 호출)
+     * 이메일/비밀번호 인증 후 Access + Refresh Token 발급.
      */
     @Transactional
-    public TokenPair issueTokens(Authentication authentication) {
+    public TokenPair login(String email, String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+
         String accessToken = jwtTokenProvider.createAccessToken(authentication);
         String newRefreshToken = issueAndSaveRefreshToken(authentication);
-        log.info("[Auth] 토큰 발급 완료: {}", authentication.getName());
+
+        log.info("[Auth] 로그인 성공: {}", email);
         return new TokenPair(accessToken, newRefreshToken);
     }
 
