@@ -1,13 +1,14 @@
 server:
   port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
   servlet:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
 
-uploadPath: file:///c:/hanspoon/img/
-itemImgLocation: c:/hanspoon/img
+uploadPath: ${UPLOAD_PATH:file:///c:/hanspoon/img/}
+itemImgLocation: ${ITEM_IMG_LOCATION:c:/hanspoon/img}
 
 spring:
   profiles:
